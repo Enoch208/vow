@@ -81,5 +81,7 @@
       "verified": "evidence/vault-deployment-observation.json"
     }
   ],
+  "demo_video": "",
+  "demo_url": "",
   "note": "All listed transactions execute VowVault on Starknet mainnet and emit its events (except the ERC-20 approve). None of them touches the STRK20 pool. No supplier collection has occurred, so no qualifying pool transaction exists yet."
 }
