@@ -50,7 +50,7 @@ test('T-006 dispatch checks selected mainnet account and sends the exact reviewe
   const request = f.requests[4]!;
   assert.equal(request.type, 'wallet_addInvokeTransaction');
   if (request.type !== 'wallet_addInvokeTransaction') throw new Error('TEST_WRONG_REQUEST');
-  assert.equal(request.params.invoke_transaction.length, 1);
+  assert.equal(request.params.calls.length, 1);
   assert.equal(request.params.proof.data, 'synthetic-not-a-real-proof');
   assert.equal(createHash('sha256').update(JSON.stringify(request)).digest('hex'), f.input.reviewed.review.payloadSha256);
   assert.deepEqual(f.requests[2], { type: 'wallet_requestAccounts', params: { silent_mode: true, api_version: '0.10.3' } });

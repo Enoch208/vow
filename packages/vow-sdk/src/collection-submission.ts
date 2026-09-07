@@ -14,7 +14,7 @@ export interface PreparedSubmissionRequest {
   readonly type: 'wallet_addInvokeTransaction';
   readonly params: {
     readonly api_version: '0.10.3';
-    readonly invoke_transaction: readonly PreparedCollection['call'][];
+    readonly calls: readonly { readonly contract_address: string; readonly entry_point: string; readonly calldata: readonly string[] }[];
     readonly proof: PreparedCollection['proof'];
   };
 }
@@ -41,7 +41,7 @@ export async function reviewCollectionSubmission(input: unknown, configuration: 
   decodePreparedClaim(retained, { claim, poolAddress: config.poolAddress, observedPoolClassHash: POOL_CLASS_HASH,
     feeToken: config.feeToken, feeCollector: config.feeCollector, maximumFee }, supplied);
   const request: PreparedSubmissionRequest = { type: 'wallet_addInvokeTransaction', params: { api_version: '0.10.3',
-    invoke_transaction: [{ contract_address: hex(config.poolAddress), entry_point: hash.getSelectorFromName('apply_actions'), calldata: retained.call.calldata.map((value) => hex(BigInt(value))) }],
+    calls: [{ contract_address: hex(config.poolAddress), entry_point: hash.getSelectorFromName('apply_actions'), calldata: retained.call.calldata.map((value) => hex(BigInt(value))) }],
     proof: { data: retained.proof.data, output: retained.proof.output.map((value) => hex(BigInt(value))), proof_facts: retained.proof.proof_facts.map((value) => hex(BigInt(value))) } } };
   const fingerprint = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(request))));
   const payloadSha256 = Array.from(fingerprint, (value) => value.toString(16).padStart(2, '0')).join('');

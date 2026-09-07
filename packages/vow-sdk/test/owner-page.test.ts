@@ -138,9 +138,9 @@ test('T-OWNER-6 an approved creation walks READY to SUBMITTED to CONFIRMED and n
   p.click('create-mandate');
   await p.settle(() => p.element('write-state').textContent === 'SUBMITTED');
   assert.equal(p.sent.length, 1);
-  const request = p.sent[0] as { type: string; params: { invoke_transaction: { entry_point: string; calldata: string[] }[] } };
+  const request = p.sent[0] as { type: string; params: { calls: { entry_point: string; calldata: string[] }[] } };
   assert.equal(request.type, 'wallet_addInvokeTransaction');
-  assert.equal(request.params.invoke_transaction[0]!.calldata.length, 5);
+  assert.equal(request.params.calls[0]!.calldata.length, 5);
   assert.equal(p.element('write-hash').textContent, '0xabc');
   assert.equal(p.element('create-mandate').disabled, true);
   p.element('create-mandate').handlers.get('click')?.();

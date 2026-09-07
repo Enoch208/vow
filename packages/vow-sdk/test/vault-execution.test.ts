@@ -130,13 +130,13 @@ test('the declare request carries the compiled class hash and no signature', () 
 test('the deploy request carries exactly one call to the deployer', () => {
   const request = vaultStageRequest('deploy', terms, artifact, 1n);
   assert.equal(request.type, 'wallet_addInvokeTransaction');
-  assert.deepEqual(Object.keys(request.params).sort(), ['api_version', 'invoke_transaction']);
-  const calls = (request.params as { invoke_transaction: Record<string, unknown>[] })
-    .invoke_transaction;
+  assert.deepEqual(Object.keys(request.params).sort(), ['api_version', 'calls']);
+  const calls = (request.params as { calls: Record<string, unknown>[] })
+    .calls;
   assert.equal(calls.length, 1);
   assert.deepEqual(Object.keys(calls[0]!).sort(), ['calldata', 'contract_address', 'entry_point']);
   assert.equal(calls[0]!.entry_point, 'deploy_contract');
-  assert.equal('calls' in request.params, false);
+  assert.equal('invoke_transaction' in request.params, false);
 });
 
 test('an artifact that does not match the reviewed terms is refused', () => {

@@ -60,7 +60,7 @@ export function deploymentRequest(stage: DeploymentStage, plan: ReturnType<typeo
       contract_class_version: artifact.contractClass.contract_class_version, entry_points_by_type: artifact.contractClass.entry_points_by_type,
       abi: typeof artifact.contractClass.abi === 'string' ? artifact.contractClass.abi : hash.formatSpaces(JSON.stringify(artifact.contractClass.abi)) } } };
   const calls = stage === 'deploy' ? [plan.deploymentCall] : [...plan.fundingCalls];
-  return { type: 'wallet_addInvokeTransaction', params: { api_version: '0.10.3', invoke_transaction: calls.map((call) => ({
+  return { type: 'wallet_addInvokeTransaction', params: { api_version: '0.10.3', calls: calls.map((call) => ({
     contract_address: call.contractAddress, entry_point: hash.getSelectorFromName(call.entrypoint), calldata: calldata(call) })) } };
 }
 export function executeCalldata(stage: DeploymentStage, plan: ReturnType<typeof buildProbeDeploymentPlan>): bigint[] {

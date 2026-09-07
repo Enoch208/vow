@@ -87,8 +87,8 @@ test('Reviewed deployment executes declaration, deployment and atomic funding on
   const declaration = f.writes[0] as { type: string; params: Record<string, unknown> };
   assert.equal(declaration.type, 'wallet_addDeclareTransaction'); assert.ok('contract_class' in declaration.params);
   assert.equal('declare_transaction' in declaration.params, false);
-  const funding = f.writes[2] as { params: { invoke_transaction: unknown[] } };
-  assert.equal(funding.params.invoke_transaction.length, 2);
+  const funding = f.writes[2] as { params: { calls: unknown[] } };
+  assert.equal(funding.params.calls.length, 2);
 });
 
 test('Wrong wallet identity, changed nonce, build hash and unexpected deployed class fail closed before writes', async () => {

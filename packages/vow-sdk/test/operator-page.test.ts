@@ -137,8 +137,8 @@ test('T-OPERATOR-5 a reservation needs a matching operator signature, then sends
   p.click('submit-reserve');
   await p.settle(() => p.element('write-state').textContent === 'SUBMITTED');
   assert.equal(p.sent.length, 1);
-  const request = p.sent[0] as { params: { invoke_transaction: { calldata: string[] }[] } };
-  const calldata = request.params.invoke_transaction[0]!.calldata;
+  const request = p.sent[0] as { params: { calls: { calldata: string[] }[] } };
+  const calldata = request.params.calls[0]!.calldata;
   assert.equal(calldata.length, 9 + 13 + 1 + 4 + 2);
   assert.equal(BigInt(calldata[3]!), set.root);
   assert.equal(BigInt(calldata[14]!), SUPPLIER_KEY);

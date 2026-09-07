@@ -93,7 +93,7 @@ export function vaultStageRequest(
     type: 'wallet_addInvokeTransaction',
     params: {
       api_version: '0.10.3',
-      invoke_transaction: [{
+      calls: [{
         contract_address: hex(BigInt(call.contractAddress)),
         entry_point: String(call.entrypoint),
         calldata: calldata.map((value: unknown) => hex(BigInt(String(value)))),

@@ -9,7 +9,7 @@ export interface VaultInvokeRequest {
   readonly type: 'wallet_addInvokeTransaction';
   readonly params: {
     readonly api_version: '0.10.3';
-    readonly invoke_transaction: readonly {
+    readonly calls: readonly {
       readonly contract_address: string;
       readonly entry_point: string;
       readonly calldata: readonly string[];
@@ -45,7 +45,7 @@ export function reserveInvoke(authorization: ReserveAuthorization, leaf: Permiss
 
 function invoke(vaultAddress: bigint, entryPoint: string, calldata: readonly bigint[]): VaultInvokeRequest {
   return Object.freeze({ type: 'wallet_addInvokeTransaction', params: Object.freeze({ api_version: '0.10.3',
-    invoke_transaction: Object.freeze([Object.freeze({ contract_address: hex(vaultAddress),
+    calls: Object.freeze([Object.freeze({ contract_address: hex(vaultAddress),
       entry_point: hash.getSelectorFromName(entryPoint), calldata: Object.freeze(calldata.map(hex)) })]) }) });
 }
 

@@ -18,9 +18,9 @@ test('T-006 submission review binds the single prepared call and proof with cano
   const candidate = await reviewCollectionSubmission(payload(), config, 777n, signature, 100n, 1000n);
   const request = candidate.take(candidate.review.reviewDigest, 1001n);
   assert.equal(request.type, 'wallet_addInvokeTransaction');
-  assert.deepEqual(Object.keys(request.params), ['api_version', 'invoke_transaction', 'proof']);
-  assert.equal(request.params.api_version, '0.10.3'); assert.equal(request.params.invoke_transaction.length, 1);
-  assert.ok(request.params.invoke_transaction[0]!.calldata.every((value) => /^0x[0-9a-f]+$/.test(value)));
+  assert.deepEqual(Object.keys(request.params), ['api_version', 'calls', 'proof']);
+  assert.equal(request.params.api_version, '0.10.3'); assert.equal(request.params.calls.length, 1);
+  assert.ok(request.params.calls[0]!.calldata.every((value) => /^0x[0-9a-f]+$/.test(value)));
   assert.equal(createHash('sha256').update(JSON.stringify(request)).digest('hex'), candidate.review.payloadSha256);
   assert.equal(candidate.review.networkFeeEnforcement, 'manual-wallet-confirmation');
   assert.equal(candidate.review.totalBudget, 'not-assessed');
