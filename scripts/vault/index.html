@@ -1,0 +1,63 @@
+<title>VOW vault deployment</title>
+<link rel="stylesheet" href="/collection/style.css">
+<main>
+  <p class="eyebrow">VOW · VAULT DEPLOYMENT</p>
+  <h1>Declare and deploy VowVault</h1>
+  <p>
+    Review the exact public terms, then request one stage at a time in Ready. A predicted address
+    does not prove declaration or deployment. Total test cost remains unverified.
+  </p>
+
+  <section>
+    <h2>Public deployment terms</h2>
+    <button id="load-vault-draft" type="button">Load local draft</button>
+    <label for="vault-terms">Public deployment terms (JSON)</label>
+    <textarea id="vault-terms" rows="10" spellcheck="false"></textarea>
+    <button id="review-vault" type="button">Review terms</button>
+    <button id="clear-vault" type="button">Clear review</button>
+    <p id="vault-status">No terms reviewed.</p>
+  </section>
+
+  <section>
+    <h2>Reviewed terms</h2>
+    <pre id="vault-summary">No deployment reviewed.</pre>
+  </section>
+
+  <section>
+    <h2>Current chain stage</h2>
+    <p>
+      VowVault is deployed in two stages. Declaration publishes the class; deployment creates the
+      vault bound to the STRK20 pool. Neither stage creates a mandate or moves budget.
+    </p>
+    <button id="check-vault-stage" type="button">Check chain stage</button>
+    <pre id="vault-stage">No chain stage checked.</pre>
+  </section>
+
+  <section>
+    <h2>Execute one reviewed stage</h2>
+    <p>
+      Each stage needs a fresh chain check and a separate confirmation in Ready. This page does not
+      cap the wallet network fee. Reject the request in Ready if its fee exceeds the ceiling shown
+      above.
+    </p>
+    <label for="vault-wallet">Detected wallet</label>
+    <select id="vault-wallet"></select>
+    <button id="scan-vault-wallets" type="button">Scan for wallets</button>
+    <label>
+      <input id="approve-vault-stage" type="checkbox">
+      I approve this exact stage and its stated fee ceiling. I will reject Ready's request if its
+      network fee exceeds that ceiling.
+    </label>
+    <button id="request-vault-stage" type="button">Request reviewed stage in Ready</button>
+    <p id="vault-execution-status">No transaction requested.</p>
+    <pre id="vault-result">No transaction submitted by this review.</pre>
+  </section>
+
+  <p class="footnote">
+    Inputs remain on this page. Draft and build reads use this local server; chain checks use the
+    public mainnet RPC. No supplier keys, passwords or recovery phrases are requested or accessed.
+    Paste only public deployment terms.
+  </p>
+</main>
+<script type="importmap">{"imports":{"@wallet-standard/app":"/vendor/wallets.js"}}</script>
+<script type="module" src="/vault/browser.js"></script>

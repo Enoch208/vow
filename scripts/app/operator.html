@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOW operator — reserve one approved purchase</title>
+  <link rel="stylesheet" href="/app.css">
+  <script type="importmap">{"imports":{"@wallet-standard/app":"/vendor/wallets.js"}}</script>
+  <script type="module" src="/operator.js"></script>
+</head>
+<body>
+<a class="skip" href="#choose">Skip to the permission list</a>
+<header>
+  <p class="eyebrow"><a href="/">VOW</a> · OPERATOR</p>
+  <h1>Reserve one approved purchase</h1>
+  <p class="lede">You choose from permissions the owner already committed. There is no field on this page for a different supplier key, a different token or a longer deadline, and a changed permission object stops matching the committed root.</p>
+  <output id="deployment-status" aria-live="polite">Reading the deployment manifest…</output>
+</header>
+<main>
+  <section class="card" aria-labelledby="load-title">
+    <h2 id="load-title">1. Load the committed permission set</h2>
+    <p>This is the encrypted file the owner created. Every permission object below is checked against the mandate root already on chain before it can be selected.</p>
+    <label for="wallet">Detected wallet</label>
+    <select id="wallet" disabled></select>
+    <output id="wallet-status" aria-live="polite">Scanning for wallets…</output>
+    <button id="scan-wallet" type="button" class="secondary">Scan for wallets</button>
+    <label for="permission-file">Encrypted permission set (JSON)</label>
+    <textarea id="permission-file" rows="6" spellcheck="false" autocomplete="off"></textarea>
+    <label for="permission-password">Permission set password</label>
+    <input id="permission-password" type="password" autocomplete="off">
+    <button id="unlock-permissions" type="button">Unlock and check against the chain</button>
+    <output id="unlock-status" aria-live="polite">No permission set loaded.</output>
+    <output id="mandate-status" aria-live="polite">No mandate read.</output>
+  </section>
+
+  <section class="card" aria-labelledby="ledger-title">
+    <h2 id="ledger-title">Mandate totals</h2>
+    <p>Five separate numbers, in the token’s smallest unit. A reservation can only draw on Available.</p>
+    <ul class="ledger">
+      <li><span class="name">Funded</span><span class="value" id="ledger-funded">unread</span></li>
+      <li><span class="name">Available</span><span class="value" id="ledger-available">unread</span></li>
+      <li><span class="name">Reserved</span><span class="value" id="ledger-reserved">unread</span></li>
+      <li><span class="name">Paid</span><span class="value" id="ledger-paid">unread</span></li>
+      <li><span class="name">Reclaimed</span><span class="value" id="ledger-reclaimed">unread</span></li>
+    </ul>
+    <output id="ledger-status" aria-live="polite">No mandate state read.</output>
+  </section>
+
+  <section class="card" aria-labelledby="choose">
+    <h2 id="choose">2. Choose one permission object</h2>
+    <fieldset>
+      <legend>Committed permission objects</legend>
+      <p class="hint" id="choice-hint">Only unused permission objects from the loaded set can be selected. Padding slots are never shown because they hold no permission.</p>
+      <div aria-describedby="choice-hint">
+      <label class="choice" id="permission-0-slot" hidden>
+        <input type="radio" name="permission" id="permission-0" value="0" disabled>
+        <span class="head">Permission slot 0</span>
+        <pre id="permission-0-terms"></pre>
+      </label>
+      <label class="choice" id="permission-1-slot" hidden>
+        <input type="radio" name="permission" id="permission-1" value="1" disabled>
+        <span class="head">Permission slot 1</span>
+        <pre id="permission-1-terms"></pre>
+      </label>
+      <label class="choice" id="permission-2-slot" hidden>
+        <input type="radio" name="permission" id="permission-2" value="2" disabled>
+        <span class="head">Permission slot 2</span>
+        <pre id="permission-2-terms"></pre>
+      </label>
+      <label class="choice" id="permission-3-slot" hidden>
+        <input type="radio" name="permission" id="permission-3" value="3" disabled>
+        <span class="head">Permission slot 3</span>
+        <pre id="permission-3-terms"></pre>
+      </label>
+      <label class="choice" id="permission-4-slot" hidden>
+        <input type="radio" name="permission" id="permission-4" value="4" disabled>
+        <span class="head">Permission slot 4</span>
+        <pre id="permission-4-terms"></pre>
+      </label>
+      <label class="choice" id="permission-5-slot" hidden>
+        <input type="radio" name="permission" id="permission-5" value="5" disabled>
+        <span class="head">Permission slot 5</span>
+        <pre id="permission-5-terms"></pre>
+      </label>
+      <label class="choice" id="permission-6-slot" hidden>
+        <input type="radio" name="permission" id="permission-6" value="6" disabled>
+        <span class="head">Permission slot 6</span>
+        <pre id="permission-6-terms"></pre>
+      </label>
+      <label class="choice" id="permission-7-slot" hidden>
+        <input type="radio" name="permission" id="permission-7" value="7" disabled>
+        <span class="head">Permission slot 7</span>
+        <pre id="permission-7-terms"></pre>
+      </label>
+      <label class="choice" id="permission-8-slot" hidden>
+        <input type="radio" name="permission" id="permission-8" value="8" disabled>
+        <span class="head">Permission slot 8</span>
+        <pre id="permission-8-terms"></pre>
+      </label>
+      <label class="choice" id="permission-9-slot" hidden>
+        <input type="radio" name="permission" id="permission-9" value="9" disabled>
+        <span class="head">Permission slot 9</span>
+        <pre id="permission-9-terms"></pre>
+      </label>
+      <label class="choice" id="permission-10-slot" hidden>
+        <input type="radio" name="permission" id="permission-10" value="10" disabled>
+        <span class="head">Permission slot 10</span>
+        <pre id="permission-10-terms"></pre>
+      </label>
+      <label class="choice" id="permission-11-slot" hidden>
+        <input type="radio" name="permission" id="permission-11" value="11" disabled>
+        <span class="head">Permission slot 11</span>
+        <pre id="permission-11-terms"></pre>
+      </label>
+      <label class="choice" id="permission-12-slot" hidden>
+        <input type="radio" name="permission" id="permission-12" value="12" disabled>
+        <span class="head">Permission slot 12</span>
+        <pre id="permission-12-terms"></pre>
+      </label>
+      <label class="choice" id="permission-13-slot" hidden>
+        <input type="radio" name="permission" id="permission-13" value="13" disabled>
+        <span class="head">Permission slot 13</span>
+        <pre id="permission-13-terms"></pre>
+      </label>
+      <label class="choice" id="permission-14-slot" hidden>
+        <input type="radio" name="permission" id="permission-14" value="14" disabled>
+        <span class="head">Permission slot 14</span>
+        <pre id="permission-14-terms"></pre>
+      </label>
+      <label class="choice" id="permission-15-slot" hidden>
+        <input type="radio" name="permission" id="permission-15" value="15" disabled>
+        <span class="head">Permission slot 15</span>
+        <pre id="permission-15-terms"></pre>
+      </label>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class="card" aria-labelledby="review-title">
+    <h2 id="review-title">3. Review the exact reservation</h2>
+    <label for="requested-amount">Requested amount (token smallest unit)</label>
+    <p class="hint" id="amount-hint">Bounded by this permission’s committed cap and by the mandate’s Available total. The request deadline is derived from the permission and cannot be extended here.</p>
+    <input id="requested-amount" aria-describedby="amount-hint" inputmode="numeric" autocomplete="off" spellcheck="false" disabled>
+    <button id="review-reserve" type="button" disabled>Review this reservation</button>
+    <pre id="reserve-review">No reservation reviewed.</pre>
+    <output id="reserve-status" aria-live="polite">No reservation reviewed.</output>
+  </section>
+
+  <section class="card" aria-labelledby="signature-title">
+    <h2 id="signature-title">4. Operator signature</h2>
+    <p>Sign the exact authorization above with the operator key in a separate tool. Enter only the resulting public signature; this page never asks for a private key.</p>
+    <label for="signature-r">Signature r</label>
+    <input id="signature-r" autocomplete="off" spellcheck="false" disabled>
+    <label for="signature-s">Signature s</label>
+    <input id="signature-s" autocomplete="off" spellcheck="false" disabled>
+    <button id="check-signature" type="button" disabled>Check the signature</button>
+    <output id="signature-status" aria-live="polite">No operator signature checked.</output>
+  </section>
+
+  <section class="card" aria-labelledby="submit-title">
+    <h2 id="submit-title">5. Send the reservation</h2>
+    <p>The wallet prices and confirms this call. This page cannot cap a network fee: reject the wallet confirmation if its fee is higher than you accept.</p>
+    <button id="submit-reserve" type="button" disabled>Reserve through the wallet</button>
+    <p>State: <span id="write-state" class="state" data-state="READY" aria-live="polite">READY</span></p>
+    <output id="write-detail" aria-live="polite">Nothing has been signed or sent.</output>
+    <h3>Exact call</h3>
+    <pre id="write-request">No call built.</pre>
+    <h3>Transaction hash</h3>
+    <pre id="write-hash">No transaction hash for this attempt.</pre>
+    <label for="recovered-hash">Transaction hash recovered from your wallet</label>
+    <p class="hint" id="recovered-hint">Only needed when the outcome is UNKNOWN and no hash was returned. An unknown outcome is never permission to send the call again.</p>
+    <input id="recovered-hash" aria-describedby="recovered-hint" autocomplete="off" spellcheck="false" disabled>
+    <button id="reconcile-reserve" type="button" disabled>Reconcile the public receipt</button>
+    <pre id="write-result">No public receipt read.</pre>
+  </section>
+</main>
+<footer>
+  <p>A reservation is public: its supplier key, amount and deadline become visible once it lands. The supplier collects it separately. <a href="/">Back to the overview</a></p>
+</footer>
+</body>
+</html>

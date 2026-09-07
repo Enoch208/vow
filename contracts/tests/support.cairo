@@ -1,3 +1,4 @@
+pub mod vault_pool;
 pub mod pool;
 pub mod token;
 use pool::{ITestPoolDispatcher, ITestPoolSafeDispatcher};

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOW — delegated procurement without a spending key</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<a class="skip" href="#start">Skip to the screens</a>
+<header>
+  <p class="eyebrow">VOW · Verifiable Operator Warrants</p>
+  <h1>Let an agent approve a purchase. Never let it choose where the money goes.</h1>
+  <p class="lede">An agent that can pay needs a spending key, and a spending key can pay anyone. VOW gives the agent permission to release money, and gives it no way to change the destination.</p>
+</header>
+<main>
+  <section class="card" aria-labelledby="problem">
+    <h2 id="problem">The problem in three lines</h2>
+    <ol>
+      <li>Hand an agent a spending key and a modified client can send the budget anywhere.</li>
+      <li>Put the approved supplier list on chain instead and you publish your whole procurement plan.</li>
+      <li>VOW publishes a commitment to the permission set, not its contents. The contract holds the money and releases it only to a supplier the owner already approved, under a cap the owner already set, once.</li>
+    </ol>
+    <p class="pull">The contract owns the escrow. The agent owns neither the funds nor their spending key.</p>
+  </section>
+
+  <section class="card" aria-labelledby="start">
+    <h2 id="start">Three screens, three separations</h2>
+    <ul class="roles">
+      <li>
+        <h3><a href="/owner">Owner →</a></h3>
+        <p>Commit a confidential set of one-use purchase permissions, after seeing exactly what becomes public.</p>
+      </li>
+      <li>
+        <h3><a href="/operator">Operator →</a></h3>
+        <p>Reserve one already-approved purchase. No field for a different supplier, token or deadline.</p>
+      </li>
+      <li>
+        <h3>Supplier</h3>
+        <p>The supplier route is <code>/claim/:reservationId</code>. It reads the public reservation before enabling wallet or signature controls; the undeployed pinned manifest currently keeps it read-only.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="card" aria-labelledby="status">
+    <h2 id="status">What is proven today</h2>
+    <p class="blocker">No VowVault has been declared, deployed or funded on any network. Without a deployment manifest both screens below load in a read-only state and every write control stays disabled. Nothing here claims a mainnet payment.</p>
+    <p>The vault contract and the client encoding are covered by local contract and TypeScript tests. Each public claim carries its own evidence tier — <code>proposed</code>, <code>local-model</code>, <code>local-contract-test</code>, <code>deployed</code>, <code>mainnet-executed</code>, <code>independently-reproduced</code> — in the claim ledger.</p>
+    <p><a href="/evidence/claims.json">Read the claim ledger (JSON)</a></p>
+  </section>
+
+  <section class="card" aria-labelledby="verify">
+    <h2 id="verify">Verify it yourself</h2>
+    <p>The logged-out verifier reads a public receipt, its block, the pinned VowVault and pool classes, claimed reservation and trace from a public mainnet RPC. It signs nothing, requests no wallet and submits nothing.</p>
+    <p><a href="/verify">Open the verifier with the real T-017 negative control →</a></p>
+    <p>It rejects a successful unrelated STRK20 transaction unless the exact <code>ReservationClaimed</code> and deposit path match. <a href="/docs/REPRODUCE.md">Full reproduction steps</a></p>
+  </section>
+
+  <section class="card" aria-labelledby="docs">
+    <h2 id="docs">Documentation</h2>
+    <ul>
+      <li><a href="/docs/README.md">README</a> — scope, what is public, what is not</li>
+      <li><a href="/docs/JUDGES.md">JUDGES</a> — what to check and in what order</li>
+      <li><a href="/docs/THREAT_MODEL.md">THREAT_MODEL</a> — who can do what to whom</li>
+      <li><a href="/docs/PRIVACY.md">PRIVACY</a> — what is hidden, what leaks, what can be inferred</li>
+      <li><a href="/docs/REPRODUCE.md">REPRODUCE</a> — build, test and verify from a clean checkout</li>
+    </ul>
+  </section>
+</main>
+<footer>
+  <p>This page is served read-only from your machine. It makes no network requests and stores nothing.</p>
+</footer>
+</body>
+</html>

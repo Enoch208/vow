@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOW claim and verification</title>
+  <link rel="stylesheet" href="/app/style.css">
+  <script type="module" src="/app/browser.js"></script>
+</head>
+<body>
+<main>
+  <header><a href="/">VOW</a><span>Public collection evidence</span></header>
+  <section id="claim-page" hidden>
+    <p class="eyebrow">SUPPLIER CLAIM</p>
+    <h1>Collect a reservation privately</h1>
+    <p class="lead">The destination note stays bound to the supplier’s signature. The collection amount and timing are public on Starknet.</p>
+    <div class="notice"><strong>Public by design:</strong> reservation ID, token, amount, collection note ID and settlement time. Note ownership privacy depends on STRK20 and is not verified by this page.</div>
+    <section class="card"><div class="step">1</div><div><h2>Read the reservation from chain</h2><p id="reservation-status" aria-live="polite">Reading the pinned vault before any signature is requested…</p><dl id="reservation-details"></dl></div></section>
+    <section class="card"><div class="step">2</div><div><h2>Prepare the exact note</h2><label for="wallet">Supplier wallet</label><select id="wallet" disabled></select><button id="wallet-check" type="button" disabled>Check STRK20 support &amp; prepare note</button><p id="wallet-status" aria-live="polite">Wallet preparation stays disabled until the public reservation is verified.</p><pre id="claim-review">No supplier signature requested.</pre></div></section>
+    <section class="card"><div class="step">3</div><div><h2>Bind the supplier signature</h2><p>Sign only the exact digest shown above with the separate supplier claim key. Do not enter a private key or recovery phrase here.</p><label for="signature-r">Signature r</label><input id="signature-r" disabled autocomplete="off" spellcheck="false"><label for="signature-s">Signature s</label><input id="signature-s" disabled autocomplete="off" spellcheck="false"><button id="bind-signature" type="button" disabled>Verify signature &amp; prepare proof</button><p id="signature-status" aria-live="polite">Waiting for a chain-verified reservation and prepared note.</p></div></section>
+    <section class="card"><div class="step">4</div><div><h2>Submit once</h2><pre id="submission-review">No exact submission prepared.</pre><label class="check"><input id="approve" type="checkbox" disabled> I checked the note, token, amount, recipient and pinned fee ceiling, and will reject a higher wallet fee.</label><button id="submit" type="button" disabled>Submit exact collection</button><p id="submission-status" aria-live="polite">Nothing submitted. A prepared note is not a confirmed collection.</p><a id="verify-link" hidden>Verify transaction without a wallet →</a></div></section>
+  </section>
+  <section id="verify-page" hidden>
+    <p class="eyebrow">PUBLIC VERIFIER · NO WALLET</p>
+    <h1>Verify a VOW collection</h1>
+    <p class="lead">A successful STRK20 transaction is not enough. This verifier requires the pinned VowVault class, one exact <code>ReservationClaimed</code> event, the matching pool deposit, reservation state and token-pull trace.</p>
+    <div class="verify-form"><label for="transaction">Transaction hash</label><input id="transaction" autocomplete="off" spellcheck="false"><button id="verify" type="button">Verify against chain</button></div>
+    <p id="verify-status" aria-live="polite">Ready to verify public chain evidence. No wallet connection is used.</p>
+    <pre id="verify-report">No transaction checked.</pre>
+    <div class="notice">The preloaded transaction is a real successful mainnet negative control. It must be rejected because it is unrelated to the pinned VowVault.</div>
+  </section>
+  <footer><span id="deployment-status">Loading pinned deployment manifest…</span><span>Single-provider public observation · note ownership unverified</span></footer>
+</main>
+</body>
+</html>

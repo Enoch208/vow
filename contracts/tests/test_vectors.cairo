@@ -1,4 +1,5 @@
 use core::ecdsa::check_ecdsa_signature;
+use core::poseidon::poseidon_hash_span;
 use vow_collection_probe::claims::{ClaimAuthorization, hash_claim};
 
 #[test]
@@ -27,5 +28,14 @@ fn t_001_typescript_claim_vector_matches_cairo() {
             0x1e6e612f39c76db07748ac1a14ce0f4b814f877e8db8311839b84ef6e7e8e6a,
         ),
         'TYPESCRIPT_SIGNATURE_REJECTED',
+    );
+}
+
+#[test]
+fn t_001_typescript_reservation_id_vector_matches_cairo() {
+    assert(
+        poseidon_hash_span(array!['VOW_RESERVATION_V1', 1, 0].span())
+            == 0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b,
+        'RESERVATION_VECTOR_MISMATCH',
     );
 }

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOW owner — commit a permission set</title>
+  <link rel="stylesheet" href="/app.css">
+  <script type="importmap">{"imports":{"@wallet-standard/app":"/vendor/wallets.js"}}</script>
+  <script type="module" src="/owner.js"></script>
+</head>
+<body>
+<a class="skip" href="#terms">Skip to the permission set</a>
+<header>
+  <p class="eyebrow"><a href="/">VOW</a> · OWNER</p>
+  <h1>Commit a permission set</h1>
+  <p class="lede">You approve suppliers and caps once. The chain stores a commitment to the set, not the set. Nothing on this page is created until you have seen exactly what becomes public and verified your own backup.</p>
+  <output id="deployment-status" aria-live="polite">Reading the deployment manifest…</output>
+</header>
+<main>
+  <section class="card" aria-labelledby="wallet-title">
+    <h2 id="wallet-title">1. Wallet and mandate id</h2>
+    <label for="wallet">Detected wallet</label>
+    <select id="wallet" disabled></select>
+    <output id="wallet-status" aria-live="polite">Scanning for wallets…</output>
+    <button id="scan-wallet" type="button" class="secondary">Scan for wallets</button>
+    <button id="bind-mandate" type="button" disabled>Read the next mandate id</button>
+    <output id="bind-status" aria-live="polite">No mandate id read. The permission set commits to one mandate id and cannot be rebound.</output>
+  </section>
+
+  <section class="card" aria-labelledby="terms">
+    <h2 id="terms">2. Mandate terms</h2>
+    <label for="owner-address">Owner address</label>
+    <p class="hint" id="owner-hint">The contract requires the account that sends the creation to equal this address.</p>
+    <input id="owner-address" aria-describedby="owner-hint" autocomplete="off" spellcheck="false" inputmode="text" disabled>
+    <label for="mandate-token">ERC-20 token address</label>
+    <input id="mandate-token" autocomplete="off" spellcheck="false" disabled>
+    <label for="operator-key">Operator public key</label>
+    <p class="hint" id="operator-hint">A Stark curve public key, not a wallet address. The holder of its private key can reserve, and can never change a destination.</p>
+    <input id="operator-key" aria-describedby="operator-hint" autocomplete="off" spellcheck="false" disabled>
+    <label for="mandate-expiry">Mandate expiry (unix seconds)</label>
+    <input id="mandate-expiry" inputmode="numeric" autocomplete="off" spellcheck="false" disabled>
+  </section>
+
+  <section class="card" aria-labelledby="permissions">
+    <h2 id="permissions">3. Permissions</h2>
+    <label for="permission-drafts">Permission list (JSON array, 1 to 16 entries)</label>
+    <p class="hint" id="drafts-hint">Each entry needs exactly supplierClaimPublicKey, maximumAmount, validAfter, approveBefore, claimBefore and purchaseCommitment, as decimal or hexadecimal strings. Amounts are in the token's smallest unit. Salts are generated locally and never typed.</p>
+    <textarea id="permission-drafts" rows="8" aria-describedby="drafts-hint" spellcheck="false" autocomplete="off" disabled></textarea>
+    <button id="preview-set" type="button" disabled>Preview what becomes public</button>
+    <output id="preview-status" aria-live="polite">No permission set previewed.</output>
+  </section>
+
+  <section class="card" aria-labelledby="disclosure-title">
+    <h2 id="disclosure-title">4. What becomes public?</h2>
+    <p>This preview is computed locally, before anything is created. Read it before you continue.</p>
+    <output id="set-root" aria-live="polite">No committed root computed.</output>
+    <pre id="disclosure">No permission set previewed.</pre>
+  </section>
+
+  <section class="card" aria-labelledby="backup-title">
+    <h2 id="backup-title">5. Encrypted backup</h2>
+    <p class="notice">The set is never published. Lose this file or its password and the permissions can never be proved again: the money stays reclaimable by you, but no supplier can ever be paid from it.</p>
+    <label for="backup-password">Backup password (at least 16 characters)</label>
+    <input id="backup-password" type="password" autocomplete="new-password" disabled>
+    <label for="backup-password-confirm">Repeat the password</label>
+    <input id="backup-password-confirm" type="password" autocomplete="new-password" disabled>
+    <button id="download-backup" type="button" disabled>Create and download the encrypted backup</button>
+    <output id="backup-status" aria-live="polite">No encrypted backup created.</output>
+  </section>
+
+  <section class="card" aria-labelledby="verify-title">
+    <h2 id="verify-title">6. Verify the backup restores the previewed root</h2>
+    <p>This decrypts the file you just downloaded, rebuilds the tree from its contents and recomputes the root. Creation stays blocked until the recomputed root equals the previewed root.</p>
+    <button id="verify-backup" type="button" disabled>Verify the downloaded backup</button>
+    <output id="verify-status" aria-live="polite">The committed root has not been verified against a downloaded backup.</output>
+  </section>
+
+  <section class="card" aria-labelledby="create-title">
+    <h2 id="create-title">7. Create the mandate</h2>
+    <p>The wallet confirms and prices this call. This page cannot cap a network fee: reject the wallet confirmation if its fee is higher than you accept.</p>
+    <button id="create-mandate" type="button" disabled>Create mandate through the wallet</button>
+    <p>State: <span id="write-state" class="state" data-state="READY" aria-live="polite">READY</span></p>
+    <output id="write-detail" aria-live="polite">Nothing has been signed or sent.</output>
+    <h3>Exact call</h3>
+    <pre id="write-request">No call built.</pre>
+    <h3>Transaction hash</h3>
+    <pre id="write-hash">No transaction hash for this attempt.</pre>
+    <label for="recovered-hash">Transaction hash recovered from your wallet</label>
+    <p class="hint" id="recovered-hint">Only needed when the outcome is UNKNOWN and no hash was returned. An unknown outcome is never permission to send the call again.</p>
+    <input id="recovered-hash" aria-describedby="recovered-hint" autocomplete="off" spellcheck="false" disabled>
+    <button id="reconcile-mandate" type="button" disabled>Reconcile the public receipt</button>
+    <pre id="write-result">No public receipt read.</pre>
+  </section>
+
+  <section class="card" aria-labelledby="ledger-title">
+    <h2 id="ledger-title">Mandate totals</h2>
+    <p>Five separate numbers, in the token's smallest unit. Available is what a reservation may still draw on.</p>
+    <button id="read-ledger" type="button" disabled>Read mandate totals</button>
+    <ul class="ledger">
+      <li><span class="name">Funded</span><span class="value" id="ledger-funded">unread</span></li>
+      <li><span class="name">Available</span><span class="value" id="ledger-available">unread</span></li>
+      <li><span class="name">Reserved</span><span class="value" id="ledger-reserved">unread</span></li>
+      <li><span class="name">Paid</span><span class="value" id="ledger-paid">unread</span></li>
+      <li><span class="name">Reclaimed</span><span class="value" id="ledger-reclaimed">unread</span></li>
+    </ul>
+    <output id="ledger-status" aria-live="polite">No mandate state read.</output>
+  </section>
+</main>
+<footer>
+  <p>Supplier keys, caps, commitments and salts never leave this page except inside the encrypted backup you download. <a href="/">Back to the overview</a></p>
+</footer>
+</body>
+</html>
