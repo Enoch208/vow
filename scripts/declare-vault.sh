@@ -6,16 +6,22 @@ export PATH="$vow_root/.tools/scarb/scarb-v2.17.0-aarch64-apple-darwin/bin:$vow_
 export SCARB_CACHE="$vow_root/.cache/scarb"
 
 expected_class_hash=0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14
+maximum_fee="${VOW_MAX_FEE:-35000000000000000000}"
 accounts_file="$vow_root/.secrets/accounts.json"
 account_name="${VOW_ACCOUNT:-vow-owner}"
 rpc="${VOW_RPC:-https://api.cartridge.gg/x/starknet/mainnet}"
+
+if [ "${1:-}" = "--submit" ] && [ "${2:-}" != "$expected_class_hash" ]; then
+  echo "Confirmation did not match. Nothing submitted." >&2
+  exit 1
+fi
 
 if [ ! -f "$accounts_file" ]; then
   echo "No accounts file at $accounts_file" >&2
   echo "Import your owner account first. It prompts for the key; nothing is written to shell history:" >&2
   echo "  sncast --accounts-file $accounts_file account import \\" >&2
-  echo "    --name $account_name --address 0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e \\" >&2
-  echo "    --type argent --url $rpc" >&2
+  echo "    --name $account_name --address 0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89 \\" >&2
+  echo "    --type oz --url $rpc" >&2
   exit 1
 fi
 
@@ -28,10 +34,17 @@ fi
 
 echo "VowVault class hash: $built"
 echo "Account: $account_name   RPC: $rpc"
+echo "Maximum declaration fee: $maximum_fee FRI"
+cd "$vow_root/contracts"
 
 if [ "${1:-}" = "--dry-run" ]; then
   exec sncast --accounts-file "$accounts_file" --account "$account_name" \
     declare --contract-name VowVault --url "$rpc" --dry-run --detailed
+fi
+
+if [ "${1:-}" = "--submit" ]; then
+  exec sncast --accounts-file "$accounts_file" --account "$account_name" --wait \
+    declare --contract-name VowVault --url "$rpc" --max-fee "$maximum_fee"
 fi
 
 echo "This SUBMITS a real mainnet declaration and spends STRK. Ctrl-C now to abort."
@@ -43,4 +56,4 @@ if [ "$confirmation" != "$expected_class_hash" ]; then
 fi
 
 exec sncast --accounts-file "$accounts_file" --account "$account_name" \
-  declare --contract-name VowVault --url "$rpc"
+  declare --contract-name VowVault --url "$rpc" --max-fee "$maximum_fee"

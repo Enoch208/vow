@@ -216,6 +216,7 @@ element('request-vault-stage').addEventListener('click', async () => {
   const captured = terms;
   const reviewed = reading;
   const stage = reviewed.stage as Exclude<VaultStageReading['stage'], 'complete'>;
+  let phase: 'wallet-identity' | 'fresh-chain' | 'wallet-request' = 'wallet-identity';
   busy = true;
   render();
   element('vault-execution-status').textContent = `Requesting the ${stage} stage in Ready…`;
@@ -228,11 +229,13 @@ element('request-vault-stage').addEventListener('click', async () => {
         selected.probe.request(input as never),
     };
     await checkVaultWallet(wallet, captured.owner);
+    phase = 'fresh-chain';
     const fresh = await readVaultStage(createPublicReader(PUBLIC_MAINNET_RPC), captured, now());
     if (fresh.stage !== stage || fresh.nonce !== reviewed.nonce) {
       throw new Error('VOW_DEPLOYMENT_STATE_CHANGED');
     }
     const request = vaultStageRequest(stage, captured, artifact, now());
+    phase = 'wallet-request';
     const response = await wallet.request(request);
     if (revision !== current) return;
     element('vault-execution-status').textContent
@@ -243,10 +246,10 @@ element('request-vault-stage').addEventListener('click', async () => {
       const walletCode = vaultWalletErrorCode(error);
       const rejected = error instanceof Error && /reject|denied|VOW_/i.test(error.message);
       element('vault-execution-status').textContent = walletCode !== null
-        ? `Ready returned wallet error code ${walletCode}. No hash was returned. Check the class and account nonce before retrying.`
+        ? `Ready returned wallet error code ${walletCode} during ${phase}. No hash was returned.`
         : rejected
-          ? 'The request was rejected or refused locally. Nothing was submitted.'
-          : 'The outcome is UNKNOWN. Do not retry until you have checked the chain for this nonce.';
+          ? `The ${phase} step was rejected or refused locally. Nothing was submitted.`
+          : `The ${phase} step failed without a hash. Nothing was submitted; check the chain before retrying.`;
       element('vault-result').textContent = walletCode === null
         ? 'No transaction hash returned.'
         : publicJson({ stage, status: 'wallet-error', walletErrorCode: walletCode });

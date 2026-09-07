@@ -107,20 +107,24 @@ test('a foreign class at the predicted address is not treated as our vault', asy
 test('the declare request carries the compiled class hash and no signature', () => {
   const request = vaultStageRequest('declare', terms, artifact, 1n);
   assert.equal(request.type, 'wallet_addDeclareTransaction');
-  assert.deepEqual(Object.keys(request.params).sort(), ['api_version', 'declare_transaction']);
-  const declaration = (request.params as {
-    declare_transaction: { compiled_class_hash: string; contract_class: CompiledSierra };
-  }).declare_transaction;
+  assert.deepEqual(
+    Object.keys(request.params).sort(),
+    ['api_version', 'compiled_class_hash', 'contract_class'],
+  );
+  const declaration = request.params as {
+    compiled_class_hash: string; contract_class: CompiledSierra;
+  };
   assert.equal(
     declaration.compiled_class_hash,
     artifact.compiledClassHash,
   );
-  assert.equal(typeof declaration.contract_class.abi, 'string');
-  assert.deepEqual(JSON.parse(declaration.contract_class.abi as unknown as string), sierra.abi);
+  assert.equal(Array.isArray(declaration.contract_class.abi), true);
+  assert.deepEqual(declaration.contract_class.abi, sierra.abi);
   assert.equal('signature' in declaration, false);
   assert.equal('sender_address' in declaration, false);
-  assert.equal('compiled_class_hash' in request.params, false);
+  assert.equal('declare_transaction' in request.params, false);
   assert.equal(Array.isArray(artifact.contractClass.abi), true);
+  assert.notEqual(declaration.contract_class.abi, artifact.contractClass.abi);
 });
 
 test('the deploy request carries exactly one call to the deployer', () => {

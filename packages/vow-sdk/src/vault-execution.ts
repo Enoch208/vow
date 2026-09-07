@@ -74,16 +74,14 @@ export function vaultStageRequest(
       type: 'wallet_addDeclareTransaction',
       params: {
         api_version: '0.10.3',
-        declare_transaction: {
-          compiled_class_hash: artifact.compiledClassHash,
-          contract_class: {
-            sierra_program: artifact.contractClass.sierra_program,
-            contract_class_version: artifact.contractClass.contract_class_version,
-            entry_points_by_type: artifact.contractClass.entry_points_by_type,
-            abi: typeof artifact.contractClass.abi === 'string'
-              ? artifact.contractClass.abi
-              : hash.formatSpaces(JSON.stringify(artifact.contractClass.abi)),
-          },
+        compiled_class_hash: artifact.compiledClassHash,
+        contract_class: {
+          sierra_program: artifact.contractClass.sierra_program,
+          contract_class_version: artifact.contractClass.contract_class_version,
+          entry_points_by_type: artifact.contractClass.entry_points_by_type,
+          abi: typeof artifact.contractClass.abi === 'string'
+            ? JSON.parse(artifact.contractClass.abi) as unknown
+            : structuredClone(artifact.contractClass.abi),
         },
       },
     };

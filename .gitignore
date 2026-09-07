@@ -1,4 +1,9 @@
 node_modules/
+.secrets/
+.next/
+out/
+*.tsbuildinfo
+web/next-env.d.ts
 dist/
 target/
 coverage/
