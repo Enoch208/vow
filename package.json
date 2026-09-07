@@ -18,6 +18,8 @@
     "app": "npm run build:workbench && node scripts/serve-app.ts",
     "build": "tsc -p tsconfig.json",
     "test": "node --test packages/vow-sdk/test/*.test.ts",
+    "evidence:verify": "node scripts/verify-evidence.mjs",
+    "ci:clean": "sh scripts/clean-clone-ci.sh",
     "check": "npm run build:workbench && npm test",
     "build:workbench": "npm run build && sh scripts/cairo.sh build && node scripts/build-collection.ts",
     "deployment:preview": "node scripts/preview-deployment.ts",
