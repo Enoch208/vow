@@ -1,0 +1,65 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "redirects": [
+    {
+      "source": "/claim",
+      "destination": "/claim/0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b",
+      "permanent": false
+    },
+    {
+      "source": "/claim/",
+      "destination": "/claim/0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/favicon.ico",
+      "destination": "/favicon.svg"
+    },
+    {
+      "source": "/claim/:reservationId",
+      "destination": "/claim/index.html"
+    },
+    {
+      "source": "/claim/:reservationId/",
+      "destination": "/claim/index.html"
+    },
+    {
+      "source": "/verify/:transactionHash",
+      "destination": "/verify/index.html"
+    },
+    {
+      "source": "/verify/:transactionHash/",
+      "destination": "/verify/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self'; connect-src 'self' https://api.cartridge.gg/x/starknet/mainnet; img-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        }
+      ]
+    }
+  ]
+}

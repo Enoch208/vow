@@ -176,6 +176,17 @@ function term(name: string, value: string): DocumentFragment {
 }
 
 function publicFailure(error: unknown, fallback: string): string {
+  if (error instanceof CollectionError && error.walletReason) {
+    const reasons = {
+      INVALID_REQUEST_PAYLOAD: 'Ready rejected the STRK20 preparation shape as invalid. No transaction was sent.',
+      NOT_REGISTERED: 'This Ready account is not registered for private tokens. Complete Ready private-token setup, then reload this reservation.',
+      INSUFFICIENT_PRIVATE_BALANCE: 'Ready reports insufficient private balance for this STRK20 preparation and its fees. No transaction was sent.',
+      PRIVACY_LEAK: 'Ready refused the preparation because it would violate its privacy checks. No transaction was sent.',
+      USER_REFUSED_OP: 'The wallet request was refused. No transaction was sent.',
+      UNKNOWN_ERROR: 'Ready could not prepare this STRK20 action. No transaction was sent.',
+    } as const;
+    return reasons[error.walletReason];
+  }
   if (error instanceof CollectionError && error.walletCode !== undefined) return `Wallet request stopped with public code ${error.walletCode}. No transaction was sent.`;
   if (error instanceof Error) {
     const messages: Record<string, string> = {
@@ -187,6 +198,9 @@ function publicFailure(error: unknown, fallback: string): string {
       VOW_NOTE_CHANGED: 'The wallet changed the signed note. The preparation was discarded.',
     };
     if (messages[error.message]) return messages[error.message]!;
+    if (/^VOW_[A-Z_]+$/.test(error.message)) {
+      return `Preparation stopped at ${error.message}. No transaction was sent.`;
+    }
   }
   return fallback;
 }

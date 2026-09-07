@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>VOW operator — reserve one approved purchase</title>
@@ -8,16 +9,43 @@
   <script type="importmap">{"imports":{"@wallet-standard/app":"/vendor/wallets.js"}}</script>
   <script type="module" src="/operator.js"></script>
 </head>
-<body>
+<body class="operator-workspace">
 <a class="skip" href="#choose">Skip to the permission list</a>
-<header>
-  <p class="eyebrow"><a href="/">VOW</a> · OPERATOR</p>
-  <h1>Reserve one approved purchase</h1>
-  <p class="lede">You choose from permissions the owner already committed. There is no field on this page for a different supplier key, a different token or a longer deadline, and a changed permission object stops matching the committed root.</p>
-  <output id="deployment-status" aria-live="polite">Reading the deployment manifest…</output>
-</header>
-<main>
-  <section class="card" aria-labelledby="load-title">
+<div class="workspace-shell">
+  <aside class="workspace-rail">
+    <a class="workspace-brand" href="/" aria-label="VOW overview">
+      <span class="workspace-mark" aria-hidden="true"><i>V</i><i>O</i><i>W</i></span>
+      <span><strong>VOW</strong><small>CONTROL</small></span>
+    </a>
+    <nav aria-label="Product navigation">
+      <a href="/">Overview</a>
+      <a href="/owner">Owner workspace</a>
+      <a href="/operator" aria-current="page">Operator control</a>
+      <a href="/verify">Public verifier</a>
+    </nav>
+    <div class="rail-boundary">
+      <span>Authority boundary</span>
+      <strong>Reserve only</strong>
+      <p>No custody. No supplier substitution. No deadline extension.</p>
+    </div>
+  </aside>
+
+  <div class="workspace-stage">
+    <header class="workspace-header">
+      <div>
+        <p class="eyebrow">VOW · OPERATOR CONTROL ROOM</p>
+        <h1>Reserve one approved purchase</h1>
+        <p class="lede">Choose from permissions the owner already committed. Every available action is derived from the encrypted set and checked against the deployed VowVault before it can reach the wallet.</p>
+      </div>
+      <div class="deployment-tile">
+        <span>Deployment</span>
+        <output id="deployment-status" aria-live="polite">Reading the deployment manifest…</output>
+        <a href="/claim/0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b">Inspect the controlled 0.1 STRK reservation →</a>
+      </div>
+    </header>
+
+    <main class="operator-dashboard">
+  <section class="card operator-access" aria-labelledby="load-title">
     <h2 id="load-title">1. Load the committed permission set</h2>
     <p>This is the encrypted file the owner created. Every permission object below is checked against the mandate root already on chain before it can be selected.</p>
     <label for="wallet">Detected wallet</label>
@@ -33,7 +61,7 @@
     <output id="mandate-status" aria-live="polite">No mandate read.</output>
   </section>
 
-  <section class="card" aria-labelledby="ledger-title">
+  <section class="card operator-ledger" aria-labelledby="ledger-title">
     <h2 id="ledger-title">Mandate totals</h2>
     <p>Five separate numbers, in the token’s smallest unit. A reservation can only draw on Available.</p>
     <ul class="ledger">
@@ -46,7 +74,7 @@
     <output id="ledger-status" aria-live="polite">No mandate state read.</output>
   </section>
 
-  <section class="card" aria-labelledby="choose">
+  <section class="card operator-permissions" aria-labelledby="choose">
     <h2 id="choose">2. Choose one permission object</h2>
     <fieldset>
       <legend>Committed permission objects</legend>
@@ -136,7 +164,7 @@
     </fieldset>
   </section>
 
-  <section class="card" aria-labelledby="review-title">
+  <section class="card operator-review" aria-labelledby="review-title">
     <h2 id="review-title">3. Review the exact reservation</h2>
     <label for="requested-amount">Requested amount (token smallest unit)</label>
     <p class="hint" id="amount-hint">Bounded by this permission’s committed cap and by the mandate’s Available total. The request deadline is derived from the permission and cannot be extended here.</p>
@@ -146,7 +174,7 @@
     <output id="reserve-status" aria-live="polite">No reservation reviewed.</output>
   </section>
 
-  <section class="card" aria-labelledby="signature-title">
+  <section class="card operator-signature" aria-labelledby="signature-title">
     <h2 id="signature-title">4. Operator signature</h2>
     <p>Sign the exact authorization above with the operator key in a separate tool. Enter only the resulting public signature; this page never asks for a private key.</p>
     <label for="signature-r">Signature r</label>
@@ -157,7 +185,7 @@
     <output id="signature-status" aria-live="polite">No operator signature checked.</output>
   </section>
 
-  <section class="card" aria-labelledby="submit-title">
+  <section class="card operator-submit" aria-labelledby="submit-title">
     <h2 id="submit-title">5. Send the reservation</h2>
     <p>The wallet prices and confirms this call. This page cannot cap a network fee: reject the wallet confirmation if its fee is higher than you accept.</p>
     <button id="submit-reserve" type="button" disabled>Reserve through the wallet</button>
@@ -173,9 +201,11 @@
     <button id="reconcile-reserve" type="button" disabled>Reconcile the public receipt</button>
     <pre id="write-result">No public receipt read.</pre>
   </section>
-</main>
-<footer>
-  <p>A reservation is public: its supplier key, amount and deadline become visible once it lands. The supplier collects it separately. <a href="/">Back to the overview</a></p>
-</footer>
+    </main>
+    <footer class="workspace-footer">
+      <p>A reservation is public: its supplier key, amount and deadline become visible once it lands. The supplier collects it separately. <a href="/">Back to the overview</a></p>
+    </footer>
+  </div>
+</div>
 </body>
 </html>

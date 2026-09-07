@@ -1,74 +1,132 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>VOW — delegated procurement without a spending key</title>
   <link rel="stylesheet" href="/app.css">
 </head>
-<body>
-<a class="skip" href="#start">Skip to the screens</a>
-<header>
-  <p class="eyebrow">VOW · Verifiable Operator Warrants</p>
-  <h1>Let an agent approve a purchase. Never let it choose where the money goes.</h1>
-  <p class="lede">An agent that can pay needs a spending key, and a spending key can pay anyone. VOW gives the agent permission to release money, and gives it no way to change the destination.</p>
-</header>
-<main>
-  <section class="card" aria-labelledby="problem">
-    <h2 id="problem">The problem in three lines</h2>
-    <ol>
-      <li>Hand an agent a spending key and a modified client can send the budget anywhere.</li>
-      <li>Put the approved supplier list on chain instead and you publish your whole procurement plan.</li>
-      <li>VOW publishes a commitment to the permission set, not its contents. The contract holds the money and releases it only to a supplier the owner already approved, under a cap the owner already set, once.</li>
-    </ol>
-    <p class="pull">The contract owns the escrow. The agent owns neither the funds nor their spending key.</p>
-  </section>
+<body class="product-dashboard">
+<a class="skip" href="#start">Skip to the control center</a>
+<div class="workspace-shell">
+  <aside class="workspace-rail">
+    <a class="workspace-brand" href="/" aria-label="VOW control center">
+      <span class="workspace-mark" aria-hidden="true"><i>V</i><i>O</i><i>W</i></span>
+      <span><strong>VOW</strong><small>CONTROL</small></span>
+    </a>
+    <nav aria-label="Product navigation">
+      <a href="/" aria-current="page">Control center</a>
+      <a href="/owner">Owner workspace</a>
+      <a href="/operator">Operator control</a>
+      <a href="/verify">Public verifier</a>
+    </nav>
+    <div class="rail-boundary">
+      <span>Core invariant</span>
+      <strong>Destination bound</strong>
+      <p>Let an agent approve a purchase. Never let it choose where the money goes.</p>
+    </div>
+  </aside>
 
-  <section class="card" aria-labelledby="start">
-    <h2 id="start">Three screens, three separations</h2>
-    <ul class="roles">
-      <li>
-        <h3><a href="/owner">Owner →</a></h3>
-        <p>Commit a confidential set of one-use purchase permissions, after seeing exactly what becomes public.</p>
-      </li>
-      <li>
-        <h3><a href="/operator">Operator →</a></h3>
-        <p>Reserve one already-approved purchase. No field for a different supplier, token or deadline.</p>
-      </li>
-      <li>
-        <h3>Supplier</h3>
-        <p>The supplier route is <code>/claim/:reservationId</code>. It reads the public reservation before enabling wallet or signature controls; the undeployed pinned manifest currently keeps it read-only.</p>
-      </li>
-    </ul>
-  </section>
+  <div class="workspace-stage">
+    <header class="workspace-header dashboard-header">
+      <div>
+        <p class="eyebrow">VOW · MAINNET CONTROL CENTER</p>
+        <h1>Procurement authority at a glance</h1>
+        <p class="lede">Track the deployed vault, controlled mandate, active reservation, collection readiness, and each role-specific action from one workspace.</p>
+      </div>
+      <div class="deployment-tile">
+        <span>Network</span>
+        <strong>Starknet mainnet</strong>
+        <p>The matching VowVault is deployed on Starknet mainnet.</p>
+      </div>
+    </header>
 
-  <section class="card" aria-labelledby="status">
-    <h2 id="status">What is proven today</h2>
-    <p class="blocker">No VowVault has been declared, deployed or funded on any network. Without a deployment manifest both screens below load in a read-only state and every write control stays disabled. Nothing here claims a mainnet payment.</p>
-    <p>The vault contract and the client encoding are covered by local contract and TypeScript tests. Each public claim carries its own evidence tier — <code>proposed</code>, <code>local-model</code>, <code>local-contract-test</code>, <code>deployed</code>, <code>mainnet-executed</code>, <code>independently-reproduced</code> — in the claim ledger.</p>
-    <p><a href="/evidence/claims.json">Read the claim ledger (JSON)</a></p>
-  </section>
+    <main class="dashboard-overview" id="start">
+      <section class="dashboard-metrics" aria-label="Recorded mainnet status">
+        <article><span>VowVault</span><strong>Deployed</strong><small>Class and pool matched</small></article>
+        <article><span>Mandate 1</span><strong>0.1 STRK</strong><small>Funded and fully reserved</small></article>
+        <article><span>Reservation</span><strong>Open</strong><small>Paid 0 · Reclaimed 0</small></article>
+        <article><span>Release gates</span><strong>0 / 5</strong><small>Zero of five release gates pass</small></article>
+      </section>
 
-  <section class="card" aria-labelledby="verify">
-    <h2 id="verify">Verify it yourself</h2>
-    <p>The logged-out verifier reads a public receipt, its block, the pinned VowVault and pool classes, claimed reservation and trace from a public mainnet RPC. It signs nothing, requests no wallet and submits nothing.</p>
-    <p><a href="/verify">Open the verifier with the real T-017 negative control →</a></p>
-    <p>It rejects a successful unrelated STRK20 transaction unless the exact <code>ReservationClaimed</code> and deposit path match. <a href="/docs/REPRODUCE.md">Full reproduction steps</a></p>
-  </section>
+      <section class="card active-reservation" aria-labelledby="reservation-title">
+        <div class="panel-kicker"><span>ACTIVE MAINNET TEST</span><span>RESERVED</span></div>
+        <h2 id="reservation-title">Controlled 0.1 STRK reservation</h2>
+        <p>The operator stage succeeded on-chain. Supplier collection remains pending because wallet note preparation has not passed its release gates.</p>
+        <dl class="facts compact-facts">
+          <dt>Mandate</dt><dd><code>0x1</code></dd>
+          <dt>Reservation</dt><dd><code>0x45cc6c11…ecf2bb2b</code></dd>
+          <dt>Reserve transaction</dt><dd><code>0x3b2d1c01…abb703a9</code></dd>
+          <dt>State</dt><dd><strong>Open · uncollected</strong></dd>
+        </dl>
+        <details class="technical-details">
+          <summary>Deployment identifiers</summary>
+          <dl class="facts compact-facts">
+            <dt>Vault</dt><dd><code>0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227</code></dd>
+            <dt>Class</dt><dd><code>0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14</code></dd>
+            <dt>Pool</dt><dd><code>0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a</code></dd>
+            <dt>Deployment account</dt><dd><code>0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89</code></dd>
+          </dl>
+        </details>
+        <div class="dashboard-actions">
+          <a class="dashboard-action primary" href="/claim/0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b">Open supplier collection →</a>
+          <a class="dashboard-action" href="/operator">Open operator control →</a>
+        </div>
+      </section>
 
-  <section class="card" aria-labelledby="docs">
-    <h2 id="docs">Documentation</h2>
-    <ul>
-      <li><a href="/docs/README.md">README</a> — scope, what is public, what is not</li>
-      <li><a href="/docs/JUDGES.md">JUDGES</a> — what to check and in what order</li>
-      <li><a href="/docs/THREAT_MODEL.md">THREAT_MODEL</a> — who can do what to whom</li>
-      <li><a href="/docs/PRIVACY.md">PRIVACY</a> — what is hidden, what leaks, what can be inferred</li>
-      <li><a href="/docs/REPRODUCE.md">REPRODUCE</a> — build, test and verify from a clean checkout</li>
-    </ul>
-  </section>
-</main>
-<footer>
-  <p>This page is served read-only from your machine. It makes no network requests and stores nothing.</p>
-</footer>
+      <section class="card role-launcher" aria-labelledby="roles-title">
+        <p class="panel-kicker">ROLE WORKSPACES</p>
+        <h2 id="roles-title">Move through the real flow</h2>
+        <nav aria-label="Role workspaces">
+          <a href="/owner"><span>01</span><strong>Owner</strong><small>Commit and fund mandates</small></a>
+          <a href="/operator"><span>02</span><strong>Operator</strong><small>Reserve approved purchases</small></a>
+          <a href="/claim/0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b"><span>03</span><strong>Supplier</strong><small>Prepare exact collection</small></a>
+          <a href="/verify"><span>04</span><strong>Verifier</strong><small>Check public settlement evidence</small></a>
+        </nav>
+      </section>
+
+      <section class="card evidence-panel" aria-labelledby="evidence-title">
+        <p class="panel-kicker">EVIDENCE BOUNDARY</p>
+        <h2 id="evidence-title">What the chain proves now</h2>
+        <ul class="evidence-list">
+          <li><span class="evidence-dot verified"></span><p><strong>Verified</strong> Matching VowVault class, pool, mandate funding, and reservation receipt.</p></li>
+          <li><span class="evidence-dot pending"></span><p><strong>Pending</strong> No supplier collection or note credit is claimed. Wallet compatibility and audit also remain open.</p></li>
+        </ul>
+        <a href="/evidence/claims.json">Read the claim ledger →</a>
+      </section>
+
+      <section class="card guard-panel" aria-labelledby="guards-title">
+        <p class="panel-kicker">ADVERSARIAL CHECKS</p>
+        <h2 id="guards-title">Falsify the enforcement story</h2>
+        <div class="guard-grid">
+          <p><strong>T-005</strong><span>Signature cannot move to another amount, request, root, or mandate.</span></p>
+          <p><strong>T-002</strong><span>Proof cannot raise a cap or substitute the approved supplier.</span></p>
+          <p><strong>T-003</strong><span>Reservations cannot exceed the available funded budget.</span></p>
+          <p><strong>T-004</strong><span>Expiry never rearms a consumed permission.</span></p>
+          <p><strong>T-011</strong><span>Only the pinned pool may settle a reservation.</span></p>
+        </div>
+        <p>Run <code>npm run verify:vault</code> to confirm the deployed ABI has no generic drain, arbitrary external-call, root-replacement or upgrade entrypoint.</p>
+      </section>
+
+      <section class="card dashboard-docs" aria-labelledby="docs-title">
+        <p class="panel-kicker">REVIEW MATERIAL</p>
+        <h2 id="docs-title">Inspect or challenge the system</h2>
+        <div class="document-links">
+          <a href="/docs/README.md">Scope and status</a>
+          <a href="/docs/JUDGES.md">Judge path</a>
+          <a href="/docs/THREAT_MODEL.md">Threat model</a>
+          <a href="/docs/PRIVACY.md">Privacy boundary</a>
+          <a href="/docs/REPRODUCE.md">Reproduce checks</a>
+        </div>
+        <p>The logged-out verifier signs nothing, requests no wallet and submits nothing. It rejects unrelated successful STRK20 transactions.</p>
+      </section>
+    </main>
+
+    <footer class="workspace-footer">
+      <p>This dashboard is a recorded evidence view. Role pages perform fresh reads before enabling any action.</p>
+    </footer>
+  </div>
+</div>
 </body>
 </html>

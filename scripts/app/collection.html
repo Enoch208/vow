@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>VOW claim and verification</title>
-  <link rel="stylesheet" href="/app/style.css">
+  <link rel="stylesheet" href="/app.css">
   <script type="module" src="/app/browser.js"></script>
 </head>
 <body>
@@ -24,10 +25,19 @@
     <p class="eyebrow">PUBLIC VERIFIER · NO WALLET</p>
     <h1>Verify a VOW collection</h1>
     <p class="lead">A successful STRK20 transaction is not enough. This verifier requires the pinned VowVault class, one exact <code>ReservationClaimed</code> event, the matching pool deposit, reservation state and token-pull trace.</p>
+    <dl class="facts">
+      <dt>Vault</dt><dd><code>0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227</code></dd>
+      <dt>Class</dt><dd><code>0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14</code></dd>
+      <dt>Pool</dt><dd><code>0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a</code></dd>
+      <dt>Deployment account</dt><dd><code>0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89</code></dd>
+      <dt>Release truth</dt><dd>One 0.1 STRK reservation is open with zero paid. Zero of five gates pass and no supplier collection is claimed.</dd>
+      <dt>Verdicts</dt><dd>CONFIRMED only when every check matches; REJECTED for contradictory evidence; UNKNOWN for missing or timed-out RPC evidence.</dd>
+      <dt>Wallet</dt><dd>Not requested. Verification is a public, read-only RPC flow.</dd>
+    </dl>
     <div class="verify-form"><label for="transaction">Transaction hash</label><input id="transaction" autocomplete="off" spellcheck="false"><button id="verify" type="button">Verify against chain</button></div>
     <p id="verify-status" aria-live="polite">Ready to verify public chain evidence. No wallet connection is used.</p>
     <pre id="verify-report">No transaction checked.</pre>
-    <div class="notice">The preloaded transaction is a real successful mainnet negative control. It must be rejected because it is unrelated to the pinned VowVault.</div>
+    <div class="notice">The preloaded transaction is a real successful mainnet negative control. It must be rejected with <code>VOW_COLLECTION_EVENTS_MISSING</code> because it is unrelated to the pinned VowVault. An RPC timeout or unavailable fact is instead UNKNOWN and never passes or fails.</div>
   </section>
   <footer><span id="deployment-status">Loading pinned deployment manifest…</span><span>Single-provider public observation · note ownership unverified</span></footer>
 </main>

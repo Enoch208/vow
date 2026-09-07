@@ -10,6 +10,12 @@ import { POOL_CLASS_HASH } from '../src/prepared-claim.ts';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
 const page = (name: string) => readFile(`${root}scripts/app/${name}`, 'utf8');
+const DEPLOYMENT_IDENTIFIERS = [
+  '0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227',
+  '0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14',
+  '0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a',
+  '0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89',
+] as const;
 const VAULT_CLASS_HASH = 0xc1a55n;
 const manifest = {
   chainId: '0x534e5f4d41494e', vaultAddress: '0x4a1', vaultClassHash: `0x${VAULT_CLASS_HASH.toString(16)}`,
@@ -43,7 +49,41 @@ test('T-APP-1 the overview explains the problem and links the screens, the docs 
   assert.match(html, /signs nothing, requests no wallet and submits nothing/);
   assert.match(html, /href="\/docs\/README\.md"/);
   assert.match(html, /href="\/evidence\/claims\.json"/);
-  assert.match(html, /No VowVault has been declared, deployed or funded on any network/);
+  assert.match(html, /matching VowVault (?:class and contract are verified|is deployed) on Starknet mainnet/i);
+  assert.match(html, /no supplier collection or note credit is claimed/i);
+  for (const id of ['T-005', 'T-002', 'T-003', 'T-004', 'T-011']) assert.match(html, new RegExp(id));
+  assert.match(html, /npm run verify:vault/);
+  assert.match(html, /no generic drain, arbitrary external-call, root-replacement or upgrade entrypoint/i);
+});
+
+test('T-APP-1 release surfaces pin one deployment and report zero qualifying collections', async () => {
+  const surfaces = await Promise.all([
+    readFile(`${root}README.md`, 'utf8'),
+    readFile(`${root}JUDGES.md`, 'utf8'),
+    page('index.html'),
+    page('collection.html'),
+    readFile(`${root}web/app/page.tsx`, 'utf8'),
+  ]);
+  for (const [index, surface] of surfaces.entries()) {
+    for (const identifier of DEPLOYMENT_IDENTIFIERS) assert.match(surface, new RegExp(identifier), `surface ${index}`);
+    assert.match(surface, /no [^.]*collection|zero collections/i, `surface ${index}`);
+    assert.match(surface, /0 of 5|zero of five/i, `surface ${index}`);
+  }
+  const submission = JSON.parse(await readFile(`${root}strk20.json`, 'utf8')) as {
+    transactions: { stage: string }[];
+    contracts: Record<string, unknown>[];
+    note: string;
+  };
+  const allowed = ['create_mandate', 'approve', 'fund_mandate', 'reserve', 'expire_reservation'];
+  assert.equal(submission.transactions.length > 0, true);
+  for (const { stage } of submission.transactions) {
+    assert.equal(allowed.includes(stage), true, `unexpected submitted stage ${stage}`);
+  }
+  assert.equal(submission.transactions.some(({ stage }) => /collect|claim/i.test(stage)), false);
+  assert.match(submission.note, /No supplier collection has occurred/);
+  assert.equal(submission.contracts.length, 1);
+  const values = Object.values(submission.contracts[0]!);
+  for (const identifier of DEPLOYMENT_IDENTIFIERS) assert.ok(values.includes(identifier), identifier);
 });
 
 test('T-APP-2 the owner and operator screens are the only routes allowed to reach the public RPC', async (context) => {
@@ -142,6 +182,18 @@ test('T-APP-7 the screen palette meets a 4.5:1 contrast ratio on every text pair
   for (const [foreground, background] of pairs) {
     assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background} is ${contrast(foreground, background).toFixed(2)}:1`);
   }
+});
+
+test('T-APP-8 the operator dashboard links the recorded reservation and invents no dashboard data', async () => {
+  const html = await page('operator.html');
+  const evidence = JSON.parse(await readFile(`${root}evidence/reservation-receipt.json`, 'utf8')) as { reservationId: string };
+  assert.match(html, /class="operator-workspace"/);
+  assert.match(html, /class="operator-dashboard"/);
+  assert.match(html, /aria-current="page">Operator control/);
+  assert.match(html, new RegExp(`href="/claim/${evidence.reservationId}"`));
+  assert.match(html, /id="ledger-funded">unread/);
+  assert.match(html, /id="write-state" class="state" data-state="READY"/);
+  assert.doesNotMatch(html, /\b(mock|fixture|sample transaction)\b/i);
 });
 
 function contrast(foreground: string, background: string): number {

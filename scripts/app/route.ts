@@ -3,7 +3,10 @@ import { felt } from '../../packages/vow-sdk/src/integers.ts';
 export type AppRoute = { readonly kind: 'claim'; readonly value: bigint }
   | { readonly kind: 'verify'; readonly value: bigint | null };
 
-export function parseAppRoute(pathname: string): AppRoute {
+export function parseAppRoute(rawPathname: string): AppRoute {
+  const pathname = rawPathname.length > 1 && rawPathname.endsWith('/')
+    ? rawPathname.slice(0, -1)
+    : rawPathname;
   const claim = /^\/claim\/(0x[0-9a-fA-F]+|[0-9]+)$/.exec(pathname);
   if (claim) return { kind: 'claim', value: felt(BigInt(claim[1]!), 'RESERVATION', 1n) };
   const verify = /^\/verify(?:\/(0x[0-9a-fA-F]+|[0-9]+))?$/.exec(pathname);

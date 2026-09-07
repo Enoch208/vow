@@ -35,8 +35,22 @@ test('app serves dynamic claim and logged-out verifier routes from a fixed read-
     const response = await fetch(base + path); assert.equal(response.status, 200);
     assert.match(response.headers.get('content-security-policy')!, /connect-src 'self' https:\/\/api\.cartridge\.gg\/x\/starknet\/mainnet/);
     const html = await response.text(); assert.match(html, /amount and timing are public/i); assert.match(html, /PUBLIC VERIFIER · NO WALLET/);
+    for (const identifier of ['0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227',
+      '0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14',
+      '0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a',
+      '0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89']) assert.match(html, new RegExp(identifier));
+    assert.match(html, /Zero of five gates pass/);
+    assert.match(html, /UNKNOWN for missing or timed-out RPC evidence/);
   }
   for (const path of ['/app/browser.js', '/app/style.css', '/app/deployment.json']) assert.equal((await fetch(base + path)).status, 200);
   for (const path of ['/claim/0x123?key=secret', '/package.json', '/scripts/app/browser.ts']) assert.equal((await fetch(base + path)).status, 404);
   assert.equal((await fetch(base + '/verify/0x123', { method: 'POST', body: '{}' })).status, 405);
+});
+
+test('static directory-index paths with a trailing slash resolve to the same route', () => {
+  assert.deepEqual(parseAppRoute('/verify/'), parseAppRoute('/verify'));
+  assert.deepEqual(parseAppRoute('/claim/0x2a/'), parseAppRoute('/claim/0x2a'));
+  assert.deepEqual(parseAppRoute('/verify/0x2a/'), parseAppRoute('/verify/0x2a'));
+  assert.throws(() => parseAppRoute('/'), /VOW_ROUTE_NOT_FOUND/);
+  assert.throws(() => parseAppRoute('/verify//'), /VOW_ROUTE_NOT_FOUND/);
 });

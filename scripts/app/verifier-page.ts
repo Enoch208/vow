@@ -24,11 +24,11 @@ export function initializeVerifier(app: AppDeployment, reader: PublicReader, ini
     try {
       const report = await readCollectionReceipt(reader, app.deployment, transactionHash);
       output.textContent = json(report);
-      if (report.status === 'confirmed') status.textContent = 'Confirmed VOW collection. The exact ReservationClaimed event and STRK20 deposit path match the pinned deployment.';
-      else if (report.status === 'receipt-matched') status.textContent = 'Receipt events match, but the trace is unavailable. This is not confirmed VOW evidence.';
+      if (report.status === 'confirmed') status.textContent = 'CONFIRMED — the pinned classes, exact ReservationClaimed event, claimed reservation, STRK20 deposit and token pull all match.';
+      else if (report.status === 'receipt-matched') status.textContent = 'UNKNOWN — receipt events match, but the call trace is unavailable. This is not confirmed VOW evidence.';
       else if (report.status === 'reverted') status.textContent = 'Rejected: the transaction reverted.';
       else if (report.status === 'mismatch') status.textContent = 'Rejected as VOW evidence. Transaction success alone does not prove a VOW collection.';
-      else status.textContent = 'Unknown. The public evidence is unavailable or not yet accepted; do not treat it as a collection.';
+      else status.textContent = 'UNKNOWN — public evidence is missing, timed out or not yet accepted. This is neither a pass nor a fail; do not retry or treat it as a collection.';
     } catch { status.textContent = 'Verification could not validate the pinned manifest or public input.'; output.textContent = 'No VOW evidence confirmed.'; }
     finally { button.disabled = transaction.disabled = false; }
   };
