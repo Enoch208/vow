@@ -8,12 +8,12 @@
       "sourceCommit": null,
       "evidence": [],
       "limitations": [
-        "Ready advertises Wallet API 0.10.3 in user-supplied diagnostic output; no collection preparation or mainnet claim has been verified."
+        "A live funded reservation exists, and Ready X 5.33.9 advertises Wallet API 0.10.3, but its note-preparation request fails without a public reason code before any supplier signature or collection transaction."
       ]
     },
     {
       "id": "REGISTERED-OWNER-SETUP",
-      "claim": "The selected owner account was activated and its public privacy key was registered by accepted mainnet transactions.",
+      "claim": "The separate Ready setup account 0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e was activated and its public privacy key was registered by accepted mainnet transactions.",
       "tier": "mainnet-executed",
       "sourceCommit": null,
       "evidence": [
@@ -24,7 +24,7 @@
       "limitations": [
         "Single-provider receipt and state observations.",
         "The 6.1 STRK owner setup transfer is not classified entirely as fees; the separate 2.885883499721302016 STRK receipt fee was relayer-paid.",
-        "No private balance, note ownership, VOW deployment, or supplier collection was verified."
+        "No private balance, note ownership, or supplier collection was verified. The VowVault deployment account is separate from this Ready account."
       ]
     },
     {
@@ -46,32 +46,46 @@
       "reproduce": "npm run check && sh scripts/cairo.sh test",
       "limitations": [
         "Synthetic local token and pool contracts; no deployed STRK20 pool was involved.",
-        "VowVault has never been declared, deployed, funded or executed on any network.",
+        "The matching VowVault class is deployed on Starknet mainnet; mandate creation, exact funding and reservation have been exercised there, while collection, expiry, revocation and reclaim have not.",
         "Cross-language permission and reserve vectors are asserted in both languages; the tree is fixed at 16 padded slots.",
         "No audit, no exhaustive mutation sweep over the new guards, no gas or griefing analysis.",
-        "Client SDK, product screens and verifier do not yet drive this contract."
+        "The SDK-built calldata was accepted in the controlled live run; the product screens and verifier have not completed a live write or collection."
       ]
     },
     {
-      "id": "VAULT-DEPLOYMENT-READINESS",
-      "claim": "The VowVault declaration and deployment were priced against live mainnet state at a pinned block, and the transaction the wallet receives is bound to the same class hash that was priced.",
-      "tier": "local-model",
+      "id": "VAULT-DEPLOYED",
+      "claim": "VowVault 0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227, class 0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14, was deployed on Starknet mainnet by 0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89 and is bound to pool 0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a.",
+      "tier": "mainnet-executed",
       "sourceCommit": null,
       "evidence": [
         "evidence/vault-deployment-fee-observation.json",
-        "packages/vow-sdk/src/vault-deployment.ts",
-        "packages/vow-sdk/src/vault-execution.ts",
-        "packages/vow-sdk/test/vault-deployment.test.ts",
-        "packages/vow-sdk/test/vault-execution.test.ts",
-        "packages/vow-sdk/test/vault-fee-query.test.ts"
+        "strk20.json"
       ],
-      "reproduce": "npm run check",
+      "reproduce": "npm run verify:vault",
       "limitations": [
-        "VowVault is NOT declared and NOT deployed. No VOW transaction has been signed or submitted on any network.",
-        "The 25.772741664327476485 STRK figure is a single-provider unsigned estimate with signature validation skipped, not an execution price.",
-        "It covers class declaration and vault deployment only. Mandate creation, funding, reservation and supplier collection are not estimated.",
-        "An earlier build shipped a re-serialized ABI whose payload hashed to a different class hash than the one estimated. The wallet review surfaced it before any transaction was signed; the build now recomputes the hash from the shipped bytes and fails on drift, and a regression test covers it.",
-        "Wallet-side declaration of this class has not succeeded; the fee never rendered in the tested wallet build."
+        "Deployment proves the contract exists and is bound to the pinned pool. It does not prove any VOW payment occurred.",
+        "Declaration and deployment receipts are recorded with matching state reads.",
+        "A mandate, funding and reservation exist but no supplier collection was performed.",
+        "Single-provider receipt and state observations.",
+        "The contract is not audited."
+      ]
+    },
+    {
+      "id": "VAULT-MAINNET-RESERVATION",
+      "claim": "The deployed VowVault accepted a controlled mandate, received exactly 0.1 STRK through an atomic approval-and-funding transaction, and opened one 0.1 STRK operator-authorized reservation.",
+      "tier": "mainnet-executed",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/vault-deployment-fee-observation.json",
+        "contracts/src/vault.cairo",
+        "packages/vow-sdk/src/mandate-calldata.ts",
+        "packages/vow-sdk/src/reserve-request.ts"
+      ],
+      "limitations": [
+        "Controlled single-provider mainnet observation against one mandate and one reservation.",
+        "Mandate creation, funding and reservation do not touch the STRK20 pool and do not qualify as supplier collections.",
+        "The reservation remains open with zero paid; it is not a payment.",
+        "Private permission material and signing keys remain outside source and public evidence."
       ]
     },
     {
@@ -200,7 +214,7 @@
       "limitations": [
         "Single-provider public observation, not independently authenticated state.",
         "Synthetic account metadata in unit tests; user-supplied public Ready metadata was separately used in unsigned fee simulation.",
-        "Account activation and privacy registration are evidenced separately; VOW deployment, fee sufficiency, and settlement remain unverified."
+        "This preflight evidence predates the separately evidenced VowVault deployment; fee sufficiency and supplier settlement remain unverified."
       ]
     },
     {
@@ -226,7 +240,7 @@
     },
     {
       "id": "COLLECTION-RECEIPT",
-      "claim": "The local verifier rejects unrelated or mismatched collection receipts and requires the exact VOW/pool events, accepted block context and token-pull trace before reporting confirmation.",
+      "claim": "The logged-out verifier rejects unrelated or mismatched collection receipts, requires pinned classes, exact VOW/pool events, claimed reservation state and token-pull trace for confirmation, and keeps missing RPC evidence UNKNOWN.",
       "tier": "local-model",
       "sourceCommit": null,
       "evidence": [
@@ -240,6 +254,7 @@
       "reproduce": "npm run check",
       "limitations": [
         "Synthetic positive receipts and traces; the VowVault verifier also rejects one unrelated successful mainnet transaction through its preloaded logged-out route.",
+        "The controlled live reservation remains open; Ready note preparation currently fails before supplier signature or submission.",
         "Single-provider observation; no actual VOW collection or encrypted note ownership verified."
       ]
     },
@@ -257,8 +272,9 @@
       "reproduce": "npm run check",
       "limitations": [
         "Synthetic wallet, reservation and positive receipt data.",
-        "The shipped manifest is explicitly not deployed with a zero network-fee ceiling, so claim controls remain disabled.",
-        "No Ready preparation, proof validity, live dispatch, VowVault deployment or supplier collection is verified."
+        "The shipped manifest pins the mainnet deployment and the page read one live open reservation before enabling wallet work.",
+        "Ready X 5.33.9 advertised API 0.10.3 but rejected live note preparation without a public reason code; signature controls stayed disabled and nothing was submitted.",
+        "No proof validity, live dispatch or supplier collection is verified."
       ]
     },
     {
@@ -352,11 +368,11 @@
       ],
       "reproduce": "npm run check && sh scripts/cairo.sh test",
       "limitations": [
-        "TypeScript tests against synthetic RPC responses and receipts; no VowVault has been deployed, funded, reserved or claimed on any network.",
-        "Permission root, leaf, slot-0 proof and reservation-id encodings are asserted as the same constants in both languages; calldata field order is checked against the local Cairo structs, not a chain-accepted transaction.",
+        "TypeScript reader tests use synthetic RPC responses; one SDK-built mandate, funding batch and reserve call were separately accepted on the deployed mainnet VowVault.",
+        "Permission root, leaf, slot-0 proof and reservation-id encodings are asserted as the same constants in both languages; the live run exercised those calldata builders but does not prove all variants.",
         "The mandate id has to be predicted before create_mandate and can only be verified between creation and funding.",
         "Unused permissions stay in client memory and in the password-encrypted owner backup; encryption at rest does not protect a compromised active browser.",
-        "No owner or operator product screen drives this layer yet."
+        "The controlled live run used terminal scripts rather than the owner and operator product screens."
       ]
     },
     {
@@ -383,7 +399,7 @@
       ],
       "reproduce": "npm run check && npm run app",
       "limitations": [
-        "No dist/deployment/manifest.json exists, so both screens load fail-closed and neither has created a mandate, reserved a purchase or sent any transaction.",
+        "The generated deployment manifest pins the verified mainnet vault; the controlled mandate and reservation were created through terminal tooling, not these screens.",
         "Screen behaviour is asserted against a synthetic DOM and a synthetic RPC. No wallet was connected and no browser run completed an owner or operator flow.",
         "The owner screen predicts the next mandate id from public reads; a concurrent create_mandate takes that id and a set committed to the wrong id can never be reserved against. The screen warns before creation and the contract offers no view that removes the race.",
         "Write reconciliation accepts an accepted, non-reverted receipt in a block that still contains the transaction plus a vault-emitted event of the expected name; it does not verify the internal call path.",
@@ -404,7 +420,7 @@
       "limitations": [
         "The recorded clean source checkout was cloned locally and used checksum-verified cached tool archives.",
         "This is not a fresh-machine or independently reproduced result.",
-        "Passing local and synthetic tests does not establish a deployed VOW contract or mainnet supplier collection."
+        "Passing local and synthetic tests does not by itself establish the separately evidenced deployment or any mainnet supplier collection."
       ]
     }
   ]

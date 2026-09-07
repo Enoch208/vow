@@ -60,7 +60,7 @@
     "Workbench has no transaction submission button and creates no journal records",
     "Browser reload/cross-tab storage behavior has not been tested in a real browser",
     "Recovery coordination requires cooperating clients on the same origin with retained storage",
-    "No VOW deployment, real collection, full budget validation or G0 pass"
+    "At recording time there was no VOW deployment; no real collection, full budget validation or G0 pass has since been established"
   ],
   "sources": [
     "https://github.com/starkware-libs/starknet-specs/blob/v0.10.3/wallet-api/wallet_rpc.json",

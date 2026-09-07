@@ -1,0 +1,54 @@
+{
+  "observedAt": "2026-09-07T20:00:05Z",
+  "scope": "Locally built and deployed VowVault class, pool and external ABI allowlist",
+  "command": "npm run build:workbench && npm run verify:vault",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "source": "single-rpc-observation",
+  "result": "matched",
+  "blockHash": "0x6bab967fc04e1a8f704f4b5a1172283ff4f656dd50333931248594f6eb96b60",
+  "vaultAddress": "0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227",
+  "localClassHash": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+  "vaultClassHash": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+  "poolAddress": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "entrypoints": [
+    "accounted_balance",
+    "claim_digest",
+    "create_mandate",
+    "expire_reservation",
+    "fund_mandate",
+    "mandate",
+    "mandate_available",
+    "permission_consumed",
+    "pool",
+    "privacy_invoke",
+    "reclaim_available",
+    "reservation",
+    "reserve",
+    "revoke_mandate"
+  ],
+  "checks": {
+    "localBuildMatchesPin": true,
+    "deployedClassMatchesPin": true,
+    "configuredPoolMatchesPin": true,
+    "genericDrainEntrypoint": false,
+    "arbitraryExternalCallEntrypoint": false,
+    "rootReplacementEntrypoint": false,
+    "upgradeEntrypoint": false
+  },
+  "localTests": {
+    "command": "node --test packages/vow-sdk/test/vault-abi.test.ts",
+    "passed": 2,
+    "failed": 0
+  },
+  "limitations": [
+    "One public RPC provider supplied the class, ABI and state observation.",
+    "An exact ABI allowlist proves the absence of additional external entrypoints, not the correctness of allowed function implementations.",
+    "This is not an audit and does not establish a qualifying supplier collection.",
+    "Run the command again for a fresh observation."
+  ],
+  "sourceSha256": {
+    "packages/vow-sdk/src/vault-abi.ts": "5689aef45c6d8684e9f1cfe6cf3b2eaba53b687aa8e210b2a6e7fb0d950b0a13",
+    "packages/vow-sdk/test/vault-abi.test.ts": "7f733120dfaf9e323dc2f24c8d902281de8c0e67b2035be8cdae53e1ea4d84c0",
+    "scripts/verify-live-vault.ts": "1b368867eb1a1fbfe31da0f81a93ae62848c47a54d37431de964be72b8800627"
+  }
+}

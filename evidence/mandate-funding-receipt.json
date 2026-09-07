@@ -1,0 +1,40 @@
+{
+  "observedAt": "2026-09-07T19:48:46Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "observationType": "live-mainnet-receipt",
+  "stage": "fund_mandate",
+  "transactionHash": "0x78d9e42445cf1d9322f3bb764318c5d0a2db76e1fd4561fc2463e3f7f28cdd8",
+  "sender": "0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89",
+  "nonce": "0x4",
+  "pinnedBlock": {
+    "blockNumber": 14519774,
+    "blockHash": "0x6cecb3e0f04d9e5bec001f82dc77a7865ed051269949301e69479cc28d791ac",
+    "timestamp": 1788809520,
+    "transactionPresent": true
+  },
+  "executionStatus": "SUCCEEDED",
+  "finalityStatus": "ACCEPTED_ON_L2",
+  "actualFeeFRI": "139638189257090080",
+  "actualFeeSTRK": "0.139638189257090080",
+  "principalFRI": "100000000000000000",
+  "principalSTRK": "0.1",
+  "vault": "0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227",
+  "vaultClassHashAtReceipt": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+  "mandateId": "0x1",
+  "sdkCalls": {
+    "entrypoints": [
+      "approve",
+      "fund_mandate"
+    ],
+    "combinedCalldataLength": 5,
+    "canonicalJsonSha256": "402f4607e9567c6e9887c948a61599e9e3dae896823145cc56c489325238a60d",
+    "matchesSubmittedAccountCalls": true
+  },
+  "receiptEvent": "MandateFunded",
+  "limitations": [
+    "Single-provider public receipt, transaction, canonical block and class-hash observation.",
+    "This transaction funded mandate 1 with 0.1 STRK but did not reserve or collect it.",
+    "The transaction did not touch the STRK20 pool and does not qualify for section 26.1.",
+    "The contract is not audited."
+  ]
+}

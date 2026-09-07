@@ -1,6 +1,6 @@
 # Threat model
 
-VOW is experimental and has no deployed or audited implementation. The first implementation milestone is a minimal supplier collection experiment; it is not the full procurement vault.
+VOW is experimental. Its matching VowVault class is deployed on Starknet mainnet, with one controlled 0.1 STRK mandate fully reserved in an open reservation. No supplier collection or payment has occurred, deployed pool behavior through VOW remains unproven, and the implementation is not audited.
 
 The intended authority boundaries are owner funding, operator-limited reservations, supplier-authorized note collection, and a pinned STRK20 pool. An operator must never inherit owner withdrawal authority or supplier signing authority. A relayer may submit signed data but cannot change its destination, amount, network, or contract.
 
@@ -16,7 +16,7 @@ Endpoint compromise can expose local keys and permission bundles. An authorized 
 
 The public deployment manifest is an expected configuration that requires review; it is not a trusted chain attestation. The controller verifies its terms against one RPC provider at a pinned block and rejects stale blocks, code changes, insufficient public escrow, stale allowance, paused pools, and mismatched terms. A compromised provider can lie; preflight cannot rule out state changes after the final read. The contract remains authoritative at execution.
 
-Wallet API advertisement does not prove correct implementation. Note ownership and proof correctness remain wallet/pool assumptions; structural calldata validation and a valid supplier claim signature do not independently prove them. The controller asks the wallet to simulate, validates the candidate, accepts only the bound supplier's signature, then requests proof preparation and revalidates the exact note. It never submits a transaction. Release to an SDK caller consumes the prepared artifact once and requires fresh preflight; an integration must separately implement reviewed submission, receipt verification and unknown-outcome reconciliation.
+Wallet API advertisement does not prove correct implementation. Note ownership and proof correctness remain wallet/pool assumptions; structural calldata validation and a valid supplier claim signature do not independently prove them. The controller asks the wallet to simulate, validates the candidate, accepts only the bound supplier's signature, then requests proof preparation and revalidates the exact note. The controller itself does not submit; release to a caller consumes the prepared artifact once and requires fresh preflight. The product claim route is that caller: it separately performs explicit review, journaled wallet submission, receipt verification and unknown-outcome reconciliation.
 
 ## Supplier claim-key lifecycle
 

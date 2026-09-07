@@ -1,0 +1,79 @@
+{
+  "observedAt": "2026-09-07T19:50:27Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "observationType": "live-mainnet-state-read",
+  "chain": "SN_MAIN",
+  "pinnedBlock": {
+    "blockNumber": 14519835,
+    "blockHash": "0x455b1f8c19aff179c014c00dbf0c1af7a08fad04253286076bef6efe13125a6"
+  },
+  "deploymentOwner": "0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89",
+  "vaultAddress": "0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227",
+  "vaultClassHash": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+  "deployedClassHash": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+  "poolAddress": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "observedPool": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "accountedBalanceSTRK": "0x16345785d8a0000",
+  "deploymentTransactions": {
+    "accountActivation": {
+      "transactionHash": "0x10d4c41b57140955c3fd4985b31e280980ce4177d466d8831975f7ea0a35815",
+      "blockNumber": 14519376,
+      "actualFeeFRI": "64153485960586256"
+    },
+    "classDeclaration": {
+      "transactionHash": "0x47e0f70503e4f28918d62d2a08fe06356fd23910348e025b5fe801eec36513f",
+      "blockNumber": 14519466,
+      "actualFeeFRI": "25754981174384634880"
+    },
+    "vaultDeployment": {
+      "transactionHash": "0x6070df09345d3b3adbd58c7a67b7f2fdb85eae81ffdcdefbcc17736f829f023",
+      "blockNumber": 14519509,
+      "actualFeeFRI": "62349799255757888"
+    }
+  },
+  "productTransactions": {
+    "mandateCreation": {
+      "transactionHash": "0x5d8a17bffcc5c7738a30fda0bd9e58987545108373b167be067949ced269d6f",
+      "blockNumber": 14519733,
+      "actualFeeFRI": "115802867024338304"
+    },
+    "atomicApprovalAndFunding": {
+      "transactionHash": "0x78d9e42445cf1d9322f3bb764318c5d0a2db76e1fd4561fc2463e3f7f28cdd8",
+      "blockNumber": 14519774,
+      "actualFeeFRI": "139638189257090080"
+    },
+    "reservation": {
+      "transactionHash": "0x3b2d1c010813ae9c7dcaee99419d02a07303b90cd780c7a4878b71eabb703a9",
+      "blockNumber": 14519835,
+      "actualFeeFRI": "215407720195652416"
+    }
+  },
+  "liveMandate": {
+    "mandateId": "0x1",
+    "fundedSTRKBaseUnits": "100000000000000000",
+    "availableSTRKBaseUnits": "0",
+    "reservedSTRKBaseUnits": "100000000000000000",
+    "paidSTRKBaseUnits": "0",
+    "reclaimedSTRKBaseUnits": "0"
+  },
+  "liveReservation": {
+    "reservationId": "0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b",
+    "state": "OPEN",
+    "amountSTRKBaseUnits": "100000000000000000",
+    "claimBefore": 1788852602
+  },
+  "verified": [
+    "A contract exists at the predicted vault address.",
+    "Its class hash equals the locally built VowVault class hash.",
+    "Its pool() view returns the pinned STRK20 pool address.",
+    "Accepted receipts created mandate 1, atomically funded it with 0.1 STRK and opened one 0.1 STRK reservation.",
+    "The mandate accounting reports 0.1 STRK reserved and zero paid."
+  ],
+  "limitations": [
+    "Single provider observation.",
+    "Single-provider receipt and state observations.",
+    "Mandate creation, funding and reservation are supporting product transactions; they do not touch the STRK20 pool and are not qualifying supplier collections.",
+    "The open reservation is not a payment. No supplier collection or note credit occurred.",
+    "The contract is not audited."
+  ]
+}

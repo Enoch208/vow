@@ -1,9 +1,9 @@
 {
-  "observedAt": "2026-09-07T17:48:13.141485+00:00",
+  "observedAt": "2026-09-07T19:49:41Z",
   "sourceCommit": null,
   "scope": "VowVault mandate, permission-tree, reservation and accounting layer",
-  "typescriptTestsPassed": 177,
-  "cairoTestsPassed": 37,
+  "typescriptTestsPassed": 278,
+  "cairoTestsPassed": 40,
   "releaseBlockingTestsCovered": [
     "T-001",
     "T-002",
@@ -37,8 +37,8 @@
   },
   "limitations": [
     "Local snforge tests against synthetic token and pool contracts only.",
-    "VowVault has never been declared, deployed, funded or executed on any network.",
-    "T-015 to T-020 are client, verifier and reproducibility IDs outside this contract layer and remain uncovered.",
+    "The matching VowVault is deployed with one funded open reservation, but the negative guard cases here execute only in the local synthetic token/pool harness.",
+    "Client, verifier and reproducibility requirements remain separately evidenced; these contract tests do not prove wallet preparation or supplier collection.",
     "Permission tree is fixed at 16 padded slots and has no on-chain root replacement path.",
     "No audit, no mutation sweep over the new guards, no gas or griefing analysis.",
     "Source is uncommitted."

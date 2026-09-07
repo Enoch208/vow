@@ -1,19 +1,29 @@
 {
   "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
-  "observedAt": "2026-09-07T13:27:23.708Z",
-  "scope": "Negative control using an unrelated public successful mainnet transaction and synthetic expected note ID 1; not a VOW execution.",
+  "observedAt": "2026-09-07T19:49:41Z",
+  "scope": "Negative control using an unrelated public successful mainnet transaction; not a VOW execution.",
   "receiptExecution": "SUCCEEDED",
-  "receiptFinality": "ACCEPTED_ON_L2",
+  "receiptFinality": "ACCEPTED_ON_L1",
   "report": {
     "transactionHash": "0x39db0c00d44f27f2e22f02abad354fc93c32a8202b04e41291a990554d49d1e",
     "status": "mismatch",
     "reason": "VOW_COLLECTION_EVENTS_MISSING",
-    "blockHash": null,
-    "finality": null,
+    "blockHash": "0x3cb339756cb6420a46b5bca9ea10a77ce287719b7e8e4f0c65504d345209be9",
+    "finality": "ACCEPTED_ON_L1",
     "events": "unverified",
     "callPath": "unverified",
+    "vaultClass": "unverified",
+    "poolClass": "unverified",
+    "claimEvent": "unverified",
+    "poolDeposit": "unverified",
+    "reservationState": "unverified",
+    "tokenPull": "unverified",
     "noteOwnership": "unverified",
     "retryAllowed": false,
     "source": "single-rpc-observation"
-  }
+  },
+  "limitations": [
+    "One public RPC provider supplied the receipt and canonical block observation.",
+    "This negative control proves only that unrelated success is rejected, not that a VOW collection succeeds."
+  ]
 }

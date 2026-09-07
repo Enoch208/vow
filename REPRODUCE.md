@@ -20,7 +20,11 @@ VOW_CAIRO_ARCHIVE_CACHE=/path/to/cache npm run ci:clean
 
 The cache directory must contain `scarb.tar.gz`, `foundry.tar.gz`, and `usc.tar.gz`. The bootstrap checks the pinned SHA-256 digest of each archive before extraction. Without this variable, it downloads the same pinned releases.
 
-The recorded macOS Apple Silicon run used the archive cache and completed in 43.44 seconds. It installed 56 packages, audited 57 packages with 0 vulnerabilities reported, built the Cairo target in 18 seconds, passed 38 Cairo tests and 267 SDK tests, and verified 20 claims across 38 JSON files. See [clean-clone evidence](evidence/clean-clone-checks.json). This remains a local, cache-assisted reproduction rather than a fresh-machine or independent result.
+The recorded macOS Apple Silicon run used the archive cache and completed in 43.44 seconds. It installed 56 packages, audited 57 packages with 0 vulnerabilities reported, built the Cairo target in 18 seconds, passed 38 Cairo tests and 267 SDK tests, and verified 20 claims across 38 JSON files. See [clean-clone evidence](evidence/clean-clone-checks.json). This remains a local, cache-assisted reproduction rather than a fresh-machine or independent result, and it predates the live deployment.
+
+The worktree checks must be rerun and recorded after the compatibility patch freezes. Worktree results do not replace T-020 clean-clone evidence and do not satisfy a product release gate.
+
+T-020 always tests the committed `HEAD`, not uncommitted working-tree files. Run `git status --short` first and commit the intended release through the normal reviewed process before treating this gate as evidence for that release.
 
 ## Manual worktree checks
 
@@ -61,7 +65,7 @@ Open `http://127.0.0.1:4317` in the browser where Ready is installed. Select the
 
 The diagnostic binds only to loopback, accepts GET/HEAD requests, serves a fixed file allowlist, rejects unexpected Host headers, and has no result-upload endpoint or telemetry. HTTP tests need permission to bind loopback sockets; restricted execution environments may need to allow that explicitly.
 
-The user supplied a successful Ready X 5.33.9 version-query result advertising 0.10.3 and 0.7.2. This does not establish collection support. A browser check passed the initial and rescan states, confirming the notices and unchanged “No capability check has run” result. No wallet request was sent during that check. The prepared-call decoder has synthetic tests against the recorded live ABI, not a captured Ready preparation. Neither function establishes proving or transaction submission support. Results and source fingerprints for this slice are in `evidence/diagnostic-checks.json`.
+The user supplied a successful Ready X 5.33.9 version-query result advertising 0.10.3 and 0.7.2. This alone does not establish collection support. A later real simulation request returned a prepared action list, which VOW rejected locally because the pool decoder required an optional screening suffix that the response omitted. The compatibility patch is covered by a sanitized regression shape without persisting proof material. This does not establish proving, settlement or note ownership. Results and source fingerprints for the earlier diagnostic slice are in `evidence/diagnostic-checks.json`.
 
 ## Collection review workbench
 
@@ -73,17 +77,37 @@ After validating terms, the supplier explicitly requests preparation. The contro
 
 A valid supplier signature enables a second preparation with proof generation. The controller rejects changed notes, changed invocation data, empty proof data, extra public transfers, changed state, and expired deadlines. Proof material stays in memory and is not displayed, saved or submitted. The SDK can release one copied prepared call after fresh preflight; the page provides no submission or payload export action. Proof structure is checked; proof validity and encrypted ownership are not independently verified. A timeout discards the result and prevents the same controller from overlapping the still-running request. Wallet identity/network events discard the UI preparation.
 
-The automated suite uses synthetic wallet responses and synthetic proof strings. Real Ready preparation and settlement are not tested. The user authorized external browser validation after an initial approval-review block. Desktop initial-state, disabled-control and invalid-manifest assertions passed. The first run exhausted its step budget; a focused rerun stopped before mobile checks due to an incorrect preparation prerequisite. Mobile layout remains unverified. No wallet request or funded transaction was part of these browser objectives.
+The automated suite uses synthetic wallet responses and synthetic proof strings. One real Ready simulation response has been observed, but proving and settlement remain unverified. The user authorized external browser validation after an initial approval-review block. Desktop initial-state, disabled-control and invalid-manifest assertions passed. The first run exhausted its step budget; a focused rerun stopped before mobile checks due to an incorrect preparation prerequisite. Mobile layout remains unverified. No funded transaction was part of those browser objectives.
 
 ## VowVault claim and logged-out verification
 
 Run `npm run app`, then open `http://127.0.0.1:4319/verify`. The route preloads transaction `0x39db0c00d44f27f2e22f02abad354fc93c32a8202b04e41291a990554d49d1e`, a real successful mainnet negative control. The verifier uses no wallet and must report `VOW_COLLECTION_EVENTS_MISSING`: transaction success without the pinned VowVault `ReservationClaimed` event is not VOW evidence.
 
-The same command serves the product screens. Open `http://127.0.0.1:4319/` for the overview, `/owner` and `/operator` for the two write screens. Both read `dist/deployment/manifest.json`; no manifest is shipped, so both load fail-closed, report the missing deployment and keep every write control disabled. Their behaviour is covered by `packages/vow-sdk/test/app-screens.test.ts`, `owner-page.test.ts`, `operator-page.test.ts` and `write-flow.test.ts`, which run inside `npm run check`.
+Confirmation requires the pinned VowVault and pool classes, exactly one ABI-shaped `ReservationClaimed` event, its later exact pool deposit, a matching claimed reservation at the receipt block, and the corresponding pool callback plus exact token pull in the trace. A missing or timed-out RPC fact renders as `unknown`, keeps `retryAllowed` false, and is neither confirmation nor contradiction. A structurally present but contradictory fact renders as `mismatch`.
+
+The same command serves the product screens. Open `http://127.0.0.1:4319/` for the overview, `/owner` and `/operator` for the two write screens. Both read the manifest generated from the pinned deployment. Missing mandate, funding, reservation, proof or budget prerequisites continue to keep their dependent controls disabled. Their behaviour is covered by `packages/vow-sdk/test/app-screens.test.ts`, `owner-page.test.ts`, `operator-page.test.ts` and `write-flow.test.ts`, which run inside `npm run check`.
 
 The supplier path is `/claim/:reservationId`. It accepts one decimal or hexadecimal public reservation ID and rejects query strings. Before discovering or requesting anything from a wallet, it reads the reservation, VowVault and pool classes, pool address, accounted balance, token balance, allowance, pool pause state and fee collector at one recent block. Only an open, funded, unexpired reservation matching the pinned deployment enables the STRK20 support check and note preparation. Signature r/s inputs remain disabled until the structurally decoded note is shown. The exact signed preparation is reviewed once, journaled before wallet dispatch and never described as confirmed until the public verifier confirms it.
 
-The generated manifest in `dist/app/deployment.json` is explicitly `not-deployed`, carries a zero network-fee ceiling and leaves all claim controls disabled. Replacing it with a live manifest is a separate evidence-bearing deployment action, not part of the build. Positive claim and receipt tests are synthetic. See `evidence/vault-claim-verifier-checks.json`.
+The generated manifests in `dist/app/deployment.json` and `dist/deployment/manifest.json` pin the verified mainnet VowVault, pool and class. Separate accepted receipts establish one controlled 0.1 STRK mandate and open reservation; they establish no supplier collection. Positive claim and receipt tests are synthetic. See `evidence/vault-claim-verifier-checks.json` and `evidence/vault-deployment-observation.json`.
+
+## §24.1 enforcement and deployed ABI
+
+Run the full Cairo suite:
+
+```sh
+sh scripts/cairo.sh test
+```
+
+T-005 in `contracts/tests/test_vault_guards.cairo` forbids moving an operator signature to a different amount, request, root or mandate. T-002 in the same file forbids altered proofs, raised caps and supplier substitution. T-003 and T-004 in `contracts/tests/test_vault.cairo` forbid overspend and permission replay, including replay after expiry. T-011 in `contracts/tests/test_vault_guards.cairo` forbids direct and outsider settlement so collection remains pool-only. These execute real VowVault Cairo logic with synthetic token and pool contracts; they are not mainnet executions.
+
+Then rebuild the local Sierra class and compare it with the deployed class and exact ABI allowlist through the public RPC:
+
+```sh
+npm run build:workbench && npm run verify:vault
+```
+
+The verification exits nonzero unless the freshly built VowVault Sierra class hashes to `0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14`, the class at mainnet address `0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227` has that same hash, and its `pool()` returns the pinned pool. It also rejects an added, removed, renamed or remutated entrypoint. A pass is a checkable fact that the locally built and deployed classes match and that the deployed ABI exposes no generic drain, arbitrary external-call, root-replacement or upgrade entrypoint. This is a single-provider observation and does not audit the implementation of the allowlisted functions.
 
 ## Preview deployment and funding
 
@@ -131,11 +155,11 @@ After building, save the deployment preview's `collectionConfiguration` object a
 
 Confirmation requires an accepted successful INVOKE receipt, the requested transaction in the canonical block, exact VOW `Collected` and pool `OpenNoteDeposited` events in order, matching block-pinned class/configuration/state reads, and a trace showing the pool's exact VOW callback and subsequent token pull. The canonical block is checked again after verification. Receipt/status handling follows the [Starknet RPC specification](https://github.com/starkware-libs/starknet-specs/blob/master/api/starknet_api_openrpc.json), and call-path checks follow its [trace schema](https://github.com/starkware-libs/starknet-specs/blob/master/api/starknet_trace_api_openrpc.json). Pool event decoding is tied to the recorded ABI and pinned pool class.
 
-A missing trace produces `receipt-matched` with the call path unverified. Missing transactions, read failures, pre-confirmed receipts and changed canonical blocks cannot establish confirmation or permission to retry. A confirmed result remains a single-provider observation; it does not decrypt ownership or prove supplier wallet discovery. Positive receipt and trace fixtures are synthetic, and no VOW mainnet transaction has been verified. See `evidence/collection-reconciliation-checks.json`.
+A missing trace produces `receipt-matched` with the call path unverified. Missing transactions, read failures, pre-confirmed receipts and changed canonical blocks cannot establish confirmation or permission to retry. A confirmed result remains a single-provider observation; it does not decrypt ownership or prove supplier wallet discovery. Positive receipt and trace fixtures are synthetic, and no VOW mainnet supplier collection has been verified. See `evidence/collection-reconciliation-checks.json`.
 
 `SubmissionAttempt` models one approved review digest through signing, submission and reconciliation. `SubmissionJournal` coordinates same-origin clients with Web Locks and stores only a reservation scope, public note ID and checkpoint. `runJournaledSubmission` persists and reads back the attempt before invoking a caller-supplied dispatcher. It saves late transaction hashes after timeout, returns a known hash even if later storage writes fail, and refuses another attempt for the same chain/vault/reservation even when the review digest or note changes. Restoration starts unknown; matching receipt evidence must be checked again. Native Node Web Locks and simulated storage tests cover concurrency and controller replacement; browser storage/reload behavior has not been tested in a real browser.
 
-The collection page now provides **Read saved attempt** and **Check public receipt** after public terms are validated. These controls make no wallet write and do not store typed inputs. Editing terms or receipt inputs clears old results; late responses for changed terms are discarded. The page still has no submission button. Durable records are created only when an integration invokes the journaled dispatcher.
+The loopback diagnostic `/collection` page provides **Read saved attempt** and **Check public receipt** after public terms are validated. Those controls make no wallet write and do not store typed inputs; that diagnostic page has no submission button. The product `/claim/:reservationId` route separately integrates the journaled dispatcher behind exact review, explicit approval, fresh state and wallet-identity checks. Editing terms or receipt inputs clears old results; late responses for changed terms are discarded.
 
 `reviewCollectionSubmission` independently checks the supplier signature and exact prepared call, normalizes wire fields, fingerprints the call/proof and binds the review to the proposed fee limits. The payload can be released once using the matching digest, before the earlier of five minutes or the claim deadline. Proof data is excluded from the public review and journal. The [Wallet API 0.10.3](https://github.com/starkware-libs/starknet-specs/blob/v0.10.3/wallet-api/wallet_rpc.json) accepts this as a single `invoke_transaction` plus `proof`. It does not accept network resource bounds or a network-fee cap from the dapp. The utility explicitly reports manual wallet confirmation for network fees and does not assess the total budget. Fresh preflight, complete budget review and actual wallet approval remain required before enabling dispatch.
 
@@ -149,7 +173,7 @@ Deployment preflight also reads `get_public_key(owner)` at the pinned block. Zer
 
 ## Activated wallet and deployment review
 
-The owner is already activated and privacy-registered; do not repeat either setup step. Accepted receipts record a 0.055724097349665504 STRK owner-paid activation fee and a separate 6.1 STRK owner transfer during **Enable private tokens**. The registration transaction's 2.885883499721302016 STRK gas was paid by its relayer. See `evidence/owner-activation-receipt.json` and `evidence/registration-receipt-observation.json`.
+The earlier Ready setup account `0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e` is activated and privacy-registered; it is distinct from the deployment account `0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89`. Accepted receipts record a 0.055724097349665504 STRK setup-account activation fee and a separate 6.1 STRK transfer during **Enable private tokens**. The registration transaction's 2.885883499721302016 STRK gas was paid by its relayer. See `evidence/owner-activation-receipt.json` and `evidence/registration-receipt-observation.json`.
 
 For an already deployed wallet, use `--deployed-owner` with the fee-preview CLI. The public-account file then contains exactly `address`, `nonce`, `version` and `blockHash`; read nonce and account state from that same pinned block. `--include-funding` adds the exact approval and funding batch. The query never repeats activation and rejects mismatched owner/block or overflowing nonce.
 

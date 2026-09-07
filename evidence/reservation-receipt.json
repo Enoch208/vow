@@ -1,0 +1,40 @@
+{
+  "observedAt": "2026-09-07T19:48:46Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "observationType": "live-mainnet-receipt",
+  "stage": "reserve",
+  "transactionHash": "0x3b2d1c010813ae9c7dcaee99419d02a07303b90cd780c7a4878b71eabb703a9",
+  "sender": "0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89",
+  "nonce": "0x5",
+  "pinnedBlock": {
+    "blockNumber": 14519835,
+    "blockHash": "0x455b1f8c19aff179c014c00dbf0c1af7a08fad04253286076bef6efe13125a6",
+    "timestamp": 1788809621,
+    "transactionPresent": true
+  },
+  "executionStatus": "SUCCEEDED",
+  "finalityStatus": "ACCEPTED_ON_L2",
+  "actualFeeFRI": "215407720195652416",
+  "actualFeeSTRK": "0.215407720195652416",
+  "vault": "0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227",
+  "vaultClassHashAtReceipt": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+  "poolClassHashAtReceipt": "0x67dddd89d80fedadc06b6f160798f94800a4a70164e5a24301cd0d6076b554d",
+  "mandateId": "0x1",
+  "reservationId": "0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b",
+  "amountFRI": "100000000000000000",
+  "amountSTRK": "0.1",
+  "sdkCall": {
+    "entrypoint": "reserve",
+    "calldataLength": 29,
+    "canonicalJsonSha256": "09bd72222e972343d67c7250a323b6e93bb8ba7e276b6aa68ca8cfc77dd944a9",
+    "matchesSubmittedAccountCall": true
+  },
+  "receiptEvent": "PurchaseReserved",
+  "limitations": [
+    "Single-provider public receipt, transaction, canonical block and class-hash observation.",
+    "This transaction opened one 0.1 STRK reservation but did not collect it.",
+    "The transaction did not touch the STRK20 pool and does not qualify for section 26.1.",
+    "No supplier note ownership or wallet preparation is established by this receipt.",
+    "The contract is not audited."
+  ]
+}

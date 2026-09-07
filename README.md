@@ -1,53 +1,310 @@
+<div align="center">
+
 # VOW
 
-Verifiable Operator Warrants for confidential delegated procurement on STRK20.
+[![MIT](https://img.shields.io/badge/license-MIT-black)](LICENSE)
+![network](https://img.shields.io/badge/network-Starknet%20mainnet-7C3AED)
+![contracts](https://img.shields.io/badge/contracts-Cairo-F2A65A)
+![SDK](https://img.shields.io/badge/SDK-TypeScript-3178C6)
 
-Status: local protocol implementation with a verified activated and privacy-registered owner account. No VOW deployment, mainnet supplier payment, wallet compatibility pass, or audit is claimed. The vault contract exists and is tested locally; it has never been declared, deployed or funded on any network. Local owner, operator, supplier-claim and logged-out verifier routes are built, but no deployment manifest exists, so every write control on them is disabled and no reservation, creation or payment has been attempted.
+### Confidential procurement permissions. Exact supplier settlement. No treasury key handoff.
 
-The product lets an owner commit one-use purchase permissions, an operator reserve an approved purchase, and the supplier collect into its exact signed STRK20 note. Unused permissions remain unpublished: the chain stores a commitment root, not the supplier list.
+VOW is a delegated-procurement protocol for STRK20. An owner commits a private set of one-use purchase permissions, an operator reserves only an approved purchase, and the supplier independently collects into the exact signed STRK20 note.
 
-## Implemented scope
+**[Demo video (placeholder) ↗](https://example.com/vow-demo)** · **[Live app (placeholder) ↗](https://example.com/vow-live)** · **[Five-minute judge path](JUDGES.md)** · **[Reproduce the evidence](REPRODUCE.md)**
 
-- `VowVault`: isolated mandates, a 16-slot padded permission commitment tree, operator-signed reservations bounded by the committed cap and available budget, single-use permissions that expiry never re-arms, separate Funded/Reserved/Paid/Reclaimed accounting, revocation that preserves open supplier claims, owner recovery that excludes outstanding reservations, and pool-only destination-bound collection. No upgrade path, no generic external call, no admin sweep of accounted funds.
-- `CollectionProbe`: one owner-funded reservation, one fixed supplier claim key, one pinned token/pool, exact received funding, destination-bound claim, and owner recovery after expiry. IDs are fixed to one; this is not VowVault.
-- TypeScript claim encoding/signatures, integer amount utilities, a read-only wallet API version probe, and a strict prepared-call decoder pinned to the observed pool class.
-- Cairo tests for funding, authorization, rollback, deadlines, recovery, donations, and replay; cross-language claim vectors; selected mutation checks.
-- A collection preparation controller and local review page, with pinned-block contract checks, exact-note signature verification, invalidation, bounded waits, and final preparation review. No transaction submission.
-- A separate local supplier-key page with encrypted backup, required restore before sharing the key, exact-claim review/signing, and session locking.
-- Integer-only test-budget assessment that requires principal, every fee category, and a fresh STRK/USD quote before reporting whether a proposed total fits its cap.
-- Read-only collection receipt verification, an exact call/proof submission review, and a durable attempt journal with Web Locks coordination. The collection page can request the exact reviewed wallet call only when a matching, fresh local budget manifest is present; no approved manifest is shipped.
-- A local `/claim/:reservationId` VowVault path that reads the reservation and pinned classes before enabling wallet preparation or supplier signature input, plus `/verify/:txHash`, which needs no wallet and requires the exact `ReservationClaimed` event, matching pool deposit, claimed reservation state and token-pull trace. Its preloaded real successful mainnet transaction is an unrelated negative control and is rejected as VOW evidence.
-- A block-pinned public mainnet pool observation and its ABI. These reads are not VOW transaction evidence.
+Built for the STRK20 privacy track on Starknet.
 
-See [reproduction instructions](REPRODUCE.md), [compatibility](COMPATIBILITY.md), [threat model](THREAT_MODEL.md), and [claim evidence](evidence/claims.json).
+</div>
 
-## Public and private
+---
+
+## Demo
+
+The intended walkthrough covers the complete separation of duties:
+
+1. An owner builds a permission set locally, previews what will become public, and commits only its root.
+2. An operator unlocks that committed set and reserves one approved purchase without receiving the supplier key.
+3. A supplier reviews the exact destination-bound claim and signs it in an isolated local tool.
+4. Anyone verifies the resulting public receipt without connecting a wallet.
+
+Video: **[three-minute walkthrough (placeholder)](https://example.com/vow-demo)**
+
+Hosted product: **[public deployment (placeholder)](https://example.com/vow-live)**
+
+Until those links are replaced, run the reviewer path locally with `npm run app` and follow [JUDGES.md](JUDGES.md). The live mainnet contract and open reservation are real; a qualifying supplier collection is not yet claimed.
+
+## Table of contents
+
+- [The problem](#the-problem)
+- [What VOW is](#what-vow-is)
+- [Verify it yourself](#verify-it-yourself)
+- [What is live and what is not](#what-is-live-and-what-is-not)
+- [Architecture](#architecture)
+- [Protocol invariants](#protocol-invariants)
+- [The procurement flow](#the-procurement-flow)
+- [Product surfaces](#product-surfaces)
+- [Public and private data](#public-and-private-data)
+- [Mainnet evidence](#mainnet-evidence)
+- [Technology and project layout](#technology-and-project-layout)
+- [Run it locally](#run-it-locally)
+- [Tests and release reproduction](#tests-and-release-reproduction)
+- [Known limitations](#known-limitations)
+- [Documentation](#documentation)
+
+## The problem
+
+Delegated purchasing usually forces a bad choice. Give an operator broad control over a treasury, or require the owner to approve every purchase. Publishing an allowlist on chain avoids key handoff, but reveals suppliers and planned purchases before they are used.
+
+VOW separates authority instead:
+
+- The **owner** controls the budget and approves a bounded set of possible purchases.
+- The **operator** can select only one committed permission and cannot redirect its supplier or raise its cap.
+- The **supplier** controls the destination note and signs the exact collection claim.
+- The **pool** is the only party allowed to settle a reservation after accepting that note.
+
+Unused permissions remain unpublished. Once a permission is exercised, its supplier pseudonym, amount and timing become public protocol data.
+
+## What VOW is
+
+VOW combines a Cairo vault, a typed TypeScript SDK, isolated local role interfaces, strict transaction review, and a public evidence ledger.
+
+<div align="center">
+
+**`COMMIT → FUND → RESERVE → SIGN → COLLECT → VERIFY`**
+
+</div>
+
+The current implementation contains two contract layers:
+
+- **`CollectionProbe`** is a deliberately narrow compatibility experiment: one owner-funded reservation, one supplier claim key, one pinned token and pool, and fixed identifiers. It is not the full product.
+- **`VowVault`** is the protocol layer: isolated mandates, committed permission membership, operator-bound reservation, explicit Funded/Available/Reserved/Paid/Reclaimed accounting, revocation, recovery, single-use permissions and pool-only collection.
+
+Neither contract exposes an upgrade path, generic external call, public supplier payout, admin sweep or root replacement.
+
+## Verify it yourself
+
+From a clean checkout using the required Node version:
+
+```sh
+npm ci --ignore-scripts
+npm run check
+sh scripts/cairo.sh test
+npm run evidence:verify
+```
+
+Then compare the locally built vault with the deployed mainnet class and exact ABI allowlist:
+
+```sh
+npm run verify:vault
+```
+
+For the release-blocking clean-clone check:
+
+```sh
+npm run ci:clean
+```
+
+That command clones committed `HEAD` into a temporary directory, installs pinned root dependencies, builds the TypeScript and Cairo workbench, runs the Cairo and SDK suites, and verifies the public evidence ledger. Full prerequisites and checksum-pinned Cairo bootstrap details are in [REPRODUCE.md](REPRODUCE.md).
+
+## What is live and what is not
+
+| Capability | Current evidence | Claim boundary |
+|---|---|---|
+| Matching VowVault class | Declared and deployed on Starknet mainnet | Local and deployed class hashes match through one public RPC provider |
+| Controlled mandate | Created with 0.1 STRK principal | Creation is not supplier settlement |
+| Funding | Atomic approval and funding accepted | Funded principal is not a protocol fee |
+| Reservation | Fully reserved; Paid and Reclaimed remain zero | Open reservation is not a payment |
+| Supplier collection | No qualifying VOW collection recorded | Note credit, wallet compatibility and collection success remain unproven |
+| Release gates | 0 of 5 pass | Deployment alone does not satisfy the first gate |
+| Audit | None | Tests and ABI checks are not an audit |
+
+The Ready wallet advertised Wallet API 0.10.3 and returned a prepared action list. VOW rejected the observed response before supplier signing or submission because the decoder required an optional screening suffix that the response omitted. The compatibility patch is covered locally, but no successful collection is inferred from that response.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    OWNER["Owner\ncommits permissions\nfunds mandate"] --> VAULT["VowVault\nreservation accounting\nsingle-use enforcement"]
+    OPERATOR["Operator\nselects committed leaf\nsigns reservation"] --> VAULT
+    SUPPLIER["Supplier\ncontrols claim key\nsigns exact note"] --> POOL["Pinned STRK20 pool\nnote preparation\ncollection callback"]
+    VAULT -->|"destination-bound claim"| POOL
+    POOL -->|"pool-only settlement"| VAULT
+    VERIFIER["Public verifier\nreceipt + event + state + trace"] --> VAULT
+    VERIFIER --> POOL
+```
+
+Authority does not collapse into one browser or one key:
+
+- Owner permission construction and backup happen locally.
+- Operator reservation never accepts a supplier signing key, token override or deadline override.
+- Supplier key generation, encrypted backup, restoration and claim signing run on a separate loopback origin with no wallet discovery.
+- Public verification needs no wallet and treats missing or timed-out RPC facts as unknown.
+
+## Protocol invariants
+
+| Invariant | Enforcement |
+|---|---|
+| Exact destination binding | The supplier signature covers chain, vault, reservation, pool, token, amount, note ID and deadline |
+| Committed permission membership | Reservation requires a valid proof for the owner’s padded permission root |
+| No operator widening | The signature is bound to the mandate, permission, amount, supplier and request |
+| No overspend | Reservation is limited by both the committed cap and currently available budget |
+| Single use | A consumed permission cannot be reserved again, including after expiry |
+| Reservation accounting | Funded, Available, Reserved, Paid and Reclaimed are tracked separately |
+| Pool-only collection | Direct supplier and outsider settlement calls are rejected |
+| Safe recovery | The owner cannot reclaim value still backing an open reservation |
+| Unknown is not retryable | Timeout or missing receipt remains unresolved until reconciliation |
+| No arbitrary authority | The ABI allowlist rejects generic calls, upgrades, sweeps and root replacement |
+
+The Cairo suite runs the contract logic against synthetic token and pool contracts. Those negatives demonstrate local enforcement; they are not mined mainnet reverts.
+
+## The procurement flow
+
+### 1. Commit
+
+The owner creates a padded 16-slot permission set. Each leaf binds a supplier pseudonym, maximum amount and nonce. Only the commitment root is stored on chain until a permission is selected.
+
+### 2. Fund
+
+The owner funds a mandate through an exact token approval and vault funding call. Direct token transfers are not counted as budget and cannot be swept back out.
+
+### 3. Reserve
+
+The operator opens the committed set locally, proves the selected leaf against the on-chain root and signs a reservation request. The vault checks the proof, signature, cap, deadline, replay state and available amount before moving value from Available to Reserved.
+
+### 4. Sign
+
+The supplier reviews the exact prepared note claim in the isolated supplier tool. A supplier key is usable only after its encrypted backup has been downloaded and successfully restored. Signing returns public signature values; the private key remains local.
+
+### 5. Collect
+
+The wallet prepares one exact call to the pinned STRK20 pool. The collection path is enabled only after fresh contract checks, exact action decoding, supplier signature verification, a bounded review window and a matching budget manifest. A timeout creates an unresolved attempt, not permission to retry.
+
+### 6. Verify
+
+The logged-out verifier checks the accepted transaction, exact VowVault event, pool deposit, claimed reservation state and token-pull trace. Contradictory facts are mismatches. Missing receipt, block, class, state or trace facts remain unknown.
+
+## Product surfaces
+
+Run `npm run app` to serve the VowVault product on `http://127.0.0.1:4319`.
+
+| Route | Reviewer action |
+|---|---|
+| `/` | Read the protocol summary, deployment status and evidence links |
+| `/owner` | Build permissions locally, preview disclosure, prove backup restoration and review mandate accounting |
+| `/operator` | Unlock the committed set and reserve one leaf without supplier secrets or mutable settlement terms |
+| `/claim/:reservationId` | Read live reservation state, prepare the exact STRK20 action and keep signing disabled on failed compatibility checks |
+| `/verify` | Verify a public transaction without connecting a wallet |
+| `/verify/:txHash` | Open the same verifier with a specific public transaction hash |
+
+Additional isolated tools:
+
+- `npm run supplier` serves the supplier-key tool on `http://127.0.0.1:4318`.
+- `npm run diagnostic` serves wallet, activation, deployment and collection review routes on `http://127.0.0.1:4317`.
+- `npm --prefix web run dev` serves the static presentation during development.
+
+These loopback pages are reviewer and integration surfaces. They do not establish public hosting or mainnet collection.
+
+## Public and private data
 
 | Information | Visibility |
 |---|---|
-| Experiment owner, funding amount, token, supplier claim key, deadline | Public if deployed |
-| Collection note ID, amount, timing, and helper address | Public |
-| Supplier signing key | Local; never requested in a URL or RPC call |
-| Note ownership privacy | Depends on the actual STRK20 wallet/pool flow; not yet demonstrated by VOW |
-| Unused procurement permissions | Not published by the protocol; only the commitment root is on chain |
-| Exercised permission, its amount, supplier pseudonym and timing | Public once reserved |
+| Mandate owner, token, principal, deadline and commitment root | Public on chain |
+| Selected permission, supplier pseudonym, reserved amount and timing | Public when reserved |
+| Collection note ID, amount, helper and timing | Public if collection occurs |
+| Unused permissions and supplier list | Not published by VOW |
+| Supplier signing key | Local only; never requested through a URL or RPC call |
+| Permission proof material | Used for authorization; excluded from public review and attempt journals |
+| Recovery phrase and wallet credentials | Never requested or stored by the product |
+| Confidential purchase details outside the permission fields | Outside the protocol and evidence files |
 
-Neither contract has a generic call, upgrade, donation sweep, or public supplier payout function. Because there is no sweep, tokens transferred to the vault outside `fund_mandate` are never counted as budget and are also never recoverable. Pool correctness, token behavior, wallet readiness, screening, and real note ownership remain integration dependencies. Do not fund the experiment before its compatibility and transaction preview are reviewed.
+Note ownership privacy depends on the actual STRK20 wallet and pool flow. VOW has not yet demonstrated that property through a qualifying collection. See [PRIVACY.md](PRIVACY.md) for the complete disclosure boundary.
 
-Ready advertises Wallet API 0.10.3, but live collection is still unverified. The probe review page is at `/collection` when running `npm run diagnostic`. Its authorized browser check verified desktop initial-state and invalid-input assertions; mobile checks did not complete; see [milestone evidence](evidence/collection-workbench-checks.json).
+## Mainnet evidence
 
-Run `npm run app` for the VowVault product routes at `http://127.0.0.1:4319`. `/` states the problem and links the screens, the shipped documents and the verifier. `/owner` builds a permission set locally, shows a preview of exactly what creation publishes and what it withholds before anything is created, downloads the encrypted backup, and unlocks that downloaded file again to prove it restores the previewed root before the creation call is enabled; it always reports Funded, Available, Reserved, Paid and Reclaimed as five separate values. `/operator` unlocks the committed set, checks it against the mandate root already on chain, and reserves one selected permission object; it has no field for a supplier key, token or deadline, and an edited permission object stops matching the committed root. `/verify` preloads the public T-017 negative-control transaction and verifies it without a wallet; `/claim/:reservationId` stays read-only until a real deployment manifest replaces the explicitly undeployed build manifest.
+| Live deployment | Starknet mainnet value |
+|---|---|
+| VowVault | `0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227` |
+| Class hash | `0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14` |
+| STRK20 pool | `0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a` |
+| Deployment account | `0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89` |
 
-Every write on those routes moves through one explicit state: READY, SIGNING, SUBMITTED, then CONFIRMED, REJECTED, REVERTED or UNKNOWN. A wallet timeout is UNKNOWN, never a retry; a late transaction hash is recorded against the same unresolved attempt so it can be reconciled against its public receipt. Because no manifest is shipped, the owner and operator routes load fail-closed and neither has sent a transaction. See [claim and verifier evidence](evidence/vault-claim-verifier-checks.json) and [product screen evidence](evidence/product-screen-checks.json).
+The evidence directory separates claims from observations:
 
-Run `npm run supplier` to open the separate supplier tool at `http://127.0.0.1:4318/`. Its empty-state browser check passed. Backup restoration, signing and collection preparation are connected in a synthetic local integration test; the browser test generated no key and entered no secret. See [supplier milestone evidence](evidence/supplier-tool-checks.json).
+- [evidence/claims.json](evidence/claims.json) is the public claim ledger and evidence-tier boundary.
+- [evidence/vault-deployment-observation.json](evidence/vault-deployment-observation.json) records class declaration and deployment.
+- [evidence/mandate-creation-receipt.json](evidence/mandate-creation-receipt.json), [evidence/mandate-funding-receipt.json](evidence/mandate-funding-receipt.json) and [evidence/reservation-receipt.json](evidence/reservation-receipt.json) record the controlled mandate path.
+- [evidence/vault-abi-checks.json](evidence/vault-abi-checks.json) records the local/deployed class and entrypoint checks.
+- [evidence/unrelated-receipt-observation.json](evidence/unrelated-receipt-observation.json) is a real successful mainnet transaction used as a negative control. It must be rejected as VOW collection evidence.
 
-Deployment-preview tooling builds deterministic UDC calldata and an exact principal-funding batch without signing or network access. It does not estimate fees or authorize spending. See [preview evidence](evidence/deployment-preview-checks.json).
+The deployment account paid 25.881484459600979024 STRK across activation, class declaration and vault deployment. Mandate creation, atomic funding and reservation paid another 0.470848776477080800 STRK in network fees. Supplier collection, wallet or prover charges, recovery reserve and the collection protocol-fee path remain unexecuted or unverified. These amounts are transcribed from the accepted receipts linked above; they are not estimates of a future collection.
 
-Deployment preflight now reads public account, declaration, UDC, token and pool state at one block, preserving explicit absence separately from RPC failure. The local `/activation` page reads wallet deployment metadata on demand and verifies its derived account address before displaying the public result. Neither tool activates an account or estimates a fee. See [deployment-readiness evidence](evidence/deployment-readiness-checks.json).
+## Technology and project layout
 
-The owner account activation and privacy registration are now verified from accepted mainnet receipts. Owner outflow was 0.055724097349665504 STRK for activation plus 6.1 STRK transferred during **Enable private tokens**, for 6.155724097349665504 STRK total owner outflow. The registration receipt's 2.885883499721302016 STRK network fee was paid by a separate relayer and is not added to the owner total. The 6.1 STRK is an asset transfer into the setup flow, not asserted to be entirely fees; the pool's raw fee value would equal 6 STRK if it is STRK-denominated with 18 decimals, but its denomination and whether it is already represented in that transfer remain unverified.
+| Area | Technology | Location |
+|---|---|---|
+| Protocol contracts | Cairo, Scarb, Starknet Foundry | `contracts/` |
+| Typed encoding and controllers | TypeScript, Starknet.js | `packages/vow-sdk/` |
+| Product and role tools | TypeScript, HTML, CSS | `scripts/app/`, `scripts/supplier/`, `scripts/collection/` |
+| Public presentation | Next.js, React, TypeScript | `web/` |
+| Reproducible observations | JSON claim and evidence records | `evidence/` |
+| Deployment manifest | Public chain, class and transaction references | `strk20.json` |
 
-A fresh unsigned estimate at mainnet block 14515326 omitted the completed activation and estimated declaration, deployment, and funding network fees at 11.52476084897244256 STRK with signature validation skipped. Adding the proposed 0.1 STRK VOW principal produces a partial projected owner outflow of 17.780484946322108064 STRK, including the 6.155724097349665504 STRK already spent. This is not a complete budget: collection gas, wallet/prover charges, the collection protocol-fee path, recovery reserve, and final wallet fee limits are unknown. No VOW spending has been authorized. See [registration evidence](evidence/registration-receipt-observation.json), [activation evidence](evidence/owner-activation-receipt.json), and [remaining fee estimate](evidence/registered-deployment-fee-observation.json).
+Small typed modules carry the protocol meaning. Token values use exact integer base units; chain, token, pool, wallet and class assumptions are pinned rather than inferred from defaults.
 
-The local `/deployment` page derives the predicted address and exact calls from public terms, checks the next declaration, deployment, or funding stage against current chain state, and asks Ready for only that reviewed stage after an explicit stage approval. It persists public recovery records before dispatch and requires exact transaction, receipt, fee, and post-state reconciliation before advancing. The collection UI has the same fail-closed dispatch and recovery path, with an additional exact budget-manifest gate. Neither browser path has completed a real VOW transaction.
+## Run it locally
+
+Prerequisites are Node 24.14 or newer within major version 24, npm, Python, Git and curl. The bundled Cairo installer targets macOS Apple Silicon; other platforms must provide the pinned toolchain versions described in [REPRODUCE.md](REPRODUCE.md).
+
+```sh
+npm ci --ignore-scripts
+python3 scripts/install-cairo.py
+npm run app
+```
+
+Open `http://127.0.0.1:4319`.
+
+For the presentation site:
+
+```sh
+npm --prefix web ci
+npm --prefix web run dev
+```
+
+The presentation defaults its functional links to the local product origin. Set `NEXT_PUBLIC_VOW_APP_URL` only when the functional product is hosted elsewhere.
+
+## Tests and release reproduction
+
+| Command | What it checks |
+|---|---|
+| `npm run check` | TypeScript build, Cairo build, generated workbench and SDK/local-page tests |
+| `sh scripts/cairo.sh test` | Cairo contract positives, negatives and cross-language vectors |
+| `npm run evidence:verify` | Claim schema, JSON parsing, references, hashes, pool ABI digest and submission manifest |
+| `npm run verify:vault` | Local class hash, deployed class hash, pool binding and exact ABI allowlist through one RPC provider |
+| `npm --prefix web run check` | Presentation tests, lint, typecheck and static build |
+| `npm run ci:clean` | Release-blocking T-020 against committed files in a temporary clean clone |
+
+The clean-clone gate must be refreshed after the final compatibility and documentation commits. Worktree passes do not replace committed-HEAD evidence, and local passes do not turn an unresolved collection into a release-gate pass.
+
+## Known limitations
+
+- No qualifying destination-bound supplier collection has succeeded on the final VowVault deployment.
+- The live STRK20 wallet, proof and note-credit path remains an unresolved integration dependency.
+- Public hosting, an independent reproduction, the final video and submission links are not yet claimed.
+- Mainnet reads and receipt verification use a single public RPC provider unless an evidence record says otherwise.
+- The contracts and supplier backup implementation have not been audited.
+- Tokens sent directly to the vault outside its funding entrypoint are neither accounted as mandate budget nor recoverable.
+- Positive receipt and trace fixtures are synthetic; the unrelated accepted mainnet receipt is deliberately a negative control.
+
+Release status remains **0 of 5 gates passed** until the requirements recorded in [evidence/claims.json](evidence/claims.json) are met.
+
+## Documentation
+
+- [JUDGES.md](JUDGES.md) — five-minute evaluation path
+- [REPRODUCE.md](REPRODUCE.md) — clean-clone and manual reproduction
+- [COMPATIBILITY.md](COMPATIBILITY.md) — wallet and STRK20 compatibility findings
+- [THREAT_MODEL.md](THREAT_MODEL.md) — assets, adversaries and mitigations
+- [PRIVACY.md](PRIVACY.md) — public/private boundary and secret handling
+- [DECISIONS.md](DECISIONS.md) — protocol design decisions
+- [evidence/claims.json](evidence/claims.json) — machine-readable claim ledger
+- [LICENSE](LICENSE) — MIT license

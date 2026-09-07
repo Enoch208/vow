@@ -1,4 +1,85 @@
 {
-  "transactions": [],
-  "contracts": []
+  "transactions": [
+    {
+      "stage": "create_mandate",
+      "chain": "SN_MAIN",
+      "hash": "0x5d8a17bffcc5c7738a30fda0bd9e58987545108373b167be067949ced269d6f",
+      "block": 14519733,
+      "executionStatus": "SUCCEEDED",
+      "finalityStatus": "ACCEPTED_ON_L2",
+      "actualFeeSTRK": "0.115802867024338304",
+      "emitsVowVaultEvent": true,
+      "evidence": "evidence/mandate-creation-receipt.json",
+      "mandate": "0x1"
+    },
+    {
+      "stage": "fund_mandate",
+      "chain": "SN_MAIN",
+      "hash": "0x78d9e42445cf1d9322f3bb764318c5d0a2db76e1fd4561fc2463e3f7f28cdd8",
+      "block": 14519774,
+      "executionStatus": "SUCCEEDED",
+      "finalityStatus": "ACCEPTED_ON_L2",
+      "actualFeeSTRK": "0.139638189257090080",
+      "emitsVowVaultEvent": true,
+      "evidence": "evidence/mandate-funding-receipt.json",
+      "mandate": "0x1"
+    },
+    {
+      "stage": "reserve",
+      "chain": "SN_MAIN",
+      "hash": "0x3b2d1c010813ae9c7dcaee99419d02a07303b90cd780c7a4878b71eabb703a9",
+      "block": 14519835,
+      "executionStatus": "SUCCEEDED",
+      "finalityStatus": "ACCEPTED_ON_L2",
+      "actualFeeSTRK": "0.215407720195652416",
+      "emitsVowVaultEvent": true,
+      "evidence": "evidence/reservation-receipt.json",
+      "mandate": "0x1"
+    },
+    {
+      "stage": "create_mandate",
+      "mandate": "0x2",
+      "chain": "SN_MAIN",
+      "hash": "0x04970466ac94f319ca7940b1163213abd67a1df4f6e313afe9fcaf927bb31a63",
+      "block": 14523103,
+      "executionStatus": "SUCCEEDED",
+      "finalityStatus": "ACCEPTED_ON_L2",
+      "actualFeeSTRK": "0.114238",
+      "emitsVowVaultEvent": true
+    },
+    {
+      "stage": "approve",
+      "mandate": "0x2",
+      "chain": "SN_MAIN",
+      "hash": "0x0131bc73e486f35e699fb0a2f7d9dbacddf6a2b291719328b42a9ff5185a985f",
+      "block": 14523119,
+      "executionStatus": "SUCCEEDED",
+      "finalityStatus": "ACCEPTED_ON_L2",
+      "actualFeeSTRK": "0.044012",
+      "emitsVowVaultEvent": false
+    },
+    {
+      "stage": "fund_mandate",
+      "mandate": "0x2",
+      "chain": "SN_MAIN",
+      "hash": "0x04649048a77422f8baea1bc6ba2944c535b16f9a0b3e356a98afe4cc13216e45",
+      "block": 14523125,
+      "executionStatus": "SUCCEEDED",
+      "finalityStatus": "ACCEPTED_ON_L2",
+      "actualFeeSTRK": "0.104222",
+      "emitsVowVaultEvent": true
+    }
+  ],
+  "contracts": [
+    {
+      "name": "VowVault",
+      "chain": "SN_MAIN",
+      "address": "0x641ca5237870312273ed2cd693372ee49e103d5c585af6185324f3662e15227",
+      "classHash": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+      "pool": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+      "deploymentOwner": "0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89",
+      "verified": "evidence/vault-deployment-observation.json"
+    }
+  ],
+  "note": "All listed transactions execute VowVault on Starknet mainnet and emit its events (except the ERC-20 approve). None of them touches the STRK20 pool. No supplier collection has occurred, so no qualifying pool transaction exists yet."
 }

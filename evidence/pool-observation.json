@@ -23,7 +23,7 @@
   ],
   "limitations": [
     "Single RPC provider observation.",
-    "No VOW deployment or wallet transaction.",
+    "At this historical pre-deployment block, no VOW deployment or wallet transaction had occurred.",
     "Token compatibility and source-to-class match unverified."
   ]
 }
