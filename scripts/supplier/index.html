@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VOW supplier key</title><link rel="stylesheet" href="/style.css"><script type="module" src="/browser.js"></script></head>
+<body><main>
+<p class="eyebrow">VOW · LOCAL SUPPLIER TOOL</p>
+<h1>Your supplier claim key</h1>
+<p>This separate key authorizes collection from VOW. It is not your Ready wallet recovery phrase or account key.</p>
+<p class="notice">This page makes no network or wallet requests. Keys and passwords stay in this browser tab. Protect your encrypted backup and password; VOW cannot recover them.</p>
+<section><h2>1. Create an encrypted backup</h2>
+<p>Choose a unique password of at least 16 characters. A new claim key is generated only when you click the button. Creating another key does not replace a key already committed on-chain.</p>
+<label for="new-password">New backup password</label>
+<div class="password-field"><input type="password" id="new-password" autocomplete="new-password" minlength="16" maxlength="1024" pattern=".{16,1024}" spellcheck="false" autocapitalize="none" aria-describedby="password-length"><button type="button" class="password-toggle" id="new-password-toggle" aria-label="Show new backup password" aria-controls="new-password" aria-pressed="false" disabled><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="eye-slash" d="m3 3 18 18"/></svg></button></div>
+<p id="password-length" class="password-hint" aria-live="polite" data-state="neutral">0 / 16 characters · Add 16 more.</p>
+<label for="confirm-password">Confirm backup password</label>
+<div class="password-field"><input type="password" id="confirm-password" autocomplete="new-password" minlength="16" maxlength="1024" pattern=".{16,1024}" spellcheck="false" autocapitalize="none" aria-describedby="password-match"><button type="button" class="password-toggle" id="confirm-password-toggle" aria-label="Show confirm backup password" aria-controls="confirm-password" aria-pressed="false" disabled><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="eye-slash" d="m3 3 18 18"/></svg></button></div>
+<p id="password-match" class="password-hint" aria-live="polite" data-state="neutral">Re-enter your password to confirm it.</p>
+<button id="create" type="button" disabled>Create encrypted backup</button>
+<button id="download" type="button" disabled>Download encrypted backup</button>
+<output id="backup-status" aria-live="polite">No key generated. No backup saved.</output>
+</section>
+<section><h2>2. Restore your backup to verify it</h2>
+<p>Choose the backup you downloaded and unlock it. Successful restoration verifies that the file and password work. Share only the public key shown afterward.</p>
+<label for="backup-file">Encrypted backup file</label><input type="file" id="backup-file" accept="application/json,.json">
+<label for="unlock-password">Backup password</label>
+<div class="password-field"><input type="password" id="unlock-password" autocomplete="off" minlength="16" maxlength="1024" pattern=".{16,1024}" spellcheck="false" autocapitalize="none"><button type="button" class="password-toggle" id="unlock-password-toggle" aria-label="Show backup password" aria-controls="unlock-password" aria-pressed="false" disabled><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="eye-slash" d="m3 3 18 18"/></svg></button></div>
+<button id="unlock" type="button">Unlock backup locally</button>
+<label for="public-key">Supplier public key — safe to share</label><textarea id="public-key" rows="3" readonly spellcheck="false" placeholder="Shown after you restore your backup"></textarea>
+<output id="status" aria-live="polite">Key locked.</output>
+</section>
+<section><h2>3. Review and sign an exact collection</h2>
+<p>Paste the public claim review from the collection page. Compare the vault, token, base-unit amount and deadline with the funded reservation. This offline tool checks the digest and bound key; it cannot check chain state or decrypt note ownership.</p>
+<label for="claim">Public claim review (JSON)</label><textarea id="claim" rows="6" spellcheck="false" autocomplete="off"></textarea>
+<button id="review" type="button" disabled>Review claim</button>
+<pre id="claim-summary">No claim reviewed.</pre>
+<label><input id="confirm-claim" type="checkbox" disabled> I checked these exact terms against the funded reservation.</label>
+<button id="sign" type="button" disabled>Sign this exact claim locally</button>
+<pre id="signature">No signature created.</pre>
+<p>Copy the public r/s signature back to the collection page. Signing here does not submit a transaction.</p>
+</section>
+<button id="lock" type="button">Lock and clear this session</button>
+<p class="note">The tool locks after five minutes without interaction and when the page closes. Clearing references cannot guarantee erasure from physical memory. Encryption cannot protect a compromised active browser. Never share the backup password or a wallet recovery phrase.</p>
+</main></body></html>

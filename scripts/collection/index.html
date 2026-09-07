@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOW collection review</title>
+  <link rel="stylesheet" href="/collection/style.css">
+  <script type="module" src="/collection/browser.js"></script>
+</head>
+<body>
+<main>
+  <a href="/">← Wallet diagnostic</a>
+  <p class="eyebrow">VOW · COLLECTION EXPERIMENT</p>
+  <h1>Review a supplier collection</h1>
+  <p class="intro">Verify the funded contract, bind the supplier signature to one note, and review the wallet’s final preparation.</p>
+  <p class="notice">Preparation sends no transaction. Submission requires a separate exact review, an approved budget and your explicit action. A prepared call is not a confirmed payment.</p>
+  <section aria-labelledby="configuration-title">
+    <h2 id="configuration-title">1. Load reviewed public terms</h2>
+    <p>No deployment is configured. Paste the reviewed deployment manifest after the probe is deployed and funded. Use token amounts in their smallest unit.</p>
+    <p>Public contract reads go to api.cartridge.gg. Wallet proof preparation and submission may use the wallet’s services. The page stores only public recovery identifiers when submission starts; configuration, proofs and signatures stay out of storage.</p>
+    <label for="configuration">Public deployment manifest (JSON)</label>
+    <textarea id="configuration" rows="7" spellcheck="false" autocomplete="off" placeholder="Public contract addresses, amount, deadlines and supplier public key only"></textarea>
+    <p class="note">Never paste a private key or recovery phrase. Unknown manifest fields are rejected.</p>
+    <button id="load" type="button">Validate public terms</button>
+    <output id="configuration-status" aria-live="polite">No public terms loaded.</output>
+    <details><summary>Required manifest fields</summary><p>Every value must be a decimal or hexadecimal string.</p><pre>chainId, vaultAddress, probeClassHash, poolAddress, token,
+supplierKey, amount, claimBefore, recipient, signatureDeadline,
+feeToken, feeCollector, maximumFee</pre><p id="build"></p></details>
+    <pre id="terms">No contract has been read.</pre>
+  </section>
+  <section aria-labelledby="wallet-title">
+    <h2 id="wallet-title">2. Prepare the destination</h2>
+    <label for="wallet">Supplier wallet</label><select id="wallet" disabled></select>
+    <div class="actions"><button id="scan" type="button">Scan for wallets</button><button id="prepare" type="button" disabled>Check contract &amp; prepare note</button></div>
+    <p>Preparation may ask for wallet permission or require STRK20 registration. The first request skips proof generation. The supplier wallet controls note ownership; the page can verify the note identifier, not decrypt its owner.</p>
+    <output id="status" aria-live="polite">No collection preparation has run.</output>
+    <pre id="review">No supplier signature requested.</pre>
+  </section>
+  <p><a href="http://127.0.0.1:4318" target="_blank" rel="noopener noreferrer">Open the separate local supplier key tool ↗</a></p>
+  <section aria-labelledby="signature-title">
+    <h2 id="signature-title">3. Verify the supplier signature</h2>
+    <p>Use the separate local supplier key tool to sign the exact claim shown above. Enter only the resulting public signature here. A wallet account signature is not a substitute for the bound supplier claim signature.</p>
+    <label for="signature-r">Signature r</label><input id="signature-r" autocomplete="off" spellcheck="false" disabled>
+    <label for="signature-s">Signature s</label><input id="signature-s" autocomplete="off" spellcheck="false" disabled>
+    <button id="prove" type="button" disabled>Verify signature &amp; prepare proof</button>
+    <p>Proof preparation can take several minutes and may reveal information to the wallet’s prover. If the note changes, this attempt is discarded. No transaction is sent.</p>
+  </section>
+  <section aria-labelledby="submission-title">
+    <h2 id="submission-title">4. Review an exact submission</h2>
+    <p>After proof preparation, enter the maximum network fee you will accept. This limit is recorded in your review, but the wallet API cannot enforce it: reject the wallet confirmation if its fee exceeds your limit.</p>
+    <label for="network-fee-cap">Maximum network fee (STRK)</label><input id="network-fee-cap" inputmode="decimal" autocomplete="off" spellcheck="false" disabled>
+    <button id="review-submission" type="button" disabled>Review exact submission</button>
+    <pre id="submission-review">No submission reviewed.</pre>
+    <output id="submission-budget-status" aria-live="polite">Total budget: UNVERIFIED. Submission is disabled until an approved local budget is validated.</output>
+    <button id="refresh-collection-budget" type="button" disabled>Load approved budget</button>
+    <p class="note">The local budget must match this exact review and include every test cost plus a recent STRK/USD quote. A missing, stale or mismatched budget keeps submission disabled.</p>
+    <label><input id="approve-submission" type="checkbox" disabled> I reviewed this exact note, recipient, token, amount and fees, and will reject a wallet network fee above my reviewed limit.</label>
+    <button id="submit-collection" type="button" disabled>Submit reviewed collection through wallet</button>
+    <output id="submission-status" aria-live="polite">Prepare a proof before reviewing a submission.</output>
+    <pre id="submission-result">No transaction submitted by this review.</pre>
+    <p class="note">A submitted hash is not confirmation. Refusal, timeout or an unknown result never enables an automatic retry; use recovery below.</p>
+  </section>
+  <button id="clear" type="button">Discard this preparation</button>
+  <section aria-labelledby="recovery-title">
+    <h2 id="recovery-title">5. Check an existing collection</h2>
+    <p>Use the public transaction hash from your wallet and the exact signed note ID. This reads public receipts from Cartridge; it does not submit a transaction or request a wallet signature.</p>
+    <button id="read-recovery" type="button" disabled>Read saved attempt</button>
+    <p class="note">Saved recovery records contain public note and transaction identifiers only. A saved status is not confirmation. Do not clear browser storage to retry an unresolved payment.</p>
+    <label for="transaction-hash">Public transaction hash</label><input id="transaction-hash" autocomplete="off" spellcheck="false" disabled>
+    <label for="receipt-note">Signed note ID</label><input id="receipt-note" autocomplete="off" spellcheck="false" disabled>
+    <button id="verify-receipt" type="button" disabled>Check public receipt</button>
+    <output id="recovery-status" aria-live="polite">Validate public terms before checking a receipt.</output>
+    <pre id="receipt-report">No receipt checked.</pre>
+  </section>
+  <p class="note">Amounts and settlement timing are public. Local checks do not establish mainnet collection or independently verify a zero-knowledge proof.</p>
+</main>
+</body>
+</html>

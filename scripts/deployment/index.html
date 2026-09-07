@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VOW deployment review</title><link rel="stylesheet" href="/collection/style.css"><script type="module" src="/deployment/browser.js"></script></head>
+<body><main>
+<p class="eyebrow">VOW · DEPLOYMENT PREPARATION</p>
+<h1>Review the exact deployment</h1>
+<p>Paste the public deployment terms to calculate the probe address and review its immutable terms against this compiled build.</p>
+<p class="notice">Review first. The execution section below connects your wallet and requests a transaction only when you explicitly approve the reviewed stage. A predicted address does not prove deployment or funding. Total test cost remains unverified.</p>
+<button id="load-deployment-draft" type="button">Load local draft</button>
+<p class="note">Loads the prepared public draft from this local server. You can also paste public terms below.</p>
+<label for="deployment-terms">Public deployment terms (JSON)</label>
+<textarea id="deployment-terms" rows="8" spellcheck="false" autocomplete="off" placeholder="Paste the public terms JSON provided for review"></textarea>
+<button id="review-deployment" type="button">Review deployment terms</button>
+<button id="clear-deployment" type="button">Clear review</button>
+<output id="deployment-status" aria-live="polite">No deployment terms reviewed.</output>
+<section><h2>Immutable terms</h2><pre id="deployment-summary">No deployment reviewed.</pre></section>
+<section><h2>Remaining transaction stages</h2>
+<ol><li>Declare the compiled probe class if it is not already declared.</li><li>Deploy the probe with the exact constructor below.</li><li>Approve only the exact principal and fund the probe in one transaction.</li></ol>
+<p>These are preparation steps, not completed transactions. A current chain check, wallet fee review and spending approval are required before proceeding. Account activation and privacy registration are checked separately.</p>
+<details><summary>Exact deployment and funding calls</summary><pre id="deployment-calls">No calls prepared.</pre></details></section>
+<section><h2>Execute one reviewed stage</h2>
+<p>Each stage needs a fresh chain check and a separate confirmation in Ready. Wallet network fees are not capped by this page. Reject the transaction if the network fee shown in Ready exceeds the stage ceiling below. Also keep the combined test spending within your remaining budget.</p>
+<label for="deployment-wallet">Detected wallet</label><select id="deployment-wallet" disabled></select>
+<button id="scan-deployment-wallet" type="button">Scan for wallets</button><button id="prepare-deployment-stage" type="button" disabled>Connect and check next stage</button>
+<pre id="deployment-stage-review">No transaction stage reviewed.</pre>
+<label><input type="checkbox" id="approve-deployment-stage" disabled>I approve this exact stage and its stated fee ceiling. I will reject Ready’s request if its network fee exceeds that ceiling.</label>
+<button id="execute-deployment-stage" type="button" disabled>Request reviewed stage in Ready</button>
+<output id="deployment-execution-status" aria-live="polite">No transaction requested.</output>
+<label for="deployment-recovery-hash">Transaction hash from Ready, only if an earlier result was missing</label><input id="deployment-recovery-hash" placeholder="0x…" autocomplete="off" spellcheck="false">
+<button id="reconcile-deployment-stage" type="button" disabled>Reconcile saved attempt</button>
+<pre id="deployment-attempt">No saved attempt loaded.</pre>
+<p class="note">Public stage, nonce, review digest and transaction hash are saved in this browser before dispatch and after its response. Pending, missing or rejected responses block retry until reconciliation. Do not clear browser storage or use another origin to bypass this safeguard. No private keys are requested.</p></section>
+<section><h2>Collection configuration</h2>
+<p>After deployment and funding have been verified, paste this configuration into <a href="/collection">collection review</a>. Opening that page does not deploy or fund the probe.</p>
+<label for="deployment-configuration">Public configuration — safe to share</label><textarea id="deployment-configuration" rows="7" readonly spellcheck="false"></textarea>
+<button id="copy-configuration" type="button" disabled>Copy configuration</button>
+<button id="download-configuration" type="button" disabled>Download configuration</button>
+<output id="deployment-export-status" aria-live="polite">No configuration prepared.</output></section>
+<p class="note">Inputs remain on this page and clear when it closes. Public deployment recovery records remain in browser storage. Draft and build reads use this local server; chain checks use Cartridge RPC. No supplier keys or backups are accessed. Paste only public deployment terms; never paste passwords, private keys or recovery phrases.</p>
+</main></body></html>

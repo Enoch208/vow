@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOW wallet diagnostic</title>
+  <link rel="stylesheet" href="/diagnostic.css">
+  <script type="importmap">{"imports":{"@wallet-standard/app":"/vendor/wallets.js"}}</script>
+  <script type="module" src="/scripts/diagnostic/browser.js"></script>
+</head>
+<body>
+  <main>
+    <p class="label">LOCAL COMPATIBILITY CHECK</p>
+    <h1>VOW wallet diagnostic</h1>
+    <p><a href="/collection">Open collection review →</a></p>
+    <p>Read the API versions advertised by your wallet. This does not prove that private collection works.</p>
+    <p>No account list, signing key, signature, or transaction is requested. Results stay on this page. The probe requests no token balances.</p>
+    <label for="wallet">Detected wallet</label>
+    <select id="wallet" disabled></select>
+    <div class="actions">
+      <button id="rescan" type="button">Scan for wallets</button>
+      <button id="run" type="button" disabled>Run read-only check</button>
+    </div>
+    <output id="status" aria-live="polite">Loading the local diagnostic…</output>
+    <pre id="result">No capability check has run.</pre>
+    <p class="note">Use the browser where Ready is installed. You can share the text result when you return. Keep recovery phrases and private keys out of this page and chat.</p>
+  </main>
+</body>
+</html>

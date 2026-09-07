@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VOW account activation details</title><link rel="stylesheet" href="/collection/style.css"><script type="module" src="/activation/browser.js"></script></head>
+<body><main>
+<p class="eyebrow">VOW · DEPLOYMENT PREPARATION</p>
+<h1>Account activation details</h1>
+<p>Read the public details needed to estimate activation for your undeployed wallet account.</p>
+<p class="notice">This button asks Ready to connect its selected public account, then reads deployment data and checks that it derives your expected address. Approve the site connection if prompted. It does not activate the account, sign, submit a transaction or request balances. The page makes no RPC requests. Results stay on this page.</p>
+<label for="owner">Expected public wallet address</label><input id="owner" spellcheck="false" autocomplete="off" placeholder="0x…">
+<label for="wallet">Detected wallet</label><select id="wallet" disabled></select>
+<button id="scan" type="button">Scan for wallets</button><button id="read" type="button" disabled>Connect and read activation details</button>
+<output id="status" aria-live="polite">No activation details requested.</output>
+<pre id="result">No account data loaded.</pre>
+<p class="note">Use the browser where Ready is installed. If it refuses, its Advanced settings → Deployment data screen may provide these public details. Never share recovery phrases or private keys. This page excludes optional signature data from its result.</p>
+<p><a href="/collection">Return to collection review</a></p>
+</main></body></html>
