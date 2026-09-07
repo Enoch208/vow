@@ -1,0 +1,61 @@
+{
+  "observedAt": "2026-09-07T19:08:06Z",
+  "sourceCommit": "2a7b7a5451601a925f38bffb191e84e949f90fbb",
+  "scope": "T-020 clean-clone release gate",
+  "environment": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "node": "v24.14.1",
+    "npm": "11.11.0",
+    "python": "3.14.4"
+  },
+  "dependencyInstall": {
+    "packagesAdded": 56,
+    "packagesAudited": 57,
+    "vulnerabilitiesReported": 0
+  },
+  "toolchain": {
+    "archiveCacheUsed": true,
+    "scarb": "2.17.0",
+    "starknetFoundry": "0.63.0",
+    "universalSierraCompiler": "2.10.0",
+    "checksumsVerified": true
+  },
+  "contractBuild": {
+    "passed": true,
+    "reportedSeconds": 18
+  },
+  "cairoTests": {
+    "passed": 38,
+    "failed": 0,
+    "ignored": 0,
+    "filteredOut": 0
+  },
+  "sdkTests": {
+    "passed": 267,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMilliseconds": 9140.295
+  },
+  "evidenceVerification": {
+    "claims": 20,
+    "jsonFiles": 38,
+    "claimReferences": 118,
+    "recordedSourceHashes": 235
+  },
+  "elapsedSeconds": 43.44,
+  "result": "passed",
+  "limitations": [
+    "The clean source checkout was cloned locally from the recorded commit.",
+    "The run used an external cache of official tool archives; the installer verified every pinned SHA-256 digest before extraction.",
+    "This was not a fresh-machine or independent reproduction.",
+    "Contract and SDK tests use local or synthetic dependencies and do not establish a VOW mainnet collection."
+  ],
+  "sourceSha256": {
+    "scripts/clean-clone-ci.sh": "f1d79f0438ed80c0822d39b4d7b0573d11647c8625639515569c4a5da09a8b99",
+    "scripts/verify-evidence.mjs": "df684116e660b40f287070dd6853bcfadd93242905c2b2ae2b2ad8cf32773ea4",
+    "package.json": "6b594b5ae81c4b5372e426ee684d806289d95bb385f4bca3d5179890afe35485"
+  }
+}

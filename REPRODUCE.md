@@ -1,19 +1,47 @@
 # Reproduce the collection experiment
 
-Use Node 24.14 or later in the Node 24 series, npm, Python 3.12 or later, and curl. The supplied Cairo bootstrap is for macOS Apple Silicon. Other platforms need the same official Scarb 2.17.0, snforge 0.63.0, and universal-sierra-compiler 2.10.0 versions on PATH.
+Use Node 24.14 or later in the Node 24 series, npm, Python 3.12 or later, Git, and curl. The supplied Cairo bootstrap is for macOS Apple Silicon. Other platforms need the same official Scarb 2.17.0, snforge 0.63.0, and universal-sierra-compiler 2.10.0 versions on PATH.
+
+## Clean-clone release gate
+
+Run T-020 from any checkout with a committed `HEAD`:
+
+```sh
+npm run ci:clean
+```
+
+The gate creates a temporary local clone containing committed files only. Inside that clone it runs, in order, `npm ci --ignore-scripts`, the checksum-pinned Cairo bootstrap, `npm run build:workbench`, `sh scripts/cairo.sh test`, `npm test`, and `npm run evidence:verify`. The temporary clone is removed on exit.
+
+CI may provide previously downloaded official archives without weakening checksum enforcement:
+
+```sh
+VOW_CAIRO_ARCHIVE_CACHE=/path/to/cache npm run ci:clean
+```
+
+The cache directory must contain `scarb.tar.gz`, `foundry.tar.gz`, and `usc.tar.gz`. The bootstrap checks the pinned SHA-256 digest of each archive before extraction. Without this variable, it downloads the same pinned releases.
+
+The recorded macOS Apple Silicon run used the archive cache and completed in 43.44 seconds. It installed 56 packages, audited 57 packages with 0 vulnerabilities reported, built the Cairo target in 18 seconds, passed 38 Cairo tests and 267 SDK tests, and verified 20 claims across 38 JSON files. See [clean-clone evidence](evidence/clean-clone-checks.json). This remains a local, cache-assisted reproduction rather than a fresh-machine or independent result.
+
+## Manual worktree checks
 
 ```sh
 npm ci --ignore-scripts
 python3 scripts/install-cairo.py
 npm run build:workbench
-npm run check
 sh scripts/cairo.sh test
+npm test
+npm run evidence:verify
+```
+
+Run the probe mutation checks separately:
+
+```sh
 python3 scripts/mutate-collection.py
 ```
 
-The bootstrap verifies pinned SHA-256 digests before extracting into the ignored `.tools` directory. It does not modify the global toolchain. The wrapper uses a project-local Scarb cache. Mutation checks run in temporary copies and never modify the working contract. A compiler failure does not count as a detected mutation.
+The bootstrap does not modify the global toolchain. The wrapper uses a project-local Scarb cache. Mutation checks run in temporary copies and never modify the working contract. A compiler failure does not count as a detected mutation.
 
-`npm run check` checks types, emits JavaScript under ignored `dist`, and runs the TypeScript tests. Cairo tests deploy a synthetic token and pool locally; they do not submit transactions. The shared claim digest/signature vector checks agreement across TypeScript and Cairo, not the unimplemented permission hash.
+`npm run build:workbench` checks types, compiles both Cairo contracts, and emits ignored local browser artifacts. `npm test` runs the TypeScript SDK and local-page tests. Cairo tests deploy a synthetic token and pool locally; they do not submit transactions. `npm run evidence:verify` parses every public evidence JSON file, validates the claims ledger and tracked references, checks recorded hash syntax and source presence, verifies the pool ABI digest, and validates the submission manifest schema.
 
 To refresh the public, read-only pool observation:
 
@@ -34,8 +62,6 @@ Open `http://127.0.0.1:4317` in the browser where Ready is installed. Select the
 The diagnostic binds only to loopback, accepts GET/HEAD requests, serves a fixed file allowlist, rejects unexpected Host headers, and has no result-upload endpoint or telemetry. HTTP tests need permission to bind loopback sockets; restricted execution environments may need to allow that explicitly.
 
 The user supplied a successful Ready X 5.33.9 version-query result advertising 0.10.3 and 0.7.2. This does not establish collection support. A browser check passed the initial and rescan states, confirming the notices and unchanged “No capability check has run” result. No wallet request was sent during that check. The prepared-call decoder has synthetic tests against the recorded live ABI, not a captured Ready preparation. Neither function establishes proving or transaction submission support. Results and source fingerprints for this slice are in `evidence/diagnostic-checks.json`.
-
-A source-only temporary-directory reproduction passed fresh offline `npm ci`, TypeScript checks/tests, Cairo compilation, and Cairo tests using the pinned installed toolchain and download caches. This is not a fresh-machine installation or a published clean-clone release. The observed outcomes and source fingerprints are in `evidence/local-checks.json` and `evidence/claims.json`.
 
 ## Collection review workbench
 

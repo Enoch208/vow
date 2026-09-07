@@ -389,6 +389,23 @@
         "Write reconciliation accepts an accepted, non-reverted receipt in a block that still contains the transaction plus a vault-emitted event of the expected name; it does not verify the internal call path.",
         "Accessibility is asserted statically over the shipped HTML and CSS, including measured contrast ratios. No assistive-technology pass was performed."
       ]
+    },
+    {
+      "id": "CLEAN-CLONE-CI",
+      "claim": "The committed T-020 gate reproduces the contract build, Cairo tests, SDK tests and public evidence verification from a clean source clone.",
+      "tier": "local-contract-test",
+      "sourceCommit": "2a7b7a5451601a925f38bffb191e84e949f90fbb",
+      "evidence": [
+        "scripts/clean-clone-ci.sh",
+        "scripts/verify-evidence.mjs",
+        "evidence/clean-clone-checks.json"
+      ],
+      "reproduce": "npm run ci:clean",
+      "limitations": [
+        "The recorded clean source checkout was cloned locally and used checksum-verified cached tool archives.",
+        "This is not a fresh-machine or independently reproduced result.",
+        "Passing local and synthetic tests does not establish a deployed VOW contract or mainnet supplier collection."
+      ]
     }
   ]
 }
