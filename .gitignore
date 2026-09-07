@@ -11,3 +11,4 @@ coverage/
 .cache/
 .snfoundry_cache/
 .DS_Store
+video/
