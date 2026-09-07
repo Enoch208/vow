@@ -1,0 +1,41 @@
+{
+  "observedAt": "2026-09-07T17:25:11Z",
+  "scope": "Local guarded deployment execution and exact collection-budget gating",
+  "checks": {
+    "typescriptHttpTestsPassed": 165,
+    "cairoTestsPassed": 18,
+    "deploymentExecutionTestsPassed": 8,
+    "collectionBudgetTestsPassed": 20,
+    "loopbackRoutes": {
+      "/deployment": 200,
+      "/deployment/contract.json": 200,
+      "/deployment/budget.json": 200,
+      "/collection/budget.json": 404
+    }
+  },
+  "deploymentFeeCeilingsSTRKBaseUnits": {
+    "declare": "20000000000000000000",
+    "deploy": "250000000000000000",
+    "fund": "200000000000000000"
+  },
+  "collectionBudget": {
+    "maximumUSDCents": "500",
+    "approvedManifestShipped": false,
+    "quoteMaximumAgeSeconds": 300
+  },
+  "limitations": [
+    "Synthetic wallets, storage and receipts; Ready has not executed a VOW transaction through these paths.",
+    "Ready must enforce the reviewed network fee manually because its wallet API has no fee-cap field.",
+    "No approved collection budget manifest exists, so the collection write remains disabled.",
+    "Clearing browser storage or changing origins bypasses the local retry guard."
+  ],
+  "sha256": {
+    "packages/vow-sdk/src/deployment-execution-state.ts": "b7feb5b84fcdf541d519684b04d73f9f6c14fa45ff90bcdecb661fef98a25bbb",
+    "packages/vow-sdk/src/deployment-execution.ts": "155ee694c6da4c2066571c320dcbfe47612222d8adce10e124346d651dabd6fd",
+    "packages/vow-sdk/src/collection-budget.ts": "f9cab8db233026a31216f82d9c10b1564d55b2a84900449aaf4ffce386994152",
+    "scripts/deployment/execution.ts": "77eadb29824699c9860e969563de3f471d16cdac92b44ac5d783b00b92714bfd",
+    "scripts/collection/budget.ts": "ce5089a7298941df5ea93c4f31479aa46e1360ef9b988c414716d03f6f7999db",
+    "packages/vow-sdk/test/deployment-execution.test.ts": "631e3501bef2104185caa08246d158695c93619ed9d189aceb35093f6ff8b5b6",
+    "packages/vow-sdk/test/collection-budget.test.ts": "e9652f46253812b4958066274cd0a1e95251d2f0c31e5b18f7d9516bc64464f7"
+  }
+}

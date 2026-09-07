@@ -1,0 +1,46 @@
+{
+  "observedAt": "2026-09-07T01:05:15.623914+00:00",
+  "sourceCommit": null,
+  "typescriptAndHttpTestsPassed": 22,
+  "freshSourceCopy": true,
+  "dependencyInstall": "npm ci --offline --ignore-scripts using the populated npm cache",
+  "loopbackAccessRequired": true,
+  "browserInteraction": {
+    "observedAt": "2026-09-07T01:09:06.327322+00:00",
+    "status": "passed",
+    "durationSeconds": 50,
+    "completedSteps": 7,
+    "scope": "Initial page and wallet rescan only; no wallet request, connection, unlocking, or account access.",
+    "result": "No capability check has run."
+  },
+  "liveReadyRequest": "not performed",
+  "limitations": [
+    "No wallet capabilities or mainnet collection proven.",
+    "Fresh source-copy checks reused download caches."
+  ],
+  "sha256": {
+    "package-lock.json": "502744c6506c9938d1138b322699ba383b5ecec0354c7e8827ec3496439f5f5a",
+    "package.json": "e31f1d918f8728c162bb84fa26fe0cbb8ee9f8e35e66ee290a718e5ebb79cdb5",
+    "packages/vow-sdk/src/claims.ts": "2f573234b10b23ce2b4d21a822f0c1e6b9a08601b113214dfbf28afbe149d122",
+    "packages/vow-sdk/src/index.ts": "061457f5d12d879670bb211466218a466fb15e9aa125c8beba8d74cbda1de293",
+    "packages/vow-sdk/src/integers.ts": "75d8e7fc97f73bc2019f0a6ba2d0bd569d609c01d65d653b2ca7d8309f0be429",
+    "packages/vow-sdk/src/pool-calldata.ts": "8d2c801be6b6920c35ac093532495c7175c83ccd09819a5889256217c0d33eec",
+    "packages/vow-sdk/src/prepared-claim.ts": "a2723a6f088fee56d54b686f663bd67ceac0100bec95fe9c7634cde4e7269bc5",
+    "packages/vow-sdk/src/wallet-discovery.ts": "df72c189d97e9de1fbc650ec70451963162b5d588ef92ac8492e17f6a3b9f226",
+    "packages/vow-sdk/src/wallet.ts": "059b183044d3af4983e6326a3f7da8636f346cdb218d359f6609e4f9bd5de945",
+    "packages/vow-sdk/test/claims.test.ts": "e77cd55a2753f5ae7be298cb56f2a16d9ceb76d470e84842d00615a4b540c95e",
+    "packages/vow-sdk/test/diagnostic-server.test.ts": "69edd19634fd07eff2a926fd50dd5799324df6e8531faab471fd973eb06e9970",
+    "packages/vow-sdk/test/integers.test.ts": "cadba5bbbb2794806087f9617c3bf6d5a112015a1c4648cbe380e041124d56c6",
+    "packages/vow-sdk/test/pool-abi.test.ts": "ad67ae44150991f44220fb12cda65264e834016cb53912ef013844fd83d73ad4",
+    "packages/vow-sdk/test/prepared-claim.test.ts": "1777943ed3c5c998d93935294eafb8f3d1a3b509af0b92201d699bd3a0dba975",
+    "packages/vow-sdk/test/wallet-discovery.test.ts": "aa6e8420be4ea051c73d87d1027cb77fa760dd2e829f730f9894d893b0aa271a",
+    "packages/vow-sdk/test/wallet.test.ts": "eb861eed4ebc5f27dd700eee75a2f34c05fd9c61c94f0a43479f4ed288041187",
+    "scripts/diagnostic/browser.ts": "c9da256d5e2cb0fc6ef107782fcb848d1b52ab65cc4fc83d7ab38e15929daa7d",
+    "scripts/diagnostic/diagnostic.css": "478c442cbdb5cb956de0c35b16751721ded379900132ddece627d8031cd4c8aa",
+    "scripts/diagnostic/index.html": "4c257c12dc3fd5882c3a4ac23d05333acd48facab9ad2b784c5df12cfaff4798",
+    "scripts/diagnostic/server.ts": "ce414a1f615860e2add2424a15664f6f509bf827a716dd2c6dd46b70aea1d64c",
+    "scripts/inspect-pool.ts": "5d04e611c4b30f502b8a782cd9bd4d23be9c98d8796cc8b82f77a2dde90345fb",
+    "scripts/serve-diagnostic.ts": "5cb782941afa1c06e7aa8ef377976426cb36419e67e7d9231c19b728b05a3154",
+    "tsconfig.json": "e6b664f1cf6b9d08d8b4eb98fcd31343806944786a584952deabe9f5cacd9f84"
+  }
+}

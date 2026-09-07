@@ -1,0 +1,28 @@
+{
+  "observedAt": "2026-09-07T13:34:41.035Z",
+  "scope": "Unsigned fee preparation and public registration observation",
+  "checks": {
+    "fullTypeScriptAndHttpSuitePassed": 115,
+    "recordedFourStageRequestReproducedExactly": true,
+    "requestSha256Verified": true,
+    "integerResourceTotalsVerified": true,
+    "cairoContractChanged": false,
+    "realBrowserRun": false
+  },
+  "files": {
+    "packages/vow-sdk/src/deployment-fee-query.ts": "d4acd602cb0dbbeb651459ce7a191b53d8cf0260c897a1eaa201a55a8e0dd9ed",
+    "packages/vow-sdk/src/deployment-readiness.ts": "d8448229df85a0e3395c89675110d7138e05182114b4dfde9937a2b8aaa0b8b3",
+    "scripts/preview-fees.ts": "d09bbf656b614f361bb5ee46c306ce91d6c7f65673a9f0f8f8d779cf9ceaeb9f",
+    "packages/vow-sdk/test/deployment-fee-query.test.ts": "700c67426242e20cb1a1fffe0f1759e131d997d093a53f5a293930739f4710fb",
+    "packages/vow-sdk/test/deployment-readiness.test.ts": "8cd69163daee3897846aff24b6762a1b3a341b4d5fadd8db4e6841b74eba94d3"
+  },
+  "evidence": [
+    "evidence/submission-fee-observation.json",
+    "evidence/recipient-registration-observation.json"
+  ],
+  "limitations": [
+    "Signature validation skipped; no final fee caps or full budget approval.",
+    "Public key absence observed at one block from one provider.",
+    "No wallet registration, activation, deployment, funding or VOW collection executed."
+  ]
+}

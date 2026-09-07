@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 1,
+  "claims": [
+    {
+      "id": "G0",
+      "claim": "A supplier can collect into its exact signed STRK20 note through VOW.",
+      "tier": "proposed",
+      "sourceCommit": null,
+      "evidence": [],
+      "limitations": [
+        "Ready advertises Wallet API 0.10.3 in user-supplied diagnostic output; no collection preparation or mainnet claim has been verified."
+      ]
+    },
+    {
+      "id": "REGISTERED-OWNER-SETUP",
+      "claim": "The selected owner account was activated and its public privacy key was registered by accepted mainnet transactions.",
+      "tier": "mainnet-executed",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/owner-activation-receipt.json",
+        "evidence/registration-receipt-observation.json",
+        "evidence/registered-deployment-readiness.json"
+      ],
+      "limitations": [
+        "Single-provider receipt and state observations.",
+        "The 6.1 STRK owner setup transfer is not classified entirely as fees; the separate 2.885883499721302016 STRK receipt fee was relayer-paid.",
+        "No private balance, note ownership, VOW deployment, or supplier collection was verified."
+      ]
+    },
+    {
+      "id": "VAULT-PROTOCOL",
+      "claim": "VowVault enforces committed permission membership, operator-authorized bounded reservations, single-use permissions, budget accounting, revocation, owner recovery and pool-only destination-bound collection in local contract tests.",
+      "tier": "local-contract-test",
+      "sourceCommit": null,
+      "evidence": [
+        "contracts/src/vault.cairo",
+        "contracts/src/permissions.cairo",
+        "contracts/src/reserve.cairo",
+        "contracts/src/records.cairo",
+        "contracts/tests/test_vault.cairo",
+        "contracts/tests/test_vault_guards.cairo",
+        "packages/vow-sdk/test/permissions.test.ts",
+        "packages/vow-sdk/test/reserve.test.ts",
+        "evidence/vault-protocol-checks.json"
+      ],
+      "reproduce": "npm run check && sh scripts/cairo.sh test",
+      "limitations": [
+        "Synthetic local token and pool contracts; no deployed STRK20 pool was involved.",
+        "VowVault has never been declared, deployed, funded or executed on any network.",
+        "Cross-language permission and reserve vectors are asserted in both languages; the tree is fixed at 16 padded slots.",
+        "No audit, no exhaustive mutation sweep over the new guards, no gas or griefing analysis.",
+        "Client SDK, product screens and verifier do not yet drive this contract."
+      ]
+    },
+    {
+      "id": "VAULT-DEPLOYMENT-READINESS",
+      "claim": "The VowVault declaration and deployment were priced against live mainnet state at a pinned block, and the transaction the wallet receives is bound to the same class hash that was priced.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/vault-deployment-fee-observation.json",
+        "packages/vow-sdk/src/vault-deployment.ts",
+        "packages/vow-sdk/src/vault-execution.ts",
+        "packages/vow-sdk/test/vault-deployment.test.ts",
+        "packages/vow-sdk/test/vault-execution.test.ts",
+        "packages/vow-sdk/test/vault-fee-query.test.ts"
+      ],
+      "reproduce": "npm run check",
+      "limitations": [
+        "VowVault is NOT declared and NOT deployed. No VOW transaction has been signed or submitted on any network.",
+        "The 25.772741664327476485 STRK figure is a single-provider unsigned estimate with signature validation skipped, not an execution price.",
+        "It covers class declaration and vault deployment only. Mandate creation, funding, reservation and supplier collection are not estimated.",
+        "An earlier build shipped a re-serialized ABI whose payload hashed to a different class hash than the one estimated. The wallet review surfaced it before any transaction was signed; the build now recomputes the hash from the shipped bytes and fails on drift, and a regression test covers it.",
+        "Wallet-side declaration of this class has not succeeded; the fee never rendered in the tested wallet build."
+      ]
+    },
+    {
+      "id": "PROBE-COLLECTION",
+      "claim": "The local CollectionProbe enforces supplier-bound collection and rolls back a failed pool pull in the tested token/pool harness.",
+      "tier": "local-contract-test",
+      "sourceCommit": null,
+      "evidence": [
+        "contracts/tests/test_collection.cairo",
+        "contracts/tests/test_guards.cairo",
+        "evidence/local-checks.json",
+        "evidence/collection-mutations.json"
+      ],
+      "reproduce": "sh scripts/cairo.sh test",
+      "limitations": [
+        "Single-reservation experiment, not VowVault.",
+        "Token and pool are synthetic local test contracts.",
+        "No deployed or audited safety claim."
+      ]
+    },
+    {
+      "id": "CLAIM-INTEROP",
+      "claim": "The fixed TypeScript claim hash and supplier signature are accepted by the Cairo test vector.",
+      "tier": "local-contract-test",
+      "sourceCommit": null,
+      "evidence": [
+        "contracts/tests/test_vectors.cairo",
+        "packages/vow-sdk/test/claims.test.ts"
+      ],
+      "reproduce": "npm run check && sh scripts/cairo.sh test",
+      "limitations": [
+        "Claim vector only; permission hashing is not implemented."
+      ]
+    },
+    {
+      "id": "WALLET-COLLECTION",
+      "claim": "Ready X 5.33.9 supports VOW destination-bound collection.",
+      "tier": "proposed",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/diagnostic-checks.json",
+        "packages/vow-sdk/test/wallet-discovery.test.ts",
+        "packages/vow-sdk/test/diagnostic-server.test.ts",
+        "evidence/wallet-api-observation.json"
+      ],
+      "limitations": [
+        "Wallet version screenshot is not capability evidence.",
+        "Prepared decoder tests use synthetic calldata against the recorded live ABI.",
+        "The local diagnostic adapter and HTTP server have tests; actual Ready integration is not verified."
+      ]
+    },
+    {
+      "id": "COLLECTION-PREPARATION",
+      "claim": "The local controller validates expected public contract terms and exact supplier-signed note across two wallet preparation phases, discarding changed or stale results.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/collection-workbench-checks.json",
+        "packages/vow-sdk/test/collection-session.test.ts",
+        "packages/vow-sdk/test/probe-reader.test.ts",
+        "packages/vow-sdk/test/probe-snapshot.test.ts",
+        "evidence/supplier-tool-checks.json",
+        "packages/vow-sdk/test/supplier-collection-flow.test.ts"
+      ],
+      "limitations": [
+        "Synthetic wallet and proof responses.",
+        "No actual Ready preparation, proof verification, or settlement.",
+        "Authorized browser tests verified desktop initial-state and invalid-input assertions; mobile and full collection browser flows remain unverified."
+      ]
+    },
+    {
+      "id": "SUPPLIER-KEY-LIFECYCLE",
+      "claim": "The local supplier tool encrypts and restores a claim-key backup, checks bound claim terms and signs an exact collection review.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/supplier-tool-checks.json",
+        "packages/vow-sdk/test/supplier-key.test.ts",
+        "packages/vow-sdk/test/supplier-collection-flow.test.ts",
+        "packages/vow-sdk/test/supplier-server.test.ts",
+        "evidence/supplier-create-checks.json",
+        "packages/vow-sdk/test/supplier-page.test.ts",
+        "evidence/supplier-password-controls-checks.json"
+      ],
+      "reproduce": "npm run check",
+      "limitations": [
+        "Synthetic local key and wallet/proof responses.",
+        "Browser check covers empty locked state only.",
+        "No audit, chain-state authentication or note-ownership verification."
+      ]
+    },
+    {
+      "id": "TEST-BUDGET",
+      "claim": "Local integer budget assessment and the collection UI require exact principal, every fee category and a recent STRK/USD quote before comparing the total with a USD cap.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/supplier-tool-checks.json",
+        "packages/vow-sdk/test/test-budget.test.ts",
+        "packages/vow-sdk/test/collection-budget.test.ts",
+        "evidence/guarded-execution-checks.json"
+      ],
+      "reproduce": "npm run check",
+      "limitations": [
+        "Synthetic quote and collection-fee values in budget tests.",
+        "No approved collection manifest, wallet spending enforcement or exchange-rate guarantee."
+      ]
+    },
+    {
+      "id": "DEPLOYMENT-PREFLIGHT",
+      "claim": "The local preflight distinguishes explicit missing account/class responses from RPC failures and validates public account deployment data against the expected derived address.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/deployment-readiness-checks.json",
+        "evidence/deployment-readiness-observation.json",
+        "packages/vow-sdk/test/deployment-readiness.test.ts",
+        "packages/vow-sdk/test/account-deployment.test.ts",
+        "evidence/deployment-fee-observation.json",
+        "evidence/recipient-registration-observation.json",
+        "evidence/submission-readiness-observation.json",
+        "evidence/four-stage-preparation-checks.json",
+        "evidence/registered-wallet-milestone-checks.json",
+        "evidence/registered-deployment-readiness.json"
+      ],
+      "limitations": [
+        "Single-provider public observation, not independently authenticated state.",
+        "Synthetic account metadata in unit tests; user-supplied public Ready metadata was separately used in unsigned fee simulation.",
+        "Account activation and privacy registration are evidenced separately; VOW deployment, fee sufficiency, and settlement remain unverified."
+      ]
+    },
+    {
+      "id": "DEPLOYMENT-FEE-QUERY",
+      "claim": "The local fee builder produces unsigned query-version activation/declaration/deployment requests and the parser checks FRI resource totals.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/deployment-fee-checks.json",
+        "evidence/activation-fee-observation.json",
+        "packages/vow-sdk/test/deployment-fee-query.test.ts",
+        "evidence/deployment-fee-observation.json",
+        "evidence/submission-fee-observation.json",
+        "evidence/four-stage-preparation-checks.json",
+        "evidence/registered-wallet-milestone-checks.json",
+        "evidence/registered-deployment-fee-observation.json"
+      ],
+      "limitations": [
+        "Unsigned activation/declaration/deployment estimates skip signature validation.",
+        "The fee-query flows submit no transactions; account activation and privacy registration occurred separately.",
+        "No total budget compliance or funded execution claim."
+      ]
+    },
+    {
+      "id": "COLLECTION-RECEIPT",
+      "claim": "The local verifier rejects unrelated or mismatched collection receipts and requires the exact VOW/pool events, accepted block context and token-pull trace before reporting confirmation.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/collection-reconciliation-checks.json",
+        "packages/vow-sdk/test/collection-receipt.test.ts",
+        "packages/vow-sdk/test/vault-collection-receipt.test.ts",
+        "evidence/submission-workbench-checks.json",
+        "evidence/unrelated-receipt-observation.json",
+        "evidence/vault-claim-verifier-checks.json"
+      ],
+      "reproduce": "npm run check",
+      "limitations": [
+        "Synthetic positive receipts and traces; the VowVault verifier also rejects one unrelated successful mainnet transaction through its preloaded logged-out route.",
+        "Single-provider observation; no actual VOW collection or encrypted note ownership verified."
+      ]
+    },
+    {
+      "id": "VOWVAULT-CLAIM-APP",
+      "claim": "The local VowVault claim route reads and pins an open reservation before enabling wallet preparation or supplier signature input, preserves its exact note through proof preparation, and journals the reviewed dispatch once.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "packages/vow-sdk/test/vault-collection.test.ts",
+        "packages/vow-sdk/test/prepared-claim.test.ts",
+        "packages/vow-sdk/test/app-routes.test.ts",
+        "evidence/vault-claim-verifier-checks.json"
+      ],
+      "reproduce": "npm run check",
+      "limitations": [
+        "Synthetic wallet, reservation and positive receipt data.",
+        "The shipped manifest is explicitly not deployed with a zero network-fee ceiling, so claim controls remain disabled.",
+        "No Ready preparation, proof validity, live dispatch, VowVault deployment or supplier collection is verified."
+      ]
+    },
+    {
+      "id": "SUBMISSION-RECOVERY",
+      "claim": "The local journal persists one reservation-scoped attempt before dispatch, coordinates cooperating clients with Web Locks, records late hashes and requires fresh evidence after restoration.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/collection-reconciliation-checks.json",
+        "packages/vow-sdk/test/submission-attempt.test.ts",
+        "evidence/submission-workbench-checks.json",
+        "packages/vow-sdk/test/submission-journal.test.ts",
+        "packages/vow-sdk/test/collection-recovery-page.test.ts"
+      ],
+      "reproduce": "npm run check",
+      "limitations": [
+        "Native Node locks, simulated storage/dispatch and DOM harness tests; real-browser reload/cross-tab behavior not verified.",
+        "No wallet write integration or automatic network-fee enforcement. Clearing storage or using another origin bypasses client coordination."
+      ]
+    },
+    {
+      "id": "COLLECTION-SUBMISSION-REVIEW",
+      "claim": "The local submission review binds the exact signed call and proof to a single expiring release and proposed fee limits.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "evidence/submission-workbench-checks.json",
+        "packages/vow-sdk/test/collection-submission.test.ts",
+        "evidence/registered-wallet-milestone-checks.json"
+      ],
+      "limitations": [
+        "Synthetic proof material; no wallet submission or proof validity verification.",
+        "The wallet API has no network-fee-cap parameter; manual wallet fee confirmation and full budget assessment remain required."
+      ]
+    },
+    {
+      "id": "COLLECTION-DISPATCH",
+      "claim": "The local collection page journals an approved attempt and checks current wallet identity, contract readiness and an exact same-origin budget before its single wallet write.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "packages/vow-sdk/test/collection-dispatch.test.ts",
+        "packages/vow-sdk/test/collection-submission-page.test.ts",
+        "evidence/registered-wallet-milestone-checks.json",
+        "evidence/guarded-execution-checks.json"
+      ],
+      "limitations": [
+        "Synthetic wallets and storage; no live collection submission.",
+        "Wallet fee confirmation remains manual.",
+        "No approved budget manifest is shipped, so the live control remains disabled."
+      ]
+    },
+    {
+      "id": "DEPLOYMENT-EXECUTION",
+      "claim": "The local deployment page serializes the exact reviewed declaration, deployment and funding stages, persists a public attempt before dispatch, and requires exact receipt and state reconciliation before advancing.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "packages/vow-sdk/test/deployment-execution.test.ts",
+        "packages/vow-sdk/test/deployment-page.test.ts",
+        "evidence/guarded-execution-checks.json"
+      ],
+      "reproduce": "npm run check",
+      "limitations": [
+        "Synthetic wallets, storage and receipts; no Ready deployment transaction has been executed through this page.",
+        "The wallet API cannot enforce the reviewed fee ceiling; the user must reject a higher fee in Ready.",
+        "Clearing storage or changing origins bypasses the client retry guard."
+      ]
+    },
+    {
+      "id": "VAULT-CLIENT",
+      "claim": "The client SDK builds a padded 16-slot permission set with independent random salts, backs it up under a password, produces mandate, funding and operator-signed reservation calldata, and reads mandate, reservation and reservation events back from a VowVault.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "packages/vow-sdk/src/permission-set.ts",
+        "packages/vow-sdk/src/permission-backup.ts",
+        "packages/vow-sdk/src/mandate-calldata.ts",
+        "packages/vow-sdk/src/operator-key.ts",
+        "packages/vow-sdk/src/reserve-request.ts",
+        "packages/vow-sdk/src/reservation-reader.ts",
+        "packages/vow-sdk/src/reservation-events.ts",
+        "packages/vow-sdk/test/permission-set.test.ts",
+        "packages/vow-sdk/test/permission-backup.test.ts",
+        "packages/vow-sdk/test/mandate-calldata.test.ts",
+        "packages/vow-sdk/test/reserve-request.test.ts",
+        "packages/vow-sdk/test/reservation-reader.test.ts",
+        "packages/vow-sdk/test/reservation-events.test.ts",
+        "contracts/tests/test_vectors.cairo",
+        "evidence/vault-client-checks.json"
+      ],
+      "reproduce": "npm run check && sh scripts/cairo.sh test",
+      "limitations": [
+        "TypeScript tests against synthetic RPC responses and receipts; no VowVault has been deployed, funded, reserved or claimed on any network.",
+        "Permission root, leaf, slot-0 proof and reservation-id encodings are asserted as the same constants in both languages; calldata field order is checked against the local Cairo structs, not a chain-accepted transaction.",
+        "The mandate id has to be predicted before create_mandate and can only be verified between creation and funding.",
+        "Unused permissions stay in client memory and in the password-encrypted owner backup; encryption at rest does not protect a compromised active browser.",
+        "No owner or operator product screen drives this layer yet."
+      ]
+    },
+    {
+      "id": "PRODUCT-SCREENS",
+      "claim": "The local owner and operator screens preview exactly what mandate creation publishes before creating anything, gate creation on a downloaded encrypted backup that restores the previewed root, report the five mandate totals separately, restrict the operator to selecting a committed permission object, and drive every write through one explicit non-retrying state machine.",
+      "tier": "local-model",
+      "sourceCommit": null,
+      "evidence": [
+        "scripts/app/server.ts",
+        "scripts/app/index.html",
+        "scripts/app/owner.html",
+        "scripts/app/operator.html",
+        "scripts/app/owner.ts",
+        "scripts/app/operator.ts",
+        "scripts/app/write-flow.ts",
+        "scripts/app/vault-invoke.ts",
+        "scripts/app/vault-receipt.ts",
+        "scripts/app/manifest.ts",
+        "packages/vow-sdk/test/app-screens.test.ts",
+        "packages/vow-sdk/test/owner-page.test.ts",
+        "packages/vow-sdk/test/operator-page.test.ts",
+        "packages/vow-sdk/test/write-flow.test.ts",
+        "evidence/product-screen-checks.json"
+      ],
+      "reproduce": "npm run check && npm run app",
+      "limitations": [
+        "No dist/deployment/manifest.json exists, so both screens load fail-closed and neither has created a mandate, reserved a purchase or sent any transaction.",
+        "Screen behaviour is asserted against a synthetic DOM and a synthetic RPC. No wallet was connected and no browser run completed an owner or operator flow.",
+        "The owner screen predicts the next mandate id from public reads; a concurrent create_mandate takes that id and a set committed to the wrong id can never be reserved against. The screen warns before creation and the contract offers no view that removes the race.",
+        "Write reconciliation accepts an accepted, non-reverted receipt in a block that still contains the transaction plus a vault-emitted event of the expected name; it does not verify the internal call path.",
+        "Accessibility is asserted statically over the shipped HTML and CSS, including measured contrast ratios. No assistive-technology pass was performed."
+      ]
+    }
+  ]
+}

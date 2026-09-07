@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-09-07T13:30:43.248Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "blockNumber": 14507124,
+  "blockHash": "0x3cb339756cb6420a46b5bca9ea10a77ce287719b7e8e4f0c65504d345209be9",
+  "pool": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "recipient": "0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e",
+  "method": "get_public_key",
+  "response": {
+    "id": 1,
+    "jsonrpc": "2.0",
+    "result": [
+      "0x0"
+    ]
+  },
+  "interpretation": "No public privacy key registered at this block",
+  "secretDataRequested": false
+}

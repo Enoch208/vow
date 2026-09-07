@@ -1,0 +1,60 @@
+{
+  "observedAt": "2026-09-07T09:53:30.254Z",
+  "scope": "Exact collection receipt verification and single-attempt submission recovery model",
+  "tier": "local-model",
+  "requirementIds": [
+    "T-017",
+    "T-018"
+  ],
+  "tests": {
+    "command": "npm run check",
+    "passed": 95,
+    "failed": 0,
+    "newTests": 18,
+    "outputSha256": "6b0b8d4f27e5983bb7a0ab4259df9b7b1f5417fbb008b924e01b24189534f64f"
+  },
+  "cairo": {
+    "changed": false,
+    "testsRerun": false,
+    "previousTestsPassed": 18,
+    "classHash": "0x566b98117859844f961c19118c835e9e9c7c1384f9ebc366b8ab81bbf15c5a7"
+  },
+  "fixtures": "Synthetic receipts, traces and wallet outcomes; ABI shapes checked against recorded pool and compiled local probe",
+  "liveNegativeControl": {
+    "status": "not-run",
+    "reason": "Lava chainId request failed; separate public health retry returned ETIMEDOUT",
+    "submittedTransactions": 0
+  },
+  "invariants": [
+    "Exact accepted transaction, canonical block membership and block-pinned class/configuration/state checks",
+    "Exact VOW Collected and pool OpenNoteDeposited events; duplicate and unrelated receipts rejected",
+    "Exact callback and subsequent token pull trace; unavailable trace stays unverified",
+    "Single-start state transition with late-hash reconciliation and no reset/retry",
+    "Conflicting hashes remain unknown, including across checkpoint restoration and in-flight reads",
+    "Restored confirmation requires fresh receipt verification"
+  ],
+  "limitations": [
+    "Single RPC provider, not independent consensus verification",
+    "No actual VOW mainnet collection or wallet note-discovery verification",
+    "No wallet broadcast, durable browser persistence, cross-tab coordination or fee enforcement",
+    "No additional cost estimate or complete $5 budget validation"
+  ],
+  "sources": [
+    "https://github.com/starkware-libs/starknet-specs/blob/master/api/starknet_api_openrpc.json",
+    "https://github.com/starkware-libs/starknet-specs/blob/master/api/starknet_trace_api_openrpc.json",
+    "evidence/pool-abi.json"
+  ],
+  "sourceSha256": {
+    "packages/vow-sdk/src/receipt-values.ts": "dce128e817a71ccc747331f210b005f6027c1982d8434a32160e11ed7409e948",
+    "packages/vow-sdk/src/collection-receipt-events.ts": "2ef5b9166d1425e23740f81911809de4bc43820f5c9642e96626e0ead9c26679",
+    "packages/vow-sdk/src/collection-trace.ts": "bb4453a24c4944d5d31d1c100094c4965d3f1cba3859298fc0b6712e0984b84e",
+    "packages/vow-sdk/src/collection-receipt.ts": "6736b8c40127648888148aa3b323958ea8cf39f474f5c973ac2e5a369c8f322f",
+    "packages/vow-sdk/src/submission-attempt.ts": "d520897710dae0072e517c989742939f1621e6343320e1995390a2b754850449",
+    "packages/vow-sdk/src/probe-reader.ts": "abdb52fcfe19c9371721b1a0252c8f7132cf993cf6fee02a69345d184c90680c",
+    "packages/vow-sdk/src/index.ts": "228a0d68614df97eaede6448b5df58a651682025b8ab246fef95071d5c3ee36d",
+    "packages/vow-sdk/test/collection-receipt.test.ts": "069bee0604b5f159ab4ff0eafc26f794e90f2894c3d307182ecdf0d034772f91",
+    "packages/vow-sdk/test/submission-attempt.test.ts": "e027e7785d7ec79c1b38fd22a072112a600b7701ae1ef4964aa6f0781030e8e9",
+    "packages/vow-sdk/test/helpers/receipt.ts": "f90f1fd83f674ced0db8bf0b5343286d53dbe3d5704d67aee6841d3f9a9f9fe8",
+    "scripts/verify-collection.ts": "b88f8b2b55670a240993f9b605523fe1ccf96da07baaac9302e1a03b885488d4"
+  }
+}

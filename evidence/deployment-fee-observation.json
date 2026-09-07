@@ -1,0 +1,142 @@
+{
+  "observedAt": "2026-09-07T07:21:44.403Z",
+  "endpoint": "https://rpc.starknet.lava.build",
+  "block": {
+    "hash": "0x47845bcc4b4d85e25be37ab726c9026404cb5d26f82c6e5ce347d805aa0b68",
+    "number": 14494128,
+    "timestamp": 1788765542,
+    "starknetVersion": "0.14.3"
+  },
+  "requestSha256": "bc6f9217ce734160a71c68ca0dffcf705d0a925f81026bd0240e2f77f548629c",
+  "scope": "User-approved contract disclosure for unsigned fee estimation only; signature validation skipped; no transactions submitted",
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+      {
+        "l1_gas_consumed": "0x0",
+        "l1_gas_price": "0x4d55dc97f151",
+        "l2_gas_consumed": "0x1d3e30",
+        "l2_gas_price": "0x6a619c570",
+        "l1_data_gas_consumed": "0x160",
+        "l1_data_gas_price": "0x71128291b",
+        "overall_fee": "0xc2781c578eaa20",
+        "unit": "FRI"
+      },
+      {
+        "l1_gas_consumed": "0x0",
+        "l1_gas_price": "0x4d55dc97f151",
+        "l2_gas_consumed": "0x18081fc0",
+        "l2_gas_price": "0x6a619c570",
+        "l1_data_gas_consumed": "0xc0",
+        "l1_data_gas_price": "0x71128291b",
+        "overall_fee": "0x9fc873b73bdb7840",
+        "unit": "FRI"
+      },
+      {
+        "l1_gas_consumed": "0x0",
+        "l1_gas_price": "0x4d55dc97f151",
+        "l2_gas_consumed": "0x3f57a0",
+        "l2_gas_price": "0x6a619c570",
+        "l1_data_gas_consumed": "0x320",
+        "l1_data_gas_price": "0x71128291b",
+        "overall_fee": "0x1a53d07c644ea60",
+        "unit": "FRI"
+      }
+    ]
+  },
+  "encodingCorrection": "Hex execute calldata and canonical ABI formatting matching the local class",
+  "estimates": [
+    {
+      "overallFeeFRI": "54738208605252128",
+      "resources": [
+        {
+          "name": "l1_gas",
+          "consumed": "0",
+          "price": "85031168504145"
+        },
+        {
+          "name": "l2_gas",
+          "consumed": "1916464",
+          "price": "28556510576"
+        },
+        {
+          "name": "l1_data_gas",
+          "consumed": "352",
+          "price": "30352615707"
+        }
+      ],
+      "validation": "skipped",
+      "spendingCap": null
+    },
+    {
+      "overallFeeFRI": "11513579678193121344",
+      "resources": [
+        {
+          "name": "l1_gas",
+          "consumed": "0",
+          "price": "85031168504145"
+        },
+        {
+          "name": "l2_gas",
+          "consumed": "403185600",
+          "price": "28556510576"
+        },
+        {
+          "name": "l1_data_gas",
+          "consumed": "192",
+          "price": "30352615707"
+        }
+      ],
+      "validation": "skipped",
+      "spendingCap": null
+    },
+    {
+      "overallFeeFRI": "118568068795656800",
+      "resources": [
+        {
+          "name": "l1_gas",
+          "consumed": "0",
+          "price": "85031168504145"
+        },
+        {
+          "name": "l2_gas",
+          "consumed": "4151200",
+          "price": "28556510576"
+        },
+        {
+          "name": "l1_data_gas",
+          "consumed": "800",
+          "price": "30352615707"
+        }
+      ],
+      "validation": "skipped",
+      "spendingCap": null
+    }
+  ],
+  "quote": {
+    "source": "https://api.coingecko.com/api/v3/simple/price?ids=starknet&vs_currencies=usd&include_last_updated_at=true",
+    "observedAt": "2026-09-07T07:22:26.207Z",
+    "lastUpdatedAt": 1788765670,
+    "usdPerSTRK": "0.03082924"
+  },
+  "subtotalSTRK": "11.686885955594030272",
+  "subtotalUSD": "0.36029781",
+  "totalBudgetUSD": "5.00",
+  "budgetStatus": "incomplete-costs",
+  "remaining": [
+    "signature validation and final wallet fee bounds",
+    "test principal",
+    "funding",
+    "privacy registration",
+    "collection",
+    "protocol fee",
+    "recovery reserve"
+  ],
+  "limitations": [
+    "Single-provider unsigned simulation at the recorded block.",
+    "Signature validation skipped; estimates are not spending caps.",
+    "No deployment, declaration, activation, funding or collection submitted.",
+    "Quoted USD subtotal is only these three preliminary stages, not the full test."
+  ]
+}

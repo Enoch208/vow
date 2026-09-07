@@ -1,0 +1,19 @@
+{
+  "source": "user-supplied local diagnostic result",
+  "wallet": {
+    "name": "Ready X",
+    "id": "argentX",
+    "version": "5.33.9",
+    "transport": "injected"
+  },
+  "method": "wallet_supportedWalletApi",
+  "result": [
+    "0.10.3",
+    "0.7.2"
+  ],
+  "collection": "unverified",
+  "limitations": [
+    "Advertised API versions only; no prepared collection, signature, proof, or settlement verified.",
+    "Earlier balance request returned error 163; root cause remains unknown."
+  ]
+}

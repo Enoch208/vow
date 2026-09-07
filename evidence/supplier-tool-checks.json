@@ -1,0 +1,93 @@
+{
+  "observedAt": "2026-09-07T06:42:34.037990+00:00",
+  "scope": "Local supplier encrypted backup, exact claim signing and test-budget assessment",
+  "tests": {
+    "command": "npm run check",
+    "typescriptAndHttpPassed": 56,
+    "failed": 0,
+    "newTests": 9,
+    "build": "TypeScript, Cairo compilation and locally bundled browser assets passed",
+    "cairoTests": "18 passed at the preceding collection milestone; Cairo sources unchanged in this milestone"
+  },
+  "browser": {
+    "scope": "Approved empty-state check only; no input, key generation, backup file, password, wallet request or transaction",
+    "status": "passed",
+    "durationSeconds": 35.4,
+    "completedSteps": 5,
+    "finalState": {
+      "url": "http://127.0.0.1:4318/",
+      "supplier_claim_key_heading_visible": "true",
+      "key_locked_status_visible": "true",
+      "supplier_public_key_field_empty": "true",
+      "download_encrypted_backup_disabled": "true",
+      "review_claim_disabled": "true",
+      "sign_exact_claim_locally_disabled": "true"
+    },
+    "assertions": [
+      {
+        "condition": "The heading Your supplier claim key is visible.",
+        "actual": "true",
+        "expected": "true",
+        "passed": true
+      },
+      {
+        "condition": "The status Key locked. is visible.",
+        "actual": "true",
+        "expected": "true",
+        "passed": true
+      },
+      {
+        "condition": "The Supplier public key field is empty.",
+        "actual": "true",
+        "expected": "true",
+        "passed": true
+      },
+      {
+        "condition": "Download encrypted backup is disabled.",
+        "actual": "true",
+        "expected": "true",
+        "passed": true
+      },
+      {
+        "condition": "Review claim is disabled.",
+        "actual": "true",
+        "expected": "true",
+        "passed": true
+      },
+      {
+        "condition": "Sign this exact claim locally is disabled.",
+        "actual": "true",
+        "expected": "true",
+        "passed": true
+      }
+    ]
+  },
+  "limitations": [
+    "Backup, signing and preparation integration tests use synthetic keys, wallet responses and proof strings.",
+    "Browser verification covers the empty state only; secret-handling browser flows were not run.",
+    "No real supplier key generated or accessed during browser validation.",
+    "No live fee estimates or price quote; budget utility cannot establish actual USD compliance yet.",
+    "No live deployment, wallet preparation, proof validation or settlement.",
+    "No audit or release-gate promotion."
+  ],
+  "sha256": {
+    "packages/vow-sdk/src/supplier-key.ts": "d7c926df587449e655c12758d9291edc1b0c5d0bbc2e707c9874af6f1a4dd2da",
+    "packages/vow-sdk/src/supplier-backup.ts": "a14283dfe7cbdf4f0684c3c2a3a18af510331e94dc8e3ead0c8d6c01472d0dfc",
+    "packages/vow-sdk/src/test-budget.ts": "132ba3f13369fa2b54e1fb656a31e0fe24aeebe55242b240726cb1af6b042780",
+    "packages/vow-sdk/src/collection-session.ts": "7bbe70c73aa1b7dd943c53015a04a961208c4aab236195f4a9e85767ffcb72b6",
+    "packages/vow-sdk/src/index.ts": "2d3fb55e965f167e924e09f4dfb14b4d600275a6329d1d2da5fed0301a222330",
+    "packages/vow-sdk/test/supplier-key.test.ts": "c73c02559b0b2bccb7df3d7a133cec866a3f08741f6eccf62c8ad0cf6466e385",
+    "packages/vow-sdk/test/supplier-collection-flow.test.ts": "87a8e0ff5f7ff7f96330c6bc24390aab96e6d04554f5ddb1fab99fcc8cf2c6c8",
+    "packages/vow-sdk/test/supplier-server.test.ts": "0d27713f57fad6dfc46a51c50db927928a7e5d21f4474569ede4a3f6ea29a92e",
+    "packages/vow-sdk/test/test-budget.test.ts": "898e6fdfa251a841d10b2b13c63ec8fa46b477aa7317c77ad77ea132f3b6d435",
+    "scripts/supplier/claim-review.ts": "a5126857fd40970b2b732921fdb665257b84b2909594e4bbdc335a9f6bca40cd",
+    "scripts/supplier/browser.ts": "50a318e05b7517c126a3f19610d369a92bd9feefd1f606176ef55d03814a3acb",
+    "scripts/supplier/server.ts": "d3dcd1a69599eb97d27e575c85010bc37bb0395e529ef3f53b7301fbf0101cf9",
+    "scripts/supplier/index.html": "7a54d86d969adf780bb73432657038ce739fff156965b5d1402f3267e88b8b03",
+    "scripts/serve-supplier.ts": "dd827f735fa66ac52b0e1a47a2dd9336969ee0bfdbb4304f7ac0677cfd64162f",
+    "scripts/build-collection.ts": "aae92da19cebe942f5b7e0de51e8675e069368150b0c2727c63c6b2a9312f10d",
+    "scripts/collection/index.html": "7d424a1a481cf50f32dc3ece9dcae7e4a8be6c004f9448c0ced9ea26b06dab22",
+    "scripts/collection/style.css": "18e24656ed76035f26141c8c3e37e3bae23c67e10b2546a763fe82a7dc2846f4",
+    "package.json": "cdd21518b3ba89562f001cca7ce2265aed8f513580bb9c746f0f4738a99747e3"
+  }
+}

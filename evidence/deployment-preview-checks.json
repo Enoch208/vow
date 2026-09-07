@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-09-07T06:30:30.416749+00:00",
+  "scope": "Local deterministic deployment and exact principal funding preview",
+  "tests": {
+    "command": "npm run check",
+    "typescriptAndHttpPassed": 47,
+    "failed": 0,
+    "newPreviewTests": 5
+  },
+  "classHash": "0x566b98117859844f961c19118c835e9e9c7c1384f9ebc366b8ab81bbf15c5a7",
+  "limitations": [
+    "Synthetic public terms in preview tests.",
+    "No live UDC class verification or address prediction confirmed by deployment.",
+    "Fees not estimated; preview cannot establish total USD budget compliance.",
+    "No declaration, deployment, signature or transaction submitted."
+  ],
+  "sha256": {
+    "packages/vow-sdk/src/deployment-plan.ts": "3e20eac773deb848a086c3e5facfb9654306d81bec2e7c02d2c05ec3584d0f10",
+    "packages/vow-sdk/test/deployment-plan.test.ts": "ef07ec718855bfb22a1eed728cbe9571f30b0512b3fba0c5ac2d71d935ef7ba1",
+    "packages/vow-sdk/test/deployment-preview.test.ts": "231f4f98112d0f4918de9a438c1a5a5a1bafcbc3ec9b0d86dd877a287ade20f7",
+    "scripts/preview-deployment.ts": "22bf16619e15425416453a81023c584878b132633ff3603bc7474a92d6ba7292",
+    "packages/vow-sdk/src/index.ts": "234978ded22330f384af3d5f5432e4463eb763c5807dfc105077fc734dd5c5cd",
+    "package.json": "90f1ab3f696049b777e53e43aa3b03e6afd9b6f215e452c042657656a72788f8"
+  }
+}

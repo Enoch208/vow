@@ -1,0 +1,148 @@
+{
+  "observedAt": "2026-09-07T17:26:25.550Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "blockNumber": 14515326,
+  "blockHash": "0x70cc7bad56f93b54970debb0722fc3a9af3a860248157380511114e7475ddc0",
+  "ownerNonce": "1",
+  "requestSha256": "6f4bf4f5b1526f62e2ee3a4d9e0e3482e9c28dd0ad2b35af3240e7fc19bf728f",
+  "review": {
+    "status": "unsigned-estimate-only",
+    "requiresUndeployedOwner": false,
+    "requiresUndeclaredProbe": true,
+    "requiresDeployedOwner": true,
+    "ownerNonce": "0x1",
+    "ownerNonceBlock": "0x70cc7bad56f93b54970debb0722fc3a9af3a860248157380511114e7475ddc0",
+    "owner": "0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e",
+    "probeClassHash": "0x566b98117859844f961c19118c835e9e9c7c1384f9ebc366b8ab81bbf15c5a7",
+    "compiledClassHash": "0x44af552244d674fdac7ba20bbb8a4ddcf946985c6ab296b36cfe5106150d9d0",
+    "predictedProbe": "0x5a8833d0def307065252bb0aee82deb48e44d79b86267e7f38316d7eeed466c",
+    "validation": "skipped",
+    "sourceDisclosure": "full-contract-class",
+    "stages": [
+      "classDeclaration",
+      "probeDeployment",
+      "funding"
+    ],
+    "omitted": [
+      "privacyRegistration",
+      "collection",
+      "protocolFee",
+      "recoveryReserve"
+    ],
+    "requiresPrincipalBalance": true,
+    "totalBudgetVerified": false
+  },
+  "estimates": [
+    {
+      "stage": "classDeclaration",
+      "STRK": "11.31845866435181472",
+      "overallFeeFRI": "0x9d133e2ffda1d440",
+      "resources": [
+        {
+          "name": "l1_gas",
+          "consumed": "0x0",
+          "price": "0x5159159877c8"
+        },
+        {
+          "name": "l2_gas",
+          "consumed": "0x18081fc0",
+          "price": "0x68940f531"
+        },
+        {
+          "name": "l1_data_gas",
+          "consumed": "0xc0",
+          "price": "0x1232924156"
+        }
+      ],
+      "validation": "skipped",
+      "spendingCap": null
+    },
+    {
+      "stage": "probeDeployment",
+      "STRK": "0.1132285472802472",
+      "overallFeeFRI": "0x19244c38b1299a0",
+      "resources": [
+        {
+          "name": "l1_gas",
+          "consumed": "0x0",
+          "price": "0x5159159877c8"
+        },
+        {
+          "name": "l2_gas",
+          "consumed": "0x3d82e0",
+          "price": "0x68940f531"
+        },
+        {
+          "name": "l1_data_gas",
+          "consumed": "0x320",
+          "price": "0x1232924156"
+        }
+      ],
+      "validation": "skipped",
+      "spendingCap": null
+    },
+    {
+      "stage": "funding",
+      "STRK": "0.09307363734038064",
+      "overallFeeFRI": "0x14aa9fae3a07de0",
+      "resources": [
+        {
+          "name": "l1_gas",
+          "consumed": "0x0",
+          "price": "0x5159159877c8"
+        },
+        {
+          "name": "l2_gas",
+          "consumed": "0x3292e0",
+          "price": "0x68940f531"
+        },
+        {
+          "name": "l1_data_gas",
+          "consumed": "0x180",
+          "price": "0x1232924156"
+        }
+      ],
+      "validation": "skipped",
+      "spendingCap": null
+    }
+  ],
+  "subtotalSTRK": "11.52476084897244256",
+  "response": {
+    "id": 1,
+    "jsonrpc": "2.0",
+    "result": [
+      {
+        "l1_data_gas_consumed": "0xc0",
+        "l1_data_gas_price": "0x1232924156",
+        "l1_gas_consumed": "0x0",
+        "l1_gas_price": "0x5159159877c8",
+        "l2_gas_consumed": "0x18081fc0",
+        "l2_gas_price": "0x68940f531",
+        "overall_fee": "0x9d133e2ffda1d440",
+        "unit": "FRI"
+      },
+      {
+        "l1_data_gas_consumed": "0x320",
+        "l1_data_gas_price": "0x1232924156",
+        "l1_gas_consumed": "0x0",
+        "l1_gas_price": "0x5159159877c8",
+        "l2_gas_consumed": "0x3d82e0",
+        "l2_gas_price": "0x68940f531",
+        "overall_fee": "0x19244c38b1299a0",
+        "unit": "FRI"
+      },
+      {
+        "l1_data_gas_consumed": "0x180",
+        "l1_data_gas_price": "0x1232924156",
+        "l1_gas_consumed": "0x0",
+        "l1_gas_price": "0x5159159877c8",
+        "l2_gas_consumed": "0x3292e0",
+        "l2_gas_price": "0x68940f531",
+        "overall_fee": "0x14aa9fae3a07de0",
+        "unit": "FRI"
+      }
+    ]
+  },
+  "totalBudgetVerified": false,
+  "transactionsSubmitted": false
+}

@@ -1,0 +1,69 @@
+{
+  "observedAt": "2026-09-07T18:34:15.600057+00:00",
+  "sourceCommit": null,
+  "scope": "Owner and operator client layer for VowVault: permission-set construction, encrypted owner backup, mandate calldata, operator authorization and reservation reads",
+  "typescriptTestsPassed": 259,
+  "vaultClientTestsPassed": 26,
+  "cairoTestsPassed": 38,
+  "checks": [
+    "npm run check",
+    "sh scripts/cairo.sh test"
+  ],
+  "crossLanguageVectors": {
+    "permissionLeaf": "0x5e3a4b1c5a610d43d66077cddaddf3f076e2c057d3dba85dd8967cdf162debe",
+    "permissionRoot": "0x10a9870e430c351eda1c8801c47ab6f28ef6bfd4228d4c94a76ca5e3c355893",
+    "permissionProofSlot0": [
+      "0x45e574b2625bdf40ea2cd2f91c2fca2135849b6515c940dd78ca5f638299c79",
+      "0x15211de2b44c7bb5dce9b9d1c76d2749fa6d11de47606e8db819402c06a9d7e",
+      "0x5437fe13d42721639cb2a76d07295db7b307d4c7d72e5d15dbf86800dde9f4",
+      "0x9243736cdc563a1d308a864a0c751de7eae7d30689e82feedc832e24fa84a0"
+    ],
+    "reservationId": "0x45cc6c11f29f5fe7b53eee680c0626324e344af8d021ca7af58a1b1ecf2bb2b",
+    "assertedIn": [
+      "packages/vow-sdk/test/permission-set.test.ts",
+      "packages/vow-sdk/test/reserve-request.test.ts",
+      "contracts/tests/vault_support.cairo",
+      "contracts/tests/test_vault.cairo",
+      "contracts/tests/test_vectors.cairo"
+    ]
+  },
+  "negativeChecks": [
+    "A salt reused between two real leaves or between a real and a padding leaf is rejected before a root exists.",
+    "A permission naming a supplier claim key that is not a curve point is refused before it can occupy a committed slot.",
+    "A proof issued for one slot proves neither another slot, another leaf nor a changed root.",
+    "A requested amount above the committed cap, outside the approval window or past the request deadline never reaches a signature.",
+    "An operator signature does not verify after any change to mandate, root, permission, leaf hash, amount, request id or deadline, and a second operator key cannot authorize the same request.",
+    "A padding slot and an out-of-range slot cannot be turned into a reserve request.",
+    "A mandate whose root, token, owner, operator key, expiry or id differs from the local set is refused before funding.",
+    "Wrong chain, missing mandate, unreconcilable accounting and foreign reservation rows are refused instead of decoded.",
+    "A PurchaseReserved or ReservationClaimed event from another contract, reservation or amount is not accepted as this request's settlement."
+  ],
+  "limitations": [
+    "TypeScript client tests only, against synthetic RPC responses and receipts; no VowVault has been declared, deployed, funded, reserved or claimed on any network.",
+    "The permission root, leaf, slot-0 proof and reservation-id domain encoding are asserted as identical constants in both languages; the reservation id is not asserted against the value an executed reserve() returned.",
+    "Calldata field order is verified against the local Cairo struct definitions, not against a chain-accepted transaction.",
+    "The mandate id must be predicted before create_mandate; the vault exposes no next-mandate view, so the client can only verify it after creation and before funding.",
+    "Random salts come from the platform crypto source and are checked for range, distinctness and independence across sets, not for generator quality.",
+    "Encryption at rest does not protect a compromised active browser or process; JavaScript strings holding a decrypted set cannot be zeroed.",
+    "Source is uncommitted."
+  ],
+  "sha256": {
+    "packages/vow-sdk/src/permission-set.ts": "a3a2d3a49fea27937953fd2a78e000f84cdc728bdb0528560bb86d6d5e12033c",
+    "packages/vow-sdk/src/permission-set-format.ts": "ea58d20120844743769742c060c4f12e28e194576c2bf288152f400a36a548da",
+    "packages/vow-sdk/src/permission-backup.ts": "172722f6ea1dc9185c33fedf16fa4ec967d35749ff117ab0e438fdfbe5fa557e",
+    "packages/vow-sdk/src/backup-crypto.ts": "682910f0d803813b3e0f5045108c5311404f8a29ff04043e866c1c80267aa0f0",
+    "packages/vow-sdk/src/operator-key.ts": "6b3184a501001783b5823119196999ab65c26711ad9be1dc66168e5e2fc2f09a",
+    "packages/vow-sdk/src/mandate-calldata.ts": "d797f0b4bf1eae9391fb16a58e81c0b4aedeba36441cb3e0f6290d5e4d245d6e",
+    "packages/vow-sdk/src/reserve-request.ts": "20118efb9f50711ba71481a38fcaf1ab2c38703de4939046523285e9122ac979",
+    "packages/vow-sdk/src/reservation-reader.ts": "7c4984c5d5d717031c2e9f04a5a496b3745ba1dae5c1d32b60418e8a19d3e41b",
+    "packages/vow-sdk/src/reservation-events.ts": "faf0d5f630ba74f575cc4d89f83824bf7ad9401b7d717c44a0561608758e7e7a",
+    "packages/vow-sdk/test/helpers/vault-client.ts": "6b8b3c0c905ba343484b849f3d527f2276d2d1610a38e1a194a06eccd9c11444",
+    "packages/vow-sdk/test/permission-set.test.ts": "849ad55cbeb488c0e94f8f1362f011fa1d048825d943118403c4924fdac402c8",
+    "packages/vow-sdk/test/permission-backup.test.ts": "e601c0fda4f27e51b3ef5172c562c4717846164bf796aa94b7a22d70d1125fa3",
+    "packages/vow-sdk/test/mandate-calldata.test.ts": "a5d63d3ec04f3a634d4eeb253833cdc0be51072e538fd349bfd4ff0dc11032ea",
+    "packages/vow-sdk/test/reserve-request.test.ts": "510865a933baacfdd597c5cf2522e9e9eb3f8fbd76d0c7eb109c5ab4b8f00c97",
+    "packages/vow-sdk/test/reservation-reader.test.ts": "9e5adcd45acf09752e5b2e1fcdc32eb348338a6240623cc6c60ac838b3494d55",
+    "packages/vow-sdk/test/reservation-events.test.ts": "3f89d56f347e91c6845138a643ae29cad3a1dc54b852359464665b777a3237e9",
+    "contracts/tests/test_vectors.cairo": "53bc8bf736fa862277ebee98722d4fd10ada4fa9343992c45c227a87561c5f8e"
+  }
+}

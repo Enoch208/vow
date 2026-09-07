@@ -1,0 +1,63 @@
+{
+  "observedAt": "2026-09-07T17:48:13.141485+00:00",
+  "sourceCommit": null,
+  "scope": "VowVault mandate, permission-tree, reservation and accounting layer",
+  "typescriptTestsPassed": 177,
+  "cairoTestsPassed": 37,
+  "releaseBlockingTestsCovered": [
+    "T-001",
+    "T-002",
+    "T-003",
+    "T-004",
+    "T-005",
+    "T-006",
+    "T-007",
+    "T-008",
+    "T-009",
+    "T-010",
+    "T-011",
+    "T-012",
+    "T-013",
+    "T-014"
+  ],
+  "checks": [
+    "npm run check",
+    "sh scripts/cairo.sh build",
+    "sh scripts/cairo.sh test"
+  ],
+  "crossLanguageVectors": {
+    "permissionLeaf": "0x5e3a4b1c5a610d43d66077cddaddf3f076e2c057d3dba85dd8967cdf162debe",
+    "permissionRoot": "0x10a9870e430c351eda1c8801c47ab6f28ef6bfd4228d4c94a76ca5e3c355893",
+    "reserveDigest": "0x10582df0952a9b449807faddbf241cb95f3d2a26fed0664a4a3c4911968e39a",
+    "assertedIn": [
+      "packages/vow-sdk/test/permissions.test.ts",
+      "packages/vow-sdk/test/reserve.test.ts",
+      "contracts/tests/test_vault.cairo"
+    ]
+  },
+  "limitations": [
+    "Local snforge tests against synthetic token and pool contracts only.",
+    "VowVault has never been declared, deployed, funded or executed on any network.",
+    "T-015 to T-020 are client, verifier and reproducibility IDs outside this contract layer and remain uncovered.",
+    "Permission tree is fixed at 16 padded slots and has no on-chain root replacement path.",
+    "No audit, no mutation sweep over the new guards, no gas or griefing analysis.",
+    "Source is uncommitted."
+  ],
+  "sha256": {
+    "contracts/src/permissions.cairo": "a84ee94d56ae4fc4ebe7eebc338603c0d84473af594117fb21ca02e7a61c3732",
+    "contracts/src/reserve.cairo": "a95b956125aea21882243ba62114fc2eff5ed65d12409980c1a8c12f8b70be3a",
+    "contracts/src/records.cairo": "94deb51e3b6dfde9dfb1bf59598aec10cebc9c1e29db57a62a3a9ab6d00db18f",
+    "contracts/src/vault.cairo": "535d03845ca0ecce2bdf9b704f62c1fd329b5752e5db4870d0d421a35adce8e0",
+    "contracts/src/interfaces.cairo": "3039adab0cb1c73699107828af9739143d942be44107121c29371b417b6bbda9",
+    "contracts/src/lib.cairo": "8d5ef456003f69fe463668e8d98c1ac45fc6f069581f49df98bb0a5385bd55a9",
+    "contracts/tests/vault_support.cairo": "2e9eb5de1d63999d71155481e165641d8166e5a9d679d1ad0f54253010fb9a16",
+    "contracts/tests/test_vault.cairo": "3f126a8f5cbc0f5e5453854714e24ef76d7578401a36953dd1f996e04ab0444a",
+    "contracts/tests/test_vault_guards.cairo": "6a4b81230c53477859e8b801b677a6c62104bb207cb75af45b878ce2832e9a04",
+    "contracts/tests/support/vault_pool.cairo": "24dccc5afb8b732d0f607e2f66c1bb6d77c14f3e3b7e13401bfa2d65790654a9",
+    "packages/vow-sdk/src/permissions.ts": "a9e20393c79a9cf3eb815b39f72d60bab61c085e0d25fe0c501322361b394ba2",
+    "packages/vow-sdk/src/reserve.ts": "8a5effc48a8680bed24bb44a0382fb56dbba8960bc8821e9caa649a9b2ecd54a",
+    "packages/vow-sdk/test/permissions.test.ts": "fcd882bc81bcd6cecef3f9cff377233d972ec7beab12f9b8f093912f0d9d9870",
+    "packages/vow-sdk/test/reserve.test.ts": "95dd5240689a06ddf8dbe1522d4728300d491c67d46183eed16e58562040d5f3",
+    "packages/vow-sdk/test/permission-fixture.ts": "c22c74f9df903b47cc07e310b8a852d53ad48c2938049cfe3e3ad786398293d6"
+  }
+}

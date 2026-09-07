@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-09-07T06:47:31.047160+00:00",
+  "scope": "Supplier Create/Download feedback and bundled event-handler regression",
+  "reportedIssue": "User reports unable to download after clicking Create; exact user status and whether button is disabled remain unconfirmed.",
+  "changes": [
+    "Display password validation and encryption failure beside Create",
+    "Show encryption-in-progress feedback",
+    "Preserve invalid inputs for correction and retain an existing downloadable backup when validation fails",
+    "Report missing browser WebCrypto without exposing raw errors"
+  ],
+  "tests": {
+    "command": "npm run check",
+    "passed": 60,
+    "failed": 0,
+    "newBundledPageTests": 4,
+    "checks": [
+      "Invalid password length and mismatched passwords produce adjacent feedback",
+      "Completed encryption enables Download without exposing the generated key",
+      "Missing browser WebCrypto keeps Download disabled and gives adjacent feedback",
+      "Lock during encryption prevents late completion from enabling Download"
+    ]
+  },
+  "limitations": [
+    "Node VM with a minimal DOM harness; not a real browser execution or download test.",
+    "Disposable test inputs only; user password, key and backup were not accessed.",
+    "Original empty-state browser evidence predates this change.",
+    "No claim that the user-reported root cause is confirmed."
+  ],
+  "sha256": {
+    "scripts/supplier/browser.ts": "1680294a09a8605e5106a4e641e8f9ca85d0543044397cb413f8cc1e4718a1af",
+    "scripts/supplier/index.html": "d7d8cb3d5d0760c85c7ebf22b3eda446b4aa14c5d3f2f99aa85043f2fcfec67c",
+    "packages/vow-sdk/test/supplier-page.test.ts": "2a81c6c1f4835fa3e768e2216bd79f637cf4072db77a35e0cb2f62c608b49ee1",
+    "dist/supplier/browser.js": "62ca5d7b39285434ed01bec261191eba2f857250527867b9d1565615fb437c6c"
+  }
+}

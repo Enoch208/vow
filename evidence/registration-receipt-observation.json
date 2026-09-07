@@ -1,0 +1,110 @@
+{
+  "observedAt": "2026-09-07T17:01:54.737Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "transactionHash": "0x06d506d1f1d357a08852861b7c441ce1b05adc3b76479a5ee580ffdf1a3adada",
+  "blockNumber": 14510239,
+  "blockHash": "0x1e68de7b730c0c27620284fd18aa416fd914189f09c0716a52f12defea16edb",
+  "execution": "SUCCEEDED",
+  "finality": "ACCEPTED_ON_L2",
+  "type": "INVOKE",
+  "actualNetworkFeeSTRK": "2.885883499721302016",
+  "actualNetworkFeeFRI": "0x280cb7c0c00ca000",
+  "owner": "0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e",
+  "pool": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "ownerPublicPrivacyKey": "0x4c90d2c7c8f3e12d69cc42f9d77545d507079e389413fc5d961346b49f051db",
+  "registrationPublicKeyPresent": true,
+  "publicSTRKTransferEvents": [
+    {
+      "data": [
+        "0x53444835ec580000",
+        "0x0"
+      ],
+      "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "keys": [
+        "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+        "0x56a084ebadde03908e0649dbe2eeed03d4a367bfa5f68a55f305849c87203c7",
+        "0x127021a1b5a52d3174c2ab077c2b043c80369250d29428cee956d76ee51584f"
+      ]
+    },
+    {
+      "data": [
+        "0x53444835ec580000",
+        "0x0"
+      ],
+      "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "keys": [
+        "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+        "0x127021a1b5a52d3174c2ab077c2b043c80369250d29428cee956d76ee51584f",
+        "0xd79041634625e5288296fbc648088788710ba44903a3a49468a66567749e77"
+      ]
+    },
+    {
+      "data": [
+        "0x54a78dae49e20000",
+        "0x0"
+      ],
+      "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "keys": [
+        "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+        "0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e",
+        "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a"
+      ]
+    },
+    {
+      "data": [
+        "0x53444835ec580000",
+        "0x0"
+      ],
+      "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "keys": [
+        "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+        "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+        "0x127021a1b5a52d3174c2ab077c2b043c80369250d29428cee956d76ee51584f"
+      ]
+    },
+    {
+      "data": [
+        "0x53444835ec580000",
+        "0x0"
+      ],
+      "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "keys": [
+        "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+        "0x127021a1b5a52d3174c2ab077c2b043c80369250d29428cee956d76ee51584f",
+        "0x56be89cb8e575d0e7778b3c3192708aa2969c6f22ee8a40f7f5b0dee33ad589"
+      ]
+    },
+    {
+      "data": [
+        "0x280cb7c0c00ca000",
+        "0x0"
+      ],
+      "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "keys": [
+        "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+        "0x56a084ebadde03908e0649dbe2eeed03d4a367bfa5f68a55f305849c87203c7",
+        "0x1176a1bd84444c89232ec27754698e5d2e7e1a7f1539f12027f28b23ec9f3d8"
+      ]
+    }
+  ],
+  "limitations": [
+    "Single-provider accepted receipt and canonical block check.",
+    "No private balances or note ownership requested or verified.",
+    "Activation is a separate transaction; no full budget total yet.",
+    "Not a VOW collection."
+  ],
+  "transactionSender": "0x56a084ebadde03908e0649dbe2eeed03d4a367bfa5f68a55f305849c87203c7",
+  "ownerPublicSTRKDebited": "6.1",
+  "ownerPublicSTRKCredited": "0",
+  "ownerNetSTRKOutflow": "6.1",
+  "networkFeePayerIsOwner": false,
+  "networkFeeAccounting": "Receipt fee is charged to the transaction sender. Owner debit is separately measured from token events; do not add relayer gas again to owner outflow.",
+  "setupReceiptVerified": true,
+  "registrationEventVerified": {
+    "name": "ViewingKeySet",
+    "emitter": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+    "owner": "0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e",
+    "publicKey": "0x4c90d2c7c8f3e12d69cc42f9d77545d507079e389413fc5d961346b49f051db",
+    "encryptedEventDataOmitted": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "observedAt": "2026-09-07T17:04:49.392Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "transactionHash": "0x695348e21ed4c7644e8916a2bb91737a61d61a08548da35cab5dbb5f751debb",
+  "blockHash": "0x3f6ca73001afe85c4bf2cc14e38938d993c38fad0d747acb0720e32cbd6218",
+  "blockNumber": 14510220,
+  "contractAddress": "0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e",
+  "execution": "SUCCEEDED",
+  "finality": "ACCEPTED_ON_L2",
+  "actualNetworkFeeFRI": "0xc5f8c573f4c2e0",
+  "actualNetworkFeeSTRK": "0.055724097349665504",
+  "scope": "Public DEPLOY_ACCOUNT receipt; separate from Ready privacy registration and VOW deployment."
+}

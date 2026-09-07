@@ -1,0 +1,45 @@
+{
+  "scope": "Selected CollectionProbe guards only; not exhaustive mutation coverage.",
+  "mutations": [
+    {
+      "guard": "pool-only",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "supplier-signature",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "exact-funding",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "signature-expiry",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "deadline-extension",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "stale-allowance",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "claim-operation",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "reservation-id",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "owner-recovery-time",
+      "detectedByTestFailure": true
+    },
+    {
+      "guard": "owner-authority",
+      "detectedByTestFailure": true
+    }
+  ]
+}

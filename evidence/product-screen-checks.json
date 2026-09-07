@@ -1,0 +1,74 @@
+{
+  "observedAt": "2026-09-07T18:37:52Z",
+  "scope": "Local owner and operator product routes served read-only from scripts/app; no VowVault deployment, transaction or payment",
+  "tier": "local-model",
+  "routes": {
+    "server": "scripts/app/server.ts",
+    "entrypoint": "npm run app",
+    "origin": "http://127.0.0.1:4319",
+    "served": ["/", "/owner", "/operator"],
+    "readOnly": true,
+    "storesNothing": true
+  },
+  "typescriptAndHttpTests": {
+    "command": "npm run check",
+    "passed": 266,
+    "failed": 0,
+    "productScreenSubset": {
+      "command": "node --test packages/vow-sdk/test/app-screens.test.ts packages/vow-sdk/test/owner-page.test.ts packages/vow-sdk/test/operator-page.test.ts packages/vow-sdk/test/write-flow.test.ts",
+      "passed": 32,
+      "failed": 0,
+      "durationMs": 1526
+    },
+    "node": "v24.14.1"
+  },
+  "writeStateMachine": {
+    "states": ["READY", "SIGNING", "SUBMITTED", "CONFIRMED", "REJECTED", "REVERTED", "UNKNOWN"],
+    "timeoutIsUnknown": true,
+    "retryAllowedAfterAnyDispatch": false,
+    "lateWalletHashRecordedWithoutPromotion": true,
+    "preflightFailureNeverSigns": true
+  },
+  "ownerRoute": {
+    "publicPreviewShownBeforeCreation": true,
+    "encryptedBackupDownloaded": true,
+    "creationBlockedUntilDownloadedBackupRestoresPreviewedRoot": true,
+    "fiveSeparateTotals": ["Funded", "Available", "Reserved", "Paid", "Reclaimed"],
+    "mandateIdReadFromChainNeverTyped": true
+  },
+  "operatorRoute": {
+    "selectsCommittedPermissionObjectsOnly": true,
+    "supplierKeyTokenOrDeadlineInputPresent": false,
+    "requestDeadlineDerivedFromPermission": true,
+    "rootCheckedAgainstOnChainMandateBeforeSelection": true,
+    "consumedPermissionBlockedAtPreflight": true
+  },
+  "accessibility": {
+    "everyNonRadioControlHasALabel": true,
+    "singleH1PerPage": true,
+    "headingLevelsNeverSkip": true,
+    "focusVisibleOutlineNeverRemoved": true,
+    "minimumMeasuredTextContrastRatio": 4.5,
+    "method": "Static assertions over the shipped HTML and CSS in packages/vow-sdk/test/app-screens.test.ts"
+  },
+  "browserObservation": {
+    "status": "partial",
+    "tool": "Local in-app browser against http://127.0.0.1:4319",
+    "confirmed": [
+      "/ , /owner and /operator render and return 200",
+      "The absent deployment manifest is reported on both screens and every write control is disabled",
+      "The skip link receives a visible 3px focus outline on keyboard focus"
+    ],
+    "notConfirmed": [
+      "No end-to-end owner or operator flow was exercised in a real browser, because binding a mandate id requires a deployed VowVault and none exists",
+      "No wallet was connected, no signature requested and no transaction submitted"
+    ]
+  },
+  "limitations": [
+    "No dist/deployment/manifest.json is shipped; both screens load fail-closed and neither has produced a transaction.",
+    "The owner screen predicts the next mandate id by scanning public mandate reads. A concurrent create_mandate takes that id, and a permission set committed to the wrong mandate id can never be reserved against. The screen states this before creation; the contract exposes no next-mandate view that would remove the race.",
+    "Reservation reconciliation checks an accepted, non-reverted receipt in a block that still contains the transaction and a vault-emitted event of the expected name. It does not verify the full internal call path.",
+    "Page behaviour is asserted against a synthetic DOM and a synthetic RPC, not a live network.",
+    "Contrast is computed from the shipped CSS tokens; no assistive-technology or screen-reader pass was performed."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "wallet": {
+    "name": "Ready X",
+    "version": "5.33.9",
+    "transport": "injected"
+  },
+  "source": "user-supplied diagnostic output and screenshot",
+  "result": "REQUEST_FAILED",
+  "collection": "unverified",
+  "cause": "UNKNOWN_ERROR; underlying cause unverified",
+  "followUp": {
+    "change": "Replace empty-token balance probe with parameter-free wallet_supportedWalletApi. Empty token list can request all shielded balances; prior no-balances description was incorrect.",
+    "liveRetry": "pending"
+  },
+  "errorCode": 163
+}

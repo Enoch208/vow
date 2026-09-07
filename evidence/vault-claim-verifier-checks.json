@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-09-07T18:18:17Z",
+  "scope": "VowVault reservation claim route and logged-out public receipt verifier",
+  "tier": "local-model",
+  "requirementIds": [
+    "T-017"
+  ],
+  "tests": {
+    "command": "node --test packages/vow-sdk/test/prepared-claim.test.ts packages/vow-sdk/test/vault-collection.test.ts packages/vow-sdk/test/vault-collection-receipt.test.ts packages/vow-sdk/test/app-routes.test.ts",
+    "passed": 16,
+    "failed": 0
+  },
+  "fullCheck": {
+    "command": "npm run check",
+    "passed": 225,
+    "failed": 0
+  },
+  "contractTests": {
+    "command": "sh scripts/cairo.sh test",
+    "passed": 37,
+    "failed": 0
+  },
+  "liveReadOnly": {
+    "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+    "transactionHash": "0x39db0c00d44f27f2e22f02abad354fc93c32a8202b04e41291a990554d49d1e",
+    "transactionScope": "Real successful mainnet negative control; unrelated to VOW",
+    "verifierStatus": "mismatch",
+    "verifierReason": "VOW_COLLECTION_EVENTS_MISSING"
+  },
+  "coverage": [
+    "Reservation data and pinned classes are read before wallet preparation or supplier signature input is enabled",
+    "Arbitrary VowVault reservation IDs are bound into the prepared pool invocation",
+    "ReservationClaimed keys and data match the compiled VowVault ABI",
+    "Exact reservation state, pool deposit and token-pull trace are required for confirmation",
+    "Wrong and duplicate events, altered reservations, wrong classes and unrelated successful activity fail closed",
+    "Verifier route uses no wallet and preloads the real mainnet negative control"
+  ],
+  "limitations": [
+    "The pinned VowVault address is explicitly marked not deployed, and its collection controls remain disabled",
+    "Positive receipt and wallet paths use synthetic test data",
+    "The live rejection is a single-provider public observation, not VOW execution evidence",
+    "No note ownership, proof validity, VowVault deployment or supplier collection is verified"
+  ],
+  "sourceSha256": {
+    "packages/vow-sdk/src/vault-collection.ts": "31039fbd810292e24cb9c020182733c3ce639acc30c0d6d04d7f4d4d25f1fa0d",
+    "packages/vow-sdk/src/vault-collection-receipt.ts": "a77437a26dfbc32cf10e505d0f044538c9849c6a1b4a18cd5cebad1a67f1cf49",
+    "packages/vow-sdk/src/collection-receipt.ts": "154a480ed05e73cd35378d2445bc3fd3456afab43a8444c5d3d9285bff83b226",
+    "packages/vow-sdk/src/prepared-claim.ts": "06094994597a80e25f7ca044e35002c867105d133c406516ee2bbe65e71417f4",
+    "packages/vow-sdk/src/collection-session.ts": "bcabf02663ec11ee895c01d47ad433d35c96e4d41f92c1232f51fe37a48272bc",
+    "packages/vow-sdk/src/collection-dispatch.ts": "1ca1743fab12276de948166f02f24a7f40db73fe91637b1db76fecc661a1ee53",
+    "scripts/app/browser.ts": "93cf163d26d91c31c8350858bfb9114ebf0975fd16a96b6dee1d635afda8068b",
+    "scripts/app/collection.html": "5315a810ef20272c71b40bed237700ec7471b3d7721d6b018a32cb0c172f6722",
+    "scripts/app/server.ts": "33a404fc12d7b4df0175abd69da2ac6a723c3ef4431e66f88e6b2ad9c987ee40"
+  }
+}

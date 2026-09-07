@@ -1,0 +1,51 @@
+{
+  "observedAt": "2026-09-07T00:08:14.813575+00:00",
+  "sourceCommit": null,
+  "typescriptTestsPassed": 16,
+  "cairoTestsPassed": 17,
+  "selectedMutationsDetected": 10,
+  "checks": [
+    "npm run check",
+    "sh scripts/cairo.sh build",
+    "sh scripts/cairo.sh test",
+    "python3 scripts/mutate-collection.py"
+  ],
+  "reproduction": "Source-only temporary directory: fresh offline npm ci, typecheck/tests, Cairo build/tests; reused pinned installed toolchain and download caches.",
+  "limitations": [
+    "Local experiment only, not full VowVault.",
+    "No wallet or mainnet claim executed.",
+    "Selected mutation coverage is not exhaustive.",
+    "Source is uncommitted."
+  ],
+  "sha256": {
+    "contracts/Scarb.lock": "984423d94eba610df9f916e815f033a33bb4a719c937fdb3b1162c61b2128490",
+    "contracts/Scarb.toml": "6e7e94bf0de6afdfaa27cd192985d7563e416db067da4cdd4e2bdd6c3b9ecc58",
+    "contracts/src/claims.cairo": "d5daab5b4b52310b44ac1a086084f795d16630e887fa00458ce5991d6be00fb9",
+    "contracts/src/collection_probe.cairo": "05cef3739103100729550725f05589961c98e164fd556780ae8d918defd566dd",
+    "contracts/src/interfaces.cairo": "51b5bf2f066e6daa3040dcff263b62be5aa9a6a02a8be83a1ecf12bf0f475dd2",
+    "contracts/src/lib.cairo": "72442ffec3acc24d064e43239a3dc481a70f25cf0b4df83c158b61a57c4ef11c",
+    "contracts/tests/support/pool.cairo": "1211444efbad78ce0c089176775fcd982bf0ad0a356eaba40f0266f5d2b09c00",
+    "contracts/tests/support/token.cairo": "1f769883a574d3ac22eb6d2586684d535bd884722d458d4b7a333071e93af65d",
+    "contracts/tests/support.cairo": "590728c2579f56be2d00de9f5e18053192875bf344151b64bbac374415dd809b",
+    "contracts/tests/test_collection.cairo": "893465a8c6127e0037f81f69290dd74b52d5a5e8ffd0e0575c78bc280a23e3f6",
+    "contracts/tests/test_guards.cairo": "0bf1cfa0e7ac532814fa6b0e7612b86e0a43efbe007bd8796f74860293047151",
+    "contracts/tests/test_vectors.cairo": "582321cf51ce134a33877045762025789688b23ff725d19b5d19909a35f2fd1a",
+    "package-lock.json": "4a77c5e71a137b1e30e29518d563750b583010ae49c5b2d8f33afa9510753022",
+    "packages/vow-sdk/src/claims.ts": "2f573234b10b23ce2b4d21a822f0c1e6b9a08601b113214dfbf28afbe149d122",
+    "packages/vow-sdk/src/index.ts": "49170b28d51db968e72c1dbb4cf8bb566292b091f86fa4188eb0d53f98f96d09",
+    "packages/vow-sdk/src/integers.ts": "75d8e7fc97f73bc2019f0a6ba2d0bd569d609c01d65d653b2ca7d8309f0be429",
+    "packages/vow-sdk/src/pool-calldata.ts": "8d2c801be6b6920c35ac093532495c7175c83ccd09819a5889256217c0d33eec",
+    "packages/vow-sdk/src/prepared-claim.ts": "a2723a6f088fee56d54b686f663bd67ceac0100bec95fe9c7634cde4e7269bc5",
+    "packages/vow-sdk/src/wallet.ts": "059b183044d3af4983e6326a3f7da8636f346cdb218d359f6609e4f9bd5de945",
+    "packages/vow-sdk/test/claims.test.ts": "e77cd55a2753f5ae7be298cb56f2a16d9ceb76d470e84842d00615a4b540c95e",
+    "packages/vow-sdk/test/integers.test.ts": "cadba5bbbb2794806087f9617c3bf6d5a112015a1c4648cbe380e041124d56c6",
+    "packages/vow-sdk/test/pool-abi.test.ts": "ad67ae44150991f44220fb12cda65264e834016cb53912ef013844fd83d73ad4",
+    "packages/vow-sdk/test/prepared-claim.test.ts": "1777943ed3c5c998d93935294eafb8f3d1a3b509af0b92201d699bd3a0dba975",
+    "packages/vow-sdk/test/wallet.test.ts": "eb861eed4ebc5f27dd700eee75a2f34c05fd9c61c94f0a43479f4ed288041187",
+    "scripts/cairo.sh": "c8f1f9006a23c79c85d6d530f0718f7af82ea546f345445044c3133dd1043245",
+    "scripts/inspect-pool.ts": "5d04e611c4b30f502b8a782cd9bd4d23be9c98d8796cc8b82f77a2dde90345fb",
+    "scripts/install-cairo.py": "5803821863679692cde04aaf693a167198d125260b954f947d86922fae1cbecf",
+    "scripts/mutate-collection.py": "7669595360e3c9d1c3f9f1102ca4a6663dd62f8f880f43f975cf28ab7f9f7bdf",
+    "tsconfig.json": "e6b664f1cf6b9d08d8b4eb98fcd31343806944786a584952deabe9f5cacd9f84"
+  }
+}

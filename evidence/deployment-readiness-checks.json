@@ -1,0 +1,41 @@
+{
+  "observedAt": "2026-09-07T07:03:11.638251+00:00",
+  "scope": "Block-pinned public deployment prerequisites, exact owner deployment metadata and supplier-key-bound draft",
+  "tests": {
+    "command": "npm run check",
+    "passed": 73,
+    "failed": 0,
+    "newTests": 12
+  },
+  "liveReadEvidence": "evidence/deployment-readiness-observation.json",
+  "limitations": [
+    "Local activation-data tests use synthetic account metadata.",
+    "No live wallet activation-data response or browser verification of the new page.",
+    "No account activation, class declaration, probe deployment, funding or collection submitted.",
+    "No live fee estimate or budget sufficiency claim.",
+    "All release gates remain pending."
+  ],
+  "sha256": {
+    "packages/vow-sdk/src/probe-reader.ts": "b8773997a3958ff7e387f6caa95474e16e5e4b5f645d195ebd710539e5c43a78",
+    "packages/vow-sdk/src/deployment-readiness.ts": "d89f833bea34aa634378507360d65f208d4ee86338b289c3806336e725ce1c0d",
+    "packages/vow-sdk/src/account-deployment.ts": "d95c83adb1a57e097ac372cbc009e49aa7249b069bc7b16499bdf1fc5bc1b6a2",
+    "packages/vow-sdk/src/collection-wallet.ts": "3383316970117ac6fcceb766f87dfba3c538f8fbeae24364fde92e836b00703b",
+    "packages/vow-sdk/src/index.ts": "9f9618a434beeed73347d60ed5cdcc499a3f3a84511d0ef9d0e4d88ac1093384",
+    "scripts/inspect-deployment.ts": "f69f1d107b85b31e0ac572ccbb0cde7238cb1adf744461aa0e8d8d526c08da89",
+    "scripts/activation/browser.ts": "0e51bd2b8449e27cf61c3d729b23458b08b7253a2bb3b41436cd253504a7d158",
+    "scripts/activation/index.html": "4b3860c09e27d90755fee2da03d0b57e78a413d01fcb7f9f369d06ade995bc51",
+    "scripts/diagnostic/server.ts": "85b9775c7f210b8d50652423c4b5335530e59233d5ab53293c204616aee55163",
+    "scripts/build-collection.ts": "115d1d1db3b2cb05bb74a1d3d3b91f49bdf8c6c09de5acbf8f53d7db74f38792",
+    "scripts/supplier/browser.ts": "7af87c3e3b6095556eb702e5c9a508b3c693bf0a664df7b0467636a0c18644c6",
+    "packages/vow-sdk/test/deployment-readiness.test.ts": "12f42e6db11b67c9aa7664a396486d36b17b052a964a8056ff73b1f7dedf7e4e",
+    "packages/vow-sdk/test/probe-reader.test.ts": "7f0644f7a52e7137db0d6d4796ed4d214b36837922e9b3b8d09070169997a8dc",
+    "packages/vow-sdk/test/account-deployment.test.ts": "991b33411dcdb8121fbda10fe776900c716f8d855eb0ad502fe0c14f7d63cbd2",
+    "packages/vow-sdk/test/diagnostic-server.test.ts": "45e1eae9a3b4fb7656b1102571fce85426983a099ddfed366c2fb3bfb3032a82",
+    "packages/vow-sdk/test/helpers/collection.ts": "dfa875d21ea3485aed0d57600a52696e20929315e0c61aede44eac5cda0be7ff"
+  },
+  "walletObservation": {
+    "source": "User-provided page result",
+    "initialRead": "Refused without numeric error code or metadata",
+    "change": "User-triggered connection now verifies selected public account before requesting deployment data; live retry pending."
+  }
+}

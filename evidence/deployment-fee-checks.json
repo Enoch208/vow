@@ -1,0 +1,48 @@
+{
+  "observedAt": "2026-09-07T07:23:50.991861+00:00",
+  "scope": "Unsigned deployment fee query and preliminary live activation estimate",
+  "tests": {
+    "command": "npm run check",
+    "passed": 77,
+    "failed": 0,
+    "newTests": 4
+  },
+  "liveEvidence": "evidence/activation-fee-observation.json",
+  "combinedQuery": {
+    "status": "simulation-succeeded",
+    "evidence": "evidence/deployment-fee-observation.json",
+    "approval": "User explicitly authorized compiled-contract and public-term disclosure to Lava solely for fee estimation",
+    "submittedTransactions": 0,
+    "attempts": [
+      {
+        "status": "rejected",
+        "rpcCode": -32602,
+        "reason": "Decimal execute calldata supplied where hexadecimal expected"
+      },
+      {
+        "status": "rejected",
+        "rpcCode": 41,
+        "transactionIndex": 2,
+        "reason": "ABI spacing altered declared class identity; exact probe class unavailable in simulated deployment"
+      },
+      {
+        "status": "succeeded",
+        "encoding": "Hexadecimal calldata and canonical ABI serialization"
+      }
+    ]
+  },
+  "limitations": [
+    "Signature validation skipped; no spending caps established.",
+    "A timestamped USD quote values only the three estimated stages.",
+    "Funding, registration, collection, protocol fees and recovery remain unknown.",
+    "No value moved or deployment performed."
+  ],
+  "sha256": {
+    "packages/vow-sdk/src/deployment-fee-query.ts": "ea2d5a9ff1098be45736d6cb01ab55a72a7c905f5c079316147b8f0d0490ad16",
+    "packages/vow-sdk/test/deployment-fee-query.test.ts": "4488c34ba3409bc6250e3cfc83147f3e494863a23eca12c2b65b591b99671ebe",
+    "packages/vow-sdk/src/index.ts": "ac22c0baa58ac7dd918e340a1194e9ce6afeffc4199a74f746b3ac8bcc2b473c",
+    "scripts/preview-fees.ts": "e971c947974b6d1fd2df372903191008b5c8bee3ed1447023a18b5f7688476de",
+    "packages/vow-sdk/src/deployment-readiness.ts": "891bf65bfa73fbf467ba249f77fcd17f7a0366e67fc35a46d31626140bab7856",
+    "packages/vow-sdk/test/deployment-readiness.test.ts": "af9b366559c0dec4cbca14fcae19f291740b1772edf623df691e5500d5f0d99b"
+  }
+}

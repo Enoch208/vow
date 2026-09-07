@@ -1,0 +1,28 @@
+{
+  "observedAt": "2026-09-07T17:10:31.467468+00:00",
+  "scope": "Registered-wallet preparation milestone",
+  "tests": {
+    "fullSuitePassed": 137,
+    "typescriptBuildPassed": true,
+    "liveLoopbackPageAndDraftChecked": true,
+    "realBrowserRun": false,
+    "cairoContractChanged": false
+  },
+  "files": {
+    "packages/vow-sdk/src/deployment-fee-query.ts": "8e5f0846c04d70f59d780d820bd44b459dc3b54552f6df0d8a8e923ec21ab19a",
+    "packages/vow-sdk/src/collection-dispatch.ts": "1ca1743fab12276de948166f02f24a7f40db73fe91637b1db76fecc661a1ee53",
+    "scripts/deployment/review.ts": "dd474ddaccb9bdc013914879044adeee90ec0dbc68d6da998b4469191f99cb60",
+    "scripts/deployment/index.html": "4c4b2500389cf0221d8f60e30bca60b43957b561a15bac46c77ea8d22754348b",
+    "scripts/diagnostic/server.ts": "7253b8d73580d90d5b89b8ac15ee16e225b5d7f5372be3c879d60166f0d211dc"
+  },
+  "evidence": [
+    "evidence/registration-receipt-observation.json",
+    "evidence/owner-activation-receipt.json",
+    "evidence/registered-deployment-fee-observation.json"
+  ],
+  "limitations": [
+    "No VOW declaration, deployment, funding or collection executed.",
+    "Collection dispatch SDK only; UI signing/submission integration unfinished.",
+    "Complete budget, final wallet fee limits and actual proof flow remain unverified."
+  ]
+}

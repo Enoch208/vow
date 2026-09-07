@@ -1,0 +1,91 @@
+{
+  "observedAt": "2026-09-07T10:51:19.562Z",
+  "scope": "Exact collection submission review, durable recovery journal, read-only workbench recovery and replacement RPC",
+  "tier": "local-model",
+  "requirementIds": [
+    "T-006",
+    "T-017",
+    "T-018"
+  ],
+  "tests": {
+    "command": "npm run check",
+    "passed": 112,
+    "failed": 0,
+    "newTests": 17,
+    "outputSha256": "6b5a3df6354500e2ff5c02b080e699542d62478df184eecc77170b45a0cec5eb"
+  },
+  "validation": {
+    "locking": "Native Node Web Locks with simulated storage and dispatcher callbacks",
+    "ui": "Direct DOM-harness event tests and local HTTP boundary tests; no external browser run",
+    "contract": "Unchanged Cairo source/build; prior18 Cairo tests not rerun"
+  },
+  "fixes": [
+    "Receipt trace now requires actual pool apply_actions selector; previous synthetic fixture incorrectly used invoke",
+    "Rejected lock operations use an async callback so native Node locks are released reliably",
+    "Receipt input/configuration edits discard stale displayed or late asynchronous results"
+  ],
+  "liveReadOnly": {
+    "retiredLava": {
+      "endpoint": "https://rpc.starknet.lava.build",
+      "chainIdResponded": true,
+      "blockReadHttpStatus": 410,
+      "response": {
+        "error": "This endpoint has been discontinued.",
+        "message": "For an up to date list of available endpoints, visit https://gateway.lavanet.xyz"
+      }
+    },
+    "replacement": {
+      "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+      "blockNumber": 14500259,
+      "readinessEvidence": "evidence/replacement-rpc-readiness.json",
+      "negativeControlEvidence": "evidence/unrelated-receipt-observation.json",
+      "negativeControlResult": "VOW_COLLECTION_EVENTS_MISSING"
+    },
+    "feeDisclosure": {
+      "status": "awaiting-user-approval",
+      "destination": "https://api.cartridge.gg/x/starknet/mainnet",
+      "preparedQueryBytes": 209099,
+      "preparedQuerySha256": "14a8d2ccb514ce5725d44c8cc8c159d2b210a03fc2b8a0700f3c094b7f3d977d",
+      "stages": [
+        "accountActivation",
+        "classDeclaration",
+        "probeDeployment",
+        "funding"
+      ],
+      "transmitted": false
+    }
+  },
+  "limits": [
+    "Network fee limits require manual wallet confirmation because wallet API0.10.3 has no dapp fee-cap field",
+    "Workbench has no transaction submission button and creates no journal records",
+    "Browser reload/cross-tab storage behavior has not been tested in a real browser",
+    "Recovery coordination requires cooperating clients on the same origin with retained storage",
+    "No VOW deployment, real collection, full budget validation or G0 pass"
+  ],
+  "sources": [
+    "https://github.com/starkware-libs/starknet-specs/blob/v0.10.3/wallet-api/wallet_rpc.json",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API",
+    "https://docs.starknet.io/build/starkzap/configuration"
+  ],
+  "sourceSha256": {
+    "packages/vow-sdk/src/submission-journal.ts": "47105f863bb755d5120469c9c0e76451208b733c19b21376a88338f270e80afd",
+    "packages/vow-sdk/src/journaled-submission.ts": "22b344a2d4e91f1e07ff8809ff6f3e8d7b1d4542af536888e03af72c2916c2f4",
+    "packages/vow-sdk/src/collection-submission.ts": "7cee6dfe9cf2054de54a4f94fbbe6c3070249463a59134e994afec64812a761f",
+    "packages/vow-sdk/src/collection-trace.ts": "d63f5882c8ce12f18a6baf2d1bea89b7d8c5b34c7437ca6fb769a004b465ab19",
+    "packages/vow-sdk/src/rpc-endpoint.ts": "9bb388ccb21628c3bdef1ea8f5166c81a4e793ea68115d28555096d9036ccd05",
+    "packages/vow-sdk/src/index.ts": "020de5c32c5fc818a394a01c8ede21cddeb872b66800f17c368c58cb9b34546d",
+    "packages/vow-sdk/test/submission-journal.test.ts": "007dd8b5136b7db54d029b5aa3101a1e1bff11a41285dfcab259efb3987f467e",
+    "packages/vow-sdk/test/collection-submission.test.ts": "4fc2a075dc5222f629a08c428673cf17ce09639a3c892ef6a35dfdaa75896a2a",
+    "packages/vow-sdk/test/collection-recovery-page.test.ts": "5f02476722f946d36cbcbe83fe75971b538beb5a5de90f9c8cc7cc77ccad184f",
+    "packages/vow-sdk/test/collection-receipt.test.ts": "f1e41b6f74035ceacd1ac996872686271f694f267a10ee4536aca290e56b27a7",
+    "packages/vow-sdk/test/helpers/receipt.ts": "212e620e4e88590c6fefc27b7857c06fc7e0ae569ebe8ab051f9d36001124023",
+    "packages/vow-sdk/test/diagnostic-server.test.ts": "4dc337bc86192f3c525c00da5a18b21f49a76d04700593fc8c1cd762c1903a80",
+    "scripts/collection/recovery.ts": "27ddb974a7f53088378a815a1555d66bd30df42587a63e2dd4378b776534e7de",
+    "scripts/collection/browser.ts": "d3dbd312a753e060c2b2bbb01c0154600aebec3dc7c8bd14be81bd6601c4e99d",
+    "scripts/collection/index.html": "0d07c4f1f195c41eb947520e23c29aba1ef1f620b0832fbcb6f4d0e7aa731b89",
+    "scripts/diagnostic/server.ts": "50b5563119782a4b148ce9d4b944b333709688513a1c1f2b173c04448d397b6c",
+    "scripts/verify-collection.ts": "5b6b3e0f5b6f8541fefefe1e63ada5f6b7b7822f78e48c45cd573bc7a0701484",
+    "scripts/inspect-deployment.ts": "4e1fa61a4243e0499660b088a88af637129b00efbf904e142455f85bf1613cd7",
+    "scripts/inspect-pool.ts": "5a0d40a00ff1186dfaf854d0d441c47382f6f3dfd9ddf82df3ef064f02a79425"
+  }
+}

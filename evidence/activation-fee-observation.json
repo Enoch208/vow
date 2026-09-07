@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-09-07T07:08:40.425Z",
+  "endpoint": "https://rpc.starknet.lava.build",
+  "block": {
+    "hash": "0x46a3ed75a74e3e81ce06b1cd752a49784908acffd0741618844e6481ac23b28",
+    "number": 14493757,
+    "timestamp": 1788764914
+  },
+  "scope": "Unsigned account activation estimate only; SKIP_VALIDATE; no transaction submitted",
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+      {
+        "l1_data_gas_consumed": "0x160",
+        "l1_data_gas_price": "0x727a6581b",
+        "l1_gas_consumed": "0x0",
+        "l1_gas_price": "0x4d9ff3dd85af",
+        "l2_gas_consumed": "0x1d3e30",
+        "l2_gas_price": "0x6a7e04746",
+        "overall_fee": "0xc2ac2662f77640",
+        "unit": "FRI"
+      }
+    ]
+  },
+  "parsed": [
+    {
+      "overallFeeFRI": "54795426350986816",
+      "resources": [
+        {
+          "name": "l1_gas",
+          "consumed": "0",
+          "price": "85349386519983"
+        },
+        {
+          "name": "l2_gas",
+          "consumed": "1916464",
+          "price": "28586297158"
+        },
+        {
+          "name": "l1_data_gas",
+          "consumed": "352",
+          "price": "30729984027"
+        }
+      ],
+      "validation": "skipped",
+      "spendingCap": null
+    }
+  ]
+}

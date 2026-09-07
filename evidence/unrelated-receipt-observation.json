@@ -1,0 +1,19 @@
+{
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "observedAt": "2026-09-07T13:27:23.708Z",
+  "scope": "Negative control using an unrelated public successful mainnet transaction and synthetic expected note ID 1; not a VOW execution.",
+  "receiptExecution": "SUCCEEDED",
+  "receiptFinality": "ACCEPTED_ON_L2",
+  "report": {
+    "transactionHash": "0x39db0c00d44f27f2e22f02abad354fc93c32a8202b04e41291a990554d49d1e",
+    "status": "mismatch",
+    "reason": "VOW_COLLECTION_EVENTS_MISSING",
+    "blockHash": null,
+    "finality": null,
+    "events": "unverified",
+    "callPath": "unverified",
+    "noteOwnership": "unverified",
+    "retryAllowed": false,
+    "source": "single-rpc-observation"
+  }
+}

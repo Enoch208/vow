@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-09-07T18:16:11.834Z",
+  "endpoint": "https://api.cartridge.gg/x/starknet/mainnet",
+  "requestSha256": "401bf722e18faf12581884c6aae71b1eb4db04bc61af372f60fe01f6c9cae4e3",
+  "httpStatus": 200,
+  "scope": "Unsigned two-stage fee estimate for VowVault class declaration and deployment. No transaction was signed or submitted.",
+  "pinnedBlock": {
+    "blockNumber": 14516803,
+    "blockHash": "0x605d7bbe661cbf3ddbdaaa7d1a1acb97619940b2f233a88f6a21b0f92a07b3c",
+    "starknetVersion": "0.14.3"
+  },
+  "owner": "0x5282ba58af3296b7c6bdb51dfb12789cbf4603799e7fc8baef6a9704de1679e",
+  "ownerNonce": "0x1",
+  "vaultClassHash": "0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14",
+  "compiledClassHash": "0x2087a8efc270aca5965055f22568a72a058df02fc373fc333386e130b17253b",
+  "predictedVault": "0x7b987f62b815591235b9ed10b6ce6cc6c32011cdd2d95025ec1052905f45065",
+  "pool": "0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "salt": "0x1a93efd6b0891a2f32c5591e128ed24d49db452aced30fc2e23adcc9b52b1e",
+  "stages": [
+    {
+      "stage": "classDeclaration",
+      "feeFRI": "25714301449410691072",
+      "feeSTRK": "25.714301449410690736"
+    },
+    {
+      "stage": "vaultDeployment",
+      "feeFRI": "58440214916782336",
+      "feeSTRK": "0.058440214916782335"
+    }
+  ],
+  "subtotalFRI": "25772741664327473408",
+  "subtotalSTRK": "25.772741664327476485",
+  "ownerBalanceSTRK": "185.215476422650334496",
+  "validation": "skipped",
+  "limitations": [
+    "Single provider observation from one RPC endpoint.",
+    "Signature validation was skipped; a signed transaction may cost more.",
+    "Covers class declaration and vault deployment only. Mandate creation, funding, reservation and supplier collection are NOT included.",
+    "Fees change between blocks. This is not an execution price.",
+    "No transaction was signed or submitted; VowVault remains undeclared."
+  ],
+  "observationType": "live-mainnet-unsigned-estimate",
+  "deploymentStatus": "VowVault is NOT declared and NOT deployed on any network.",
+  "declarePayload": {
+    "sizeKB": 357.05,
+    "fields": [
+      "sierra_program",
+      "contract_class_version",
+      "entry_points_by_type",
+      "abi"
+    ],
+    "note": "Sierra debug identifiers are disabled and sierra_program_debug_info is stripped. Neither is part of the class hash; the declared class hash is unchanged from the estimated one."
+  },
+  "classHashIntegrity": "The shipped declare payload is recomputed at build time and must hash to the declared class hash, or the build fails."
+}
