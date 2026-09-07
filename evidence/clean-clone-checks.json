@@ -1,6 +1,6 @@
 {
-  "observedAt": "2026-09-07T19:08:06Z",
-  "sourceCommit": "2a7b7a5451601a925f38bffb191e84e949f90fbb",
+  "observedAt": "2026-09-07T21:47:56Z",
+  "sourceCommit": "235b3c6e3955a70b6bd4b7dce8676cf77e819220",
   "scope": "T-020 clean-clone release gate",
   "environment": {
     "system": "Darwin",
@@ -23,29 +23,29 @@
   },
   "contractBuild": {
     "passed": true,
-    "reportedSeconds": 18
+    "reportedSeconds": 8
   },
   "cairoTests": {
-    "passed": 38,
+    "passed": 40,
     "failed": 0,
     "ignored": 0,
     "filteredOut": 0
   },
   "sdkTests": {
-    "passed": 267,
+    "passed": 290,
     "failed": 0,
     "cancelled": 0,
     "skipped": 0,
     "todo": 0,
-    "durationMilliseconds": 9140.295
+    "durationMilliseconds": 13967.786709
   },
   "evidenceVerification": {
-    "claims": 20,
-    "jsonFiles": 38,
-    "claimReferences": 118,
-    "recordedSourceHashes": 235
+    "claims": 22,
+    "jsonFiles": 44,
+    "claimReferences": 121,
+    "recordedSourceHashes": 238
   },
-  "elapsedSeconds": 43.44,
+  "elapsedSeconds": 45.39,
   "result": "passed",
   "limitations": [
     "The clean source checkout was cloned locally from the recorded commit.",
@@ -56,6 +56,6 @@
   "sourceSha256": {
     "scripts/clean-clone-ci.sh": "f1d79f0438ed80c0822d39b4d7b0573d11647c8625639515569c4a5da09a8b99",
     "scripts/verify-evidence.mjs": "df684116e660b40f287070dd6853bcfadd93242905c2b2ae2b2ad8cf32773ea4",
-    "package.json": "6b594b5ae81c4b5372e426ee684d806289d95bb385f4bca3d5179890afe35485"
+    "package.json": "2228fc268a50c036df879d6c0db5be28e8f13fc60ab13e79f3026748e787c383"
   }
 }

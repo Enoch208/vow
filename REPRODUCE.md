@@ -20,11 +20,9 @@ VOW_CAIRO_ARCHIVE_CACHE=/path/to/cache npm run ci:clean
 
 The cache directory must contain `scarb.tar.gz`, `foundry.tar.gz`, and `usc.tar.gz`. The bootstrap checks the pinned SHA-256 digest of each archive before extraction. Without this variable, it downloads the same pinned releases.
 
-The recorded macOS Apple Silicon run used the archive cache and completed in 43.44 seconds. It installed 56 packages, audited 57 packages with 0 vulnerabilities reported, built the Cairo target in 18 seconds, passed 38 Cairo tests and 267 SDK tests, and verified 20 claims across 38 JSON files. See [clean-clone evidence](evidence/clean-clone-checks.json). This remains a local, cache-assisted reproduction rather than a fresh-machine or independent result, and it predates the live deployment.
+The recorded macOS Apple Silicon run tested commit `235b3c6e3955a70b6bd4b7dce8676cf77e819220` with the archive cache and completed in 45.39 seconds. It installed 56 packages, audited 57 packages with 0 vulnerabilities reported, built the Cairo target in 8 seconds, passed 40 Cairo tests and 290 SDK tests, and verified 22 claims across 44 JSON files with 121 claim references and 238 recorded source hashes. See [clean-clone evidence](evidence/clean-clone-checks.json). This remains a local, cache-assisted reproduction rather than a fresh-machine or independent result.
 
-The worktree checks must be rerun and recorded after the compatibility patch freezes. Worktree results do not replace T-020 clean-clone evidence and do not satisfy a product release gate.
-
-T-020 always tests the committed `HEAD`, not uncommitted working-tree files. Run `git status --short` first and commit the intended release through the normal reviewed process before treating this gate as evidence for that release.
+T-020 always tests the committed `HEAD`, not uncommitted working-tree files. Run `git status --short` first and commit the intended release through the normal reviewed process before treating this gate as evidence for that release. The evidence-refresh commit that records a run necessarily follows the tested source commit; it changes only public documentation and evidence records.
 
 ## Manual worktree checks
 

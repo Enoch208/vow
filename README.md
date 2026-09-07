@@ -284,7 +284,7 @@ The presentation defaults its functional links to the local product origin. Set 
 | `npm --prefix web run check` | Presentation tests, lint, typecheck and static build |
 | `npm run ci:clean` | Release-blocking T-020 against committed files in a temporary clean clone |
 
-The clean-clone gate must be refreshed after the final compatibility and documentation commits. Worktree passes do not replace committed-HEAD evidence, and local passes do not turn an unresolved collection into a release-gate pass.
+The recorded clean-clone gate passed against the final source and mainnet-evidence commit. Its documentation-only evidence refresh follows the tested commit, as explained in [REPRODUCE.md](REPRODUCE.md). Local passes do not turn an unresolved collection into a release-gate pass.
 
 ## Known limitations
 

@@ -410,7 +410,7 @@
       "id": "CLEAN-CLONE-CI",
       "claim": "The committed T-020 gate reproduces the contract build, Cairo tests, SDK tests and public evidence verification from a clean source clone.",
       "tier": "local-contract-test",
-      "sourceCommit": "2a7b7a5451601a925f38bffb191e84e949f90fbb",
+      "sourceCommit": "235b3c6e3955a70b6bd4b7dce8676cf77e819220",
       "evidence": [
         "scripts/clean-clone-ci.sh",
         "scripts/verify-evidence.mjs",
