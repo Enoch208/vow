@@ -5,6 +5,7 @@ import { hash } from 'starknet';
 import { readCollectionReceipt } from '../src/collection-receipt.ts';
 import type { PublicReader, PublicReadMethod } from '../src/probe-reader.ts';
 import { POOL_CLASS_HASH } from '../src/prepared-claim.ts';
+import { PublicReadError } from '../src/probe-reader.ts';
 import type { VaultDeploymentManifest } from '../src/vault-collection.ts';
 
 const manifest: VaultDeploymentManifest = { chainId: 0x534e5f4d41494en, vaultAddress: 56n, vaultClassHash: 1234n, poolAddress: 55n,
@@ -57,6 +58,8 @@ test('T-017 VowVault receipt requires ReservationClaimed, matching reservation s
   assert.equal(report.reservationId, reservationId); assert.equal(report.mandateId, mandateId);
   assert.equal(report.noteId, noteId); assert.equal(report.token, token); assert.equal(report.amount, amount);
   assert.equal(report.signatureDeadline, signatureDeadline); assert.equal(report.noteOwnership, 'unverified');
+  assert.deepEqual([report.vaultClass, report.poolClass, report.claimEvent, report.poolDeposit, report.reservationState, report.tokenPull],
+    ['matched', 'matched', 'matched', 'matched', 'matched', 'matched']);
   assert.equal(f.calls.filter((call) => call.method === 'starknet_getBlockWithTxHashes').length, 2);
 });
 
@@ -75,6 +78,7 @@ test('T-017 successful unrelated STRK20 activity is rejected as VOW evidence', a
   f.receipt.events.shift();
   const report = await readCollectionReceipt(f.reader, manifest, transactionHash);
   assert.equal(report.status, 'mismatch'); assert.equal(report.reason, 'VOW_COLLECTION_EVENTS_MISSING');
+  assert.equal(report.blockHash, 0x987n); assert.equal(report.finality, 'ACCEPTED_ON_L2');
   assert.equal(f.calls.some((call) => call.method === 'starknet_traceTransaction'), false);
 });
 
@@ -85,6 +89,10 @@ test('T-017 wrong reservation, duplicate claim event, wrong note and altered tra
     (f) => { f.receipt.events[1]!.keys[3] = hex(noteId + 1n); },
     (f) => { f.receipt.events.reverse(); },
     (f) => { f.callback.calldata[1] = hex(reservationId + 1n); },
+    (f) => { f.callback.calldata[2] = hex(noteId + 1n); },
+    (f) => { f.callback.calldata[3] = hex(2001n); },
+    (f) => { f.callback.calldata[4] = hex(0n); },
+    (f) => { f.callback.calldata[5] = hex(0n); },
     (f) => { f.pull.calldata[1] = hex(manifest.poolAddress + 1n); },
   ];
   for (const mutate of mutations) {
@@ -102,5 +110,20 @@ test('T-017 verifier pins VowVault and pool classes at the receipt block', async
       return f.reader.request(method, params);
     } }, manifest, transactionHash);
     assert.equal(report.status, 'mismatch'); assert.equal(report.reason, 'VOW_CLASS_CHANGED');
+  }
+});
+
+test('T-017 missing or timed-out RPC evidence is UNKNOWN and never a pass or fail', async () => {
+  const methods = ['starknet_chainId', 'starknet_getTransactionReceipt', 'starknet_getBlockWithTxHashes', 'starknet_getClassHashAt',
+    'starknet_call', 'starknet_traceTransaction'] as const;
+  for (const unavailable of methods) {
+    const f = fixture();
+    const report = await readCollectionReceipt({ request: async (method, params) => {
+      if (method === unavailable) throw new PublicReadError();
+      return f.reader.request(method, params);
+    } }, manifest, transactionHash);
+    assert.equal(report.status, 'unknown', unavailable);
+    assert.equal(report.retryAllowed, false, unavailable);
+    assert.notEqual(report.reason, 'VOW_COLLECTION_CONFIRMED', unavailable);
   }
 });

@@ -25,6 +25,7 @@ class Cursor {
   end(): void {
     if (this.position !== this.data.length) throw new Error('VOW_TRAILING_CALLDATA');
   }
+  atEnd(): boolean { return this.position === this.data.length; }
 }
 
 export function decodePoolActions(input: unknown): readonly PoolAction[] {
@@ -38,11 +39,13 @@ export function decodePoolActions(input: unknown): readonly PoolAction[] {
   const cursor = new Cursor(data);
   const count = Number(bounded(cursor.read(), 128n, 'ACTION_COUNT', 1n));
   const actions = Array.from({ length: count }, () => decodeAction(cursor));
-  const screening = cursor.read();
-  if (screening === 0n) {
-    bounded(cursor.read(), U64_MAX, 'SCREENING_TIME');
-    cursor.skip(2);
-  } else if (screening !== 1n) throw new Error('VOW_INVALID_SCREENING');
+  if (!cursor.atEnd()) {
+    const screening = cursor.read();
+    if (screening === 0n) {
+      bounded(cursor.read(), U64_MAX, 'SCREENING_TIME');
+      cursor.skip(2);
+    } else if (screening !== 1n) throw new Error('VOW_INVALID_SCREENING');
+  }
   cursor.end();
   return actions;
 }

@@ -30,11 +30,13 @@ test('T-015 decoder resolves note from the exact pinned pool action structure', 
   assert.equal(claim.amount, 100n);
 });
 
-test('T-015 every truncation and trailing data is rejected', () => {
+test('T-015 every truncation is rejected except the optional screening suffix', () => {
   const full = payload();
-  for (let length = 0; length < full.call.calldata.length; length++) {
+  const actionsEnd = full.call.calldata.length - 1;
+  for (let length = 0; length < actionsEnd; length++) {
     assert.throws(() => decodePreparedProbeClaim({ ...full, call: { ...full.call, calldata: full.call.calldata.slice(0, length) } }, expected));
   }
+  decodePreparedProbeClaim({ ...full, call: { ...full.call, calldata: full.call.calldata.slice(0, actionsEnd) } }, expected);
   full.call.calldata.push('0');
   assert.throws(() => decodePreparedProbeClaim(full, expected), /TRAILING/);
 });
@@ -57,7 +59,7 @@ test('T-016 final preparation must preserve the signed destination and signature
   assert.throws(() => decodePreparedProbeClaim(payload({ signature: [123n, 457n] }), expected, signature), /CALL_MISMATCH/);
   const actions = buildProbeClaimActions(expected.claim, 333n, signature);
   assert.equal(actions[1]?.type, 'invoke');
-  if (actions[1]?.type === 'invoke') assert.equal(actions[1].calldata[2], '0x309');
+  if (actions[1]?.type === 'invoke') assert.equal(actions[1].calldata[2], '${openNoteIds[0]}');
 });
 
 test('T-015 extra transfers must be limited to the approved fee collector and budget', () => {
@@ -75,4 +77,14 @@ test('VowVault preparation binds an arbitrary reservation ID without weakening p
   assert.equal(actions[1]?.type, 'invoke');
   if (actions[1]?.type === 'invoke') assert.equal(actions[1].calldata[1], '0x123');
   assert.throws(() => decodePreparedProbeClaim(prepared, vaultExpected), /PROBE_IDS/);
+});
+
+test('T-015 the open-note placeholder sits where the deployed vault reads it and a note-last layout is rejected', () => {
+  const actions = buildClaimActions(expected.claim, 333n);
+  assert.equal(actions[1]?.type, 'invoke');
+  if (actions[1]?.type !== 'invoke') return;
+  assert.equal(actions[1].calldata[2], '${openNoteIds[0]}');
+  const legacy = payload();
+  legacy.call.calldata.splice(15, 6, String(operation), '1', '1900', '0', '0', '777');
+  assert.throws(() => decodePreparedClaim(legacy, expected), /CALL_MISMATCH/);
 });

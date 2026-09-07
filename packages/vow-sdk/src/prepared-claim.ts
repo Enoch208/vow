@@ -72,7 +72,8 @@ export function buildClaimActions(
   return [
     { type: 'transfer', token: hex(claim.token), amount: 'OPEN', recipient: hex(recipient) },
     { type: 'invoke', contract: hex(claim.vaultAddress), calldata: [
-      hex(CLAIM_OPERATION), hex(claim.reservationId), signature ? hex(claim.outputNoteId) : '${openNoteIds[0]}',
+      hex(CLAIM_OPERATION), hex(claim.reservationId),
+      '${openNoteIds[0]}',
       hex(claim.signatureDeadline), hex(signature?.r ?? 0n), hex(signature?.s ?? 0n),
     ] },
   ];

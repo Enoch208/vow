@@ -119,6 +119,8 @@ test('T-017 trace rejects wrong caller, class, signature terms, transfer destina
     (f) => { f.callback.call_type = 'DELEGATE'; },
     (f) => { f.callback.calldata[2] = '0x999'; },
     (f) => { f.callback.calldata[3] = '0x999'; },
+    (f) => { f.callback.calldata[4] = '0x0'; },
+    (f) => { f.callback.calldata[5] = '0x0'; },
     (f) => { f.callback.result[3] = '0x999'; },
     (f) => { f.pool.class_hash = '0x999'; },
     (f) => { f.pull.calldata[1] = '0x999'; },
