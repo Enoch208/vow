@@ -158,7 +158,7 @@ async function initializeClaim(app: AppDeployment, reservationId: bigint): Promi
           verifyLink.href = `/verify/${hex(result.transactionHash)}`; verifyLink.hidden = false;
           submissionStatus.textContent = 'Transaction submitted. Confirmation is still pending; verify the public receipt before treating the collection as complete.';
         } else submissionStatus.textContent = 'Submission outcome is unknown. Do not retry; reconcile the saved attempt and wallet activity first.';
-      } catch { submissionStatus.textContent = 'Submission stopped or remains unresolved. Do not retry until the saved attempt and wallet activity are reconciled.'; }
+      } catch (error: unknown) { submissionStatus.textContent = publicFailure(error, 'Submission stopped or remains unresolved. Do not retry until the saved attempt and wallet activity are reconciled.'); }
       finally { busy = false; }
     })();
   });
