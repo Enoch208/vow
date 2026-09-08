@@ -70,16 +70,20 @@ test('T-APP-1 release surfaces pin one deployment and report zero qualifying col
     assert.match(surface, /0 of 5|zero of five/i, `surface ${index}`);
   }
   const submission = JSON.parse(await readFile(`${root}strk20.json`, 'utf8')) as {
-    transactions: { stage: string }[];
+    transactions: string[];
+    transactionDetails: { stage: string; hash: string }[];
     contracts: Record<string, unknown>[];
     note: string;
   };
   const allowed = ['create_mandate', 'approve', 'fund_mandate', 'reserve', 'expire_reservation'];
   assert.equal(submission.transactions.length > 0, true);
-  for (const { stage } of submission.transactions) {
+  assert.equal(submission.transactions.length, submission.transactionDetails.length);
+  for (const hash of submission.transactions) assert.match(hash, /^0x[0-9a-f]{64}$/);
+  assert.deepEqual(submission.transactions, submission.transactionDetails.map(({ hash }) => hash));
+  for (const { stage } of submission.transactionDetails) {
     assert.equal(allowed.includes(stage), true, `unexpected submitted stage ${stage}`);
   }
-  assert.equal(submission.transactions.some(({ stage }) => /collect|claim/i.test(stage)), false);
+  assert.equal(submission.transactionDetails.some(({ stage }) => /collect|claim/i.test(stage)), false);
   assert.match(submission.note, /No supplier collection has occurred/);
   assert.equal(submission.contracts.length, 1);
   const values = Object.values(submission.contracts[0]!);
