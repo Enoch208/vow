@@ -41,6 +41,7 @@ export default function Home() {
           <div className="hero-actions">
             <LandingActionButton href="/demo" tone="dark">Explore the protocol</LandingActionButton>
             <LandingActionButton href={appRoot} tone="yellow">Open the product</LandingActionButton>
+            <LandingActionButton href="https://youtu.be/ZTXMF4lDoww" tone="blue">Watch the walkthrough</LandingActionButton>
           </div>
           <div className="safety-note">
             <ShieldCheck size={18} aria-hidden="true" />

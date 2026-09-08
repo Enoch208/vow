@@ -2,7 +2,7 @@
 
 VOW explores confidential delegated procurement on STRK20: an owner funds a constrained purchase, an operator cannot redirect it, and the supplier authorizes the exact STRK20 note used for collection.
 
-The matching `VowVault` class is declared and deployed on Starknet mainnet. A controlled 0.1 STRK mandate was created, atomically funded and fully reserved on that deployment. The reservation is open with Paid and Reclaimed both zero. No qualifying VOW pool collection, supplier note credit, compatibility pass, public deployment of the UI or audit is claimed.
+The matching `VowVault` class is declared and deployed on Starknet mainnet. A controlled 0.1 STRK mandate was created, atomically funded and fully reserved on that deployment. The reservation is open with Paid and Reclaimed both zero. No qualifying VOW pool collection, supplier note credit, compatibility pass or audit is claimed.
 
 | Live deployment | Starknet mainnet value |
 |---|---|
@@ -10,6 +10,8 @@ The matching `VowVault` class is declared and deployed on Starknet mainnet. A co
 | Class hash | `0x3c85f692be0a2280bc85fc9802019121a8b52ef4de0db9273c3806f7355ce14` |
 | STRK20 pool | `0x40337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a` |
 | Deployment account | `0x3f3cc7727c66634967621dc8d4697f1bfd6c29f81757496a4783bf5c90deb89` |
+
+**[Demo video ↗](https://youtu.be/ZTXMF4lDoww)** · **[Hosted presentation ↗](https://vow-mocha-two.vercel.app)** — the functional reviewer surfaces run locally over loopback; see [Local interfaces](#local-interfaces).
 
 Release status: **0 of 5 gates pass.** Deployment and an open reservation do not satisfy G0; one genuinely successful destination-bound supplier collection through the live pool is still required. G1 cannot be declared complete while G0 is unresolved, and G2–G4 remain open.
 

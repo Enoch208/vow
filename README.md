@@ -11,7 +11,7 @@
 
 VOW is a delegated-procurement protocol for STRK20. An owner commits a private set of one-use purchase permissions, an operator reserves only an approved purchase, and the supplier independently collects into the exact signed STRK20 note.
 
-**[Demo video (placeholder) ↗](https://example.com/vow-demo)** · **[Live app (placeholder) ↗](https://example.com/vow-live)** · **[Five-minute judge path](JUDGES.md)** · **[Reproduce the evidence](REPRODUCE.md)**
+**[Demo video ↗](https://youtu.be/ZTXMF4lDoww)** · **[Live app ↗](https://vow-mocha-two.vercel.app)** · **[Five-minute judge path](JUDGES.md)** · **[Reproduce the evidence](REPRODUCE.md)**
 
 Built for the STRK20 privacy track on Starknet.
 
@@ -28,11 +28,11 @@ The intended walkthrough covers the complete separation of duties:
 3. A supplier reviews the exact destination-bound claim and signs it in an isolated local tool.
 4. Anyone verifies the resulting public receipt without connecting a wallet.
 
-Video: **[three-minute walkthrough (placeholder)](https://example.com/vow-demo)**
+Video: **[walkthrough ↗](https://youtu.be/ZTXMF4lDoww)**
 
-Hosted product: **[public deployment (placeholder)](https://example.com/vow-live)**
+Hosted presentation: **[vow-mocha-two.vercel.app ↗](https://vow-mocha-two.vercel.app)**
 
-Until those links are replaced, run the reviewer path locally with `npm run app` and follow [JUDGES.md](JUDGES.md). The live mainnet contract and open reservation are real; a qualifying supplier collection is not yet claimed.
+The hosted site is the public presentation of the protocol and its mainnet identifiers. The functional owner, operator, claim, supplier and verifier surfaces run locally over loopback by design, because the supplier signing tool must not share an origin with wallet discovery; start them with `npm run app` and follow [JUDGES.md](JUDGES.md). The live mainnet contract and the open reservation are real. A qualifying supplier collection is not yet claimed.
 
 ## Table of contents
 
@@ -205,6 +205,8 @@ Additional isolated tools:
 
 These loopback pages are reviewer and integration surfaces. They do not establish public hosting or mainnet collection.
 
+The claim page loads any saved collection attempt before enabling preparation. Use **Resolve the previous attempt** to inspect its public record and check a transaction hash from Ready Activity against the saved reservation and note. An older record without a hash remains unresolved even if no confirmation appeared in Ready; do not clear browser storage to bypass it. For new attempts, the dispatcher records `not-dispatched` only after stopping every pending continuation and establishing that it never called the wallet submission method. That state permits a fresh note, signature and review. Wallet submission errors, missing receipts and conflicting hashes remain blocked.
+
 ## Public and private data
 
 | Information | Visibility |
@@ -290,7 +292,7 @@ The recorded clean-clone gate passed against the final source and mainnet-eviden
 
 - No qualifying destination-bound supplier collection has succeeded on the final VowVault deployment.
 - The live STRK20 wallet, proof and note-credit path remains an unresolved integration dependency.
-- Public hosting, an independent reproduction, the final video and submission links are not yet claimed.
+- The hosted site presents the protocol; it does not itself execute a mainnet collection, and no independent reproduction is claimed.
 - Mainnet reads and receipt verification use a single public RPC provider unless an evidence record says otherwise.
 - The contracts and supplier backup implementation have not been audited.
 - Tokens sent directly to the vault outside its funding entrypoint are neither accounted as mandate budget nor recoverable.
