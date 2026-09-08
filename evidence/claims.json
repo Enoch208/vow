@@ -260,7 +260,7 @@
     },
     {
       "id": "VOWVAULT-CLAIM-APP",
-      "claim": "The local VowVault claim route reads and pins an open reservation before enabling wallet preparation or supplier signature input, preserves its exact note through proof preparation, and journals the reviewed dispatch once.",
+      "claim": "The local VowVault claim route loads saved submission recovery before enabling wallet preparation, reads and pins an open reservation, preserves its exact note through proof preparation, and journals the reviewed dispatch once.",
       "tier": "local-model",
       "sourceCommit": null,
       "evidence": [
@@ -274,12 +274,13 @@
         "Synthetic wallet, reservation and positive receipt data.",
         "The shipped manifest pins the mainnet deployment and the page read one live open reservation before enabling wallet work.",
         "Ready X 5.33.9 advertised API 0.10.3 but rejected live note preparation without a public reason code; signature controls stayed disabled and nothing was submitted.",
-        "No proof validity, live dispatch or supplier collection is verified."
+        "No proof validity, live dispatch or supplier collection is verified.",
+        "Recovery and safe replacement of attempts that never reached wallet submission are covered with synthetic data; existing live hashless attempts are not automatically unblocked."
       ]
     },
     {
       "id": "SUBMISSION-RECOVERY",
-      "claim": "The local journal persists one reservation-scoped attempt before dispatch, coordinates cooperating clients with Web Locks, records late hashes and requires fresh evidence after restoration.",
+      "claim": "The local journal persists one reservation-scoped attempt before dispatch, coordinates cooperating clients with Web Locks, records late hashes, and permits a fresh review only after a durable no-dispatch outcome; legacy unknown attempts require recovery.",
       "tier": "local-model",
       "sourceCommit": null,
       "evidence": [
@@ -287,12 +288,14 @@
         "packages/vow-sdk/test/submission-attempt.test.ts",
         "evidence/submission-workbench-checks.json",
         "packages/vow-sdk/test/submission-journal.test.ts",
-        "packages/vow-sdk/test/collection-recovery-page.test.ts"
+        "packages/vow-sdk/test/collection-recovery-page.test.ts",
+        "evidence/vault-claim-verifier-checks.json"
       ],
       "reproduce": "npm run check",
       "limitations": [
         "Native Node locks, simulated storage/dispatch and DOM harness tests; real-browser reload/cross-tab behavior not verified.",
-        "No wallet write integration or automatic network-fee enforcement. Clearing storage or using another origin bypasses client coordination."
+        "No wallet write integration or automatic network-fee enforcement. Clearing storage or using another origin bypasses client coordination.",
+        "Legacy hashless attempts cannot be inferred to be not-dispatched; the claim panel retains them and verifies any recovered transaction against the exact saved reservation and note."
       ]
     },
     {
@@ -404,6 +407,24 @@
         "The owner screen predicts the next mandate id from public reads; a concurrent create_mandate takes that id and a set committed to the wrong id can never be reserved against. The screen warns before creation and the contract offers no view that removes the race.",
         "Write reconciliation accepts an accepted, non-reverted receipt in a block that still contains the transaction plus a vault-emitted event of the expected name; it does not verify the internal call path.",
         "Accessibility is asserted statically over the shipped HTML and CSS, including measured contrast ratios. No assistive-technology pass was performed."
+      ]
+    },
+    {
+      "id": "PUBLIC-DEMO",
+      "claim": "VOW publishes a hosted presentation at https://vow-mocha-two.vercel.app and a walkthrough video at https://youtu.be/ZTXMF4lDoww. Both are reachable, and the mainnet vault address, class hash and pool shown on the site are the identifiers recorded in strk20.json.",
+      "tier": "deployed",
+      "sourceCommit": null,
+      "evidence": [
+        "strk20.json",
+        "README.md",
+        "JUDGES.md"
+      ],
+      "reproduce": "curl -sI https://vow-mocha-two.vercel.app && curl -sIL https://youtu.be/ZTXMF4lDoww",
+      "limitations": [
+        "The hosted site is a presentation surface. It executes no mainnet transaction and performs no supplier collection.",
+        "The functional owner, operator, claim, supplier and verifier surfaces are loopback-only by design and are not part of the hosted deployment.",
+        "Reachability was observed from one network at one point in time; third-party hosting availability is outside this repository.",
+        "The video records a walkthrough. It is not independent reproduction and does not raise any other claim tier."
       ]
     },
     {
